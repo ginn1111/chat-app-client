@@ -1,9 +1,8 @@
+import Authentication from './components/pages/Authentication';
+import Layout from './components/layout/Layout';
+
 function App() {
-  return (
-    <div className="App text-3xl py-6">
-      <span className="text-4xl font-bold underline">Hello reactJS</span>
-    </div>
-  );
+  return <Layout></Layout>;
 }
 
 export default App;

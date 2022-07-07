@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
+
+@layer utilities {
+  .nav-bar {
+    @apply relative  transition-colors duration-300 ease-in-out;
+  }
+  .nav-bar::after {
+    @apply absolute bottom-[-5px] left-0 w-0 h-[4px] bg-blue-400 content-[''] transition-all duration-300 ease-in-out;
+  }
+  .nav-bar--hovered,
+  .nav-bar:hover {
+    @apply text-blue-600;
+  }
+  .nav-bar-slide--hovered.nav-bar::after,
+  .nav-bar:hover::after {
+    @apply w-[100%];
+  }
+}
