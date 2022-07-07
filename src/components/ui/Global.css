@@ -1,0 +1,21 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+:root {
+  --primary: #fff;
+}
+html {
+  font-size: 62.5%;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+body {
+  font-family: 'IBM Plex Sans', sans-serif, Ubuntu;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
