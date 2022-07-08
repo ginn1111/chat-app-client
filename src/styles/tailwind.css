@@ -18,4 +18,16 @@
   .nav-bar:hover::after {
     @apply w-[100%];
   }
+  .arrow-menu::after {
+    @apply absolute top-0 left-[55%] translate-y-[-100%] content-[''] border-solid border-[10px] border-t-transparent border-l-transparent border-r-transparent border-b-white;
+  }
+  .absolute-x-center {
+    @apply absolute left-[50%] translate-x-[-50%];
+  }
+  .absolute-y-center {
+    @apply absolute top-[50%] translate-y-[-50%];
+  }
+  .absolute-center {
+    @apply absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%];
+  }
 }

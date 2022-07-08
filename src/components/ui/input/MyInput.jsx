@@ -1,9 +1,10 @@
 import { useId } from 'react';
+import { motion } from 'framer-motion';
 
 const MyInput = (props) => {
   const id = useId();
   return (
-    <div
+    <motion.div
       className={`flex basis-${props.basis} items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500`}
     >
       <div className="flex flex-col w-full">
@@ -18,7 +19,7 @@ const MyInput = (props) => {
         />
       </div>
       <div className="opacity-50">{props.icon}</div>
-    </div>
+    </motion.div>
   );
 };
 

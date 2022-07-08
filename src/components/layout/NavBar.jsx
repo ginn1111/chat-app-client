@@ -18,6 +18,11 @@ const NavBar = () => {
           Message
         </NavLink>
       </li>
+      <li>
+        <NavLink className={stylesNavBar} to="/wall/me">
+          About me
+        </NavLink>
+      </li>
     </ul>
   );
 };
