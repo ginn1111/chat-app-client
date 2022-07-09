@@ -45,6 +45,8 @@ const BasicInformation = () => {
         address: addressRef.current.value,
         gender: genderRef.current.value,
       });
+    } else {
+      firstNameRef.current.focus();
     }
   }, [isUpdate]);
 

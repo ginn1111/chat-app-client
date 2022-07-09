@@ -1,4 +1,4 @@
-import { useId, forwardRef, useImperativeHandle } from 'react';
+import { useId, forwardRef, useImperativeHandle, useRef } from 'react';
 import useInput, { useRadioInput } from '../../../hooks/useInput';
 import { motion } from 'framer-motion';
 import { UilEditAlt, UilCheck } from '@iconscout/react-unicons';
@@ -36,17 +36,22 @@ export const InputInformation = forwardRef(
     { icon, title, type, placeholder, width, readOnly, validateFunction },
     ref,
   ) => {
-    const { state, actions } = useInput(validateFunction);
-    const { value, isValid, isInValid } = state;
-    const { onChange, onBlur, reset } = actions;
+    const {
+      state: { value, isValid, isInValid },
+      actions: { onChange, onBlur, reset },
+    } = useInput(validateFunction);
 
     const id = useId();
+    const inputRef = useRef();
 
     useImperativeHandle(ref, () => ({
       value,
       isValid,
       isInValid,
       reset,
+      focus() {
+        inputRef.current.focus();
+      },
     }));
 
     return (
@@ -62,6 +67,7 @@ export const InputInformation = forwardRef(
           </label>
         </div>
         <input
+          ref={inputRef}
           value={value}
           onBlur={onBlur}
           onChange={onChange}
