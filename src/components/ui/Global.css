@@ -3,7 +3,16 @@
 :root {
   --primary: #fff;
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+  opacity: 0.4;
+  border-radius: 5px;
+}
 html {
+  scroll-behavior: smoothing;
   font-size: 62.5%;
   font-size: 1.6rem;
   line-height: 1.5;

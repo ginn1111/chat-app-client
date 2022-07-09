@@ -30,4 +30,13 @@
   .absolute-center {
     @apply absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%];
   }
+  .format-page-size {
+    @apply pb-5 xl:w-[1280px] md:w-screen md:mx-[24px] mx-auto;
+  }
+  .img-container:hover img {
+    @apply rounded-[0px] mt-0 w-full h-full duration-200 transition-all;
+  }
+  .text-primary {
+    @apply text-[16px] text-slate-600;
+  }
 }
