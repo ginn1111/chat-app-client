@@ -2,7 +2,7 @@ import React from 'react';
 
 const FriendItem = ({ avatar, slogan, name }) => {
   return (
-    <li className="text-[16px] flex items-center gap-x-2 w-full bg-white shadow-lg p-2 rounded-md hover:bg-blue-400 hover:text-white cursor-pointer duration-300">
+    <li className="text-[16px] flex items-center gap-x-2 w-full bg-white shadow-lg p-2 rounded-md item-hovered">
       <img
         src={avatar}
         alt="avatar-friend"

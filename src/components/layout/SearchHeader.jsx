@@ -8,7 +8,7 @@ const SearchHeader = ({ isSearch }) => {
     <AnimatePresence>
       {isSearch && (
         <motion.form
-          className="z-50 bottom-[-120%] absolute right-[50%]"
+          className="z-50 bottom-[-120%] absolute right-[50%] drop-shadow-xl w-36"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}

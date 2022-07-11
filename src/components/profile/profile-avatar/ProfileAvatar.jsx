@@ -42,7 +42,7 @@ const ProfileAvatarMenu = () => {
 
 const ProfileAvatar = () => {
   return (
-    <section className="w-5/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh] ml-[-30px]">
+    <section className="w-5/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh]">
       <div className="bg-white w-5/6 h-[55%] text-center mx-auto rounded-md overflow-hidden shadow-lg">
         <motion.img
           whileHover={{

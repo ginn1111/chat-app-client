@@ -1,5 +1,8 @@
-import { useId } from 'react';
+import { useImperativeHandle, useId, useState, forwardRef } from 'react';
 import { motion } from 'framer-motion';
+import { UilEyeSlash } from '@iconscout/react-unicons';
+import useInput from '../../../hooks/useInput';
+import ErrorMessage from '../../ui/error/ErrorMessage';
 
 export const InputInformation = ({ icon, type, title, width, placeholder }) => {
   const id = useId();
@@ -26,28 +29,77 @@ export const InputInformation = ({ icon, type, title, width, placeholder }) => {
   );
 };
 
-const MyInput = (props) => {
+const MyInput = forwardRef((props, ref) => {
+  const {
+    state: { value, isValid, isInValid },
+    actions: { onChange, onBlur, reset },
+  } = useInput(props.validationFunction);
+
+  useImperativeHandle(ref, () => ({
+    value,
+    isValid,
+    isInValid,
+    reset,
+    blur: onBlur,
+  }));
+
   const id = useId();
+  const [isPassword, togglePassword] = useState(props.type === 'password');
+  const fieldIsPassword = isPassword && props.type === 'password';
+
+  const passwordAnimate = {
+    initial: { opacity: 0, scale: 0.5 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 0.5 },
+  };
+
+  function togglePasswordHandler() {
+    if (props.type === 'password') togglePassword((prevState) => !prevState);
+  }
+
   return (
-    <motion.div
-      className={`flex basis-${props.basis} items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
-    >
-      <div className="flex flex-col w-full">
-        <label className="text-[12px]  opacity-50" htmlFor={id}>
-          {props.title}
-        </label>
-        <input
-          required
-          placeholder={props.placeholder}
-          className=" outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
-          id={id}
-          type={props.type ?? 'text'}
-        />
-      </div>
-      <div className="opacity-50">{props.icon}</div>
-    </motion.div>
+    <>
+      <motion.div
+        className={`flex basis-${props.basis} items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
+      >
+        <div className="flex flex-col w-full">
+          <label className="text-[12px]  opacity-50" htmlFor={id}>
+            {props.title}
+          </label>
+          <input
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            required
+            placeholder={props.placeholder}
+            className=" outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
+            id={id}
+            type={fieldIsPassword ? 'password' : 'text'}
+          />
+        </div>
+        <div
+          onClick={togglePasswordHandler}
+          className={`opacity-50 ${
+            props.type === 'password' ? 'cursor-pointer' : ''
+          }`}
+        >
+          {!isPassword && (
+            <motion.div {...passwordAnimate}>{props.icon}</motion.div>
+          )}
+          {isPassword && (
+            <motion.div {...passwordAnimate}>
+              <UilEyeSlash size={22} />
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
+      <ErrorMessage
+        message={props.errorText ?? 'Input is in valid!'}
+        isShow={isInValid}
+      />
+    </>
   );
-};
+});
 
 export const InputRadio = ({ list, width, title }) => {
   return (

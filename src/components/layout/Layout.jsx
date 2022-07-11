@@ -1,13 +1,14 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from './Header';
 
 const Layout = ({ children }) => {
+  const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <div>
-      {/* <div className="overflow-hidden"> */}
-      <Header />
+      {pathname !== '/auth' && <Header />}
       <main>{children}</main>
-      {/* </div> */}
     </div>
   );
 };

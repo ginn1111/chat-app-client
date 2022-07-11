@@ -7,7 +7,7 @@ const NavBar = () => {
       ? 'nav-bar--hovered nav-bar-slide--hovered nav-bar'
       : 'nav-bar';
   return (
-    <ul className="flex gap-x-5 justify-center items-center w-1/2">
+    <ul className="flex gap-x-5 justify-center items-center w-1/3 text-[18px]">
       <li>
         <NavLink className={stylesNavBar} to="/">
           Home

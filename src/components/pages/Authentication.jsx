@@ -10,7 +10,7 @@ const Authentication = () => {
   }
 
   return (
-    <div className=" flex items-end w-full h-screen relative  bg-[url('../assets/img/background.jpg')] overflow-hidden">
+    <div className=" flex items-center w-full h-screen relative  bg-[url('../assets/img/background.jpg')] overflow-hidden justify-center">
       <div className="w-full h-full bg-gradient-to-tr from-slate-900 to-[#4b5563de] ">
         {!toggleForm && <Register onToggle={toggleFormHandler} />}
         {toggleForm && <Login onToggle={toggleFormHandler} />}

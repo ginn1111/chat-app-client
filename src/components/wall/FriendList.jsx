@@ -8,6 +8,7 @@ const FriendList = () => {
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
+      {/* <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
@@ -36,8 +37,7 @@ const FriendList = () => {
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
       <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
-      <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
-      <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" />
+      <FriendItem avatar={Avatar} name="Gin" slogan="You only live one!" /> */}
     </ul>
   );
 };
