@@ -16,22 +16,34 @@ import {
   validateEmpty,
 } from '../../utils/validate';
 import { itemAnimate, slideInFromLeft } from '../../animation/models/index';
+import ToastList from '../ui/notification/ToastList';
 
 const Register = (props) => {
   const status = useSelector(getStatus);
   const dispatch = useDispatch();
 
+  const toastRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
 
   useEffect(() => {
-    if (status === 'failed') {
-      console.log('failed');
+    if (status === 'register/success') {
+      toastRef.current.addToast({
+        type: 'success',
+        message: 'Create new account successfully!',
+      });
       dispatch(resetStatus());
     }
-  }, []);
+    if (status === 'register/failed') {
+      toastRef.current.addToast({
+        type: 'error',
+        message: 'Your email is exist account!',
+      });
+      dispatch(resetStatus());
+    }
+  }, [status]);
 
   function submitRegisterHandler(event) {
     event.preventDefault();
@@ -62,7 +74,8 @@ const Register = (props) => {
 
   return (
     <>
-      <ProcessBar isShow={status === 'pending'} />
+      <ToastList ref={toastRef} />
+      <ProcessBar isShow={status === 'register/pending'} />
       <Animation animationCreator={slideInFromLeft}>
         <section className="pt-[50px] ml-[100px] h-full flex flex-col justify-center w-full">
           <div className="flex flex-col items-start">

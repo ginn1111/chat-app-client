@@ -40,20 +40,20 @@ const Header = () => {
 
   const hoverAnimation = {
     whileHover: {
-      color: 'lightblue',
+      color: '#bfdbce',
       scale: 1.5,
       cursor: 'pointer',
       transition: { duration: 0.2 },
     },
     whileTap: {
-      color: 'lightblue',
+      color: '#bfdbce',
       scale: 3,
       cursor: 'pointer',
       transition: { duration: 0.2 },
     },
   };
   return (
-    <header className="bg-white z-[10] w-[90%] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600">
+    <header className="bg-white  z-[10] w-[90%] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600 fixed top-0 left-0 right-0">
       <div className="ml-auto flex  gap-x-2 relative w-5/12 ">
         <Animation animationCreator={fallAnimate}>
           <div>Logo</div>

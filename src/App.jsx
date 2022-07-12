@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getToken } from './store/selectors';
-import { setUser } from './store/authen-slice';
+import { getToken, hasLogged } from './store/selectors';
+import { getUserInformation } from './store/authen-slice';
 
 import Layout from './components/layout/Layout';
 import Authentication from './components/pages/Authentication';
@@ -14,24 +14,24 @@ import Chat from './components/message/chat/Chat';
 
 function App() {
   const token = useSelector(getToken);
+  const isLogged = useSelector(hasLogged);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      dispatch(setUser(JSON.parse(user)));
-      navigate('/wall/me');
-    }
-  }, []);
+    if (!isLogged) dispatch(getUserInformation());
+  }, [isLogged]);
 
   return (
     <Layout>
       <Routes>
-        <Route path="*" element={<Navigate to="/auth" />} />
-        <Route path="/auth" element={<Authentication />} />
         <Route
-          path="/wall/me"
+          path="/"
+          element={
+            token ? <Navigate to={'/profile'} /> : <Navigate to="/auth" />
+          }
+        />
+        <Route
+          path="/wall/:id"
           element={token ? <Wall /> : <Navigate to="/auth" />}
         />
         <Route
@@ -45,6 +45,11 @@ function App() {
           <Route path=":id" element={<Chat />} />
         </Route>
         <Route path="/search" element={<Search />} />
+        <Route
+          path="/auth"
+          element={!token ? <Authentication /> : <Navigate to="/wall/me" />}
+        />
+        <Route path="*" element={<Navigate to="/auth" />} />
       </Routes>
     </Layout>
   );

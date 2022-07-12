@@ -18,27 +18,25 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const status = useSelector(getStatus);
   const token = useSelector(getToken);
-  const navigate = useNavigate();
 
-  // test toast showing
   const toastRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   useEffect(() => {
-    if (status === 'failed') {
+    if (status === 'login/failed') {
       toastRef.current.addToast({
         message: 'Login failed, try again!',
         type: 'error',
       });
       dispatch(resetStatus());
     }
-    if (status === 'success') {
-      navigate('/wall/me');
-      dispatch(resetStatus());
-    }
-  }, [status]);
+  }, [status, token]);
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  useEffect(() => {
+    emailRef.current.setValue('vanthuanjw@gmail.com');
+    passwordRef.current.setValue('Thu@n12312');
+  }, []);
 
   function rememberMeHandler({ target: { checked } }) {}
 
@@ -59,7 +57,7 @@ const Login = (props) => {
 
   return (
     <>
-      <ProcessBar isShow={status === 'pending'} />
+      <ProcessBar isShow={status === 'login/pending'} />
       <ToastList ref={toastRef} />
       <Animation animationCreator={slideInFromRight}>
         <section className="pr-[100px] pt-[100px] h-full flex flex-col items-end w-full ">

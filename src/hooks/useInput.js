@@ -1,22 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useRadioInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
 
-  function onChangeValueHandler(event) {
-    console.log(event.target.value);
+  function changeValueHandler(event) {
     setValue(event.target.value);
   }
 
-  return { value, onChange: onChangeValueHandler };
+  function setNewValue(value) {
+    setValue(value);
+  }
+
+  return { value, onChange: changeValueHandler, setValue: setNewValue };
 };
 
 const useInput = (validateFunction) => {
   const [value, setValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
-
   const isValid = validateFunction?.(value) ?? true;
-  const isInValid = !isValid && isFocus;
+  const [isInValid, setIsInValid] = useState(!isValid && isFocus);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setIsInValid(!isValid && isFocus);
+    }, 300);
+
+    return () => clearTimeout(timerId);
+  }, [isValid, isFocus]);
 
   function onChangeHandler(event) {
     setIsFocus(true);
@@ -31,6 +41,10 @@ const useInput = (validateFunction) => {
     setValue('');
   }
 
+  function setNewValue(value) {
+    setValue(value);
+  }
+
   return {
     state: {
       value,
@@ -41,6 +55,7 @@ const useInput = (validateFunction) => {
       onChange: onChangeHandler,
       onBlur: onBlurHandler,
       reset: resetHandler,
+      setValue: setNewValue,
     },
   };
 };

@@ -4,11 +4,11 @@ import Header from './Header';
 
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
-  console.log(pathname);
+  const isAuthPage = pathname === '/auth';
   return (
     <div>
-      {pathname !== '/auth' && <Header />}
-      <main>{children}</main>
+      {!isAuthPage && <Header />}
+      <main className={`${isAuthPage ? '' : 'mt-[70px]'}`}>{children}</main>
     </div>
   );
 };

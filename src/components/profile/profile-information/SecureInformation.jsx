@@ -2,28 +2,50 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InputInformation, HeaderProfile } from '../profile-input/ProfileInput';
 import { UilKeySkeleton } from '@iconscout/react-unicons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getStatus, getUser } from '../../../store/selectors';
+import { updateUser } from '../../../store/authen-slice';
 
-const SecureInformation = () => {
+const SecureInformation = ({ toastRef }) => {
+  const user = useSelector(getUser);
+  const dispatch = useDispatch();
   const [isUpdate, setIsUpdate] = useState(null);
 
   const newPasswordRef = useRef();
   const oldPasswordRef = useRef();
 
   useEffect(() => {
+    // ignore the first time component mount
     if (isUpdate === null) {
       return;
     }
     if (!isUpdate) {
-      console.log('submit', {
-        newPassword: newPasswordRef.current.value,
-        oldPassword: oldPasswordRef.current.value,
-      });
+      dispatch(
+        updateUser({
+          ...user,
+          currentPassword: oldPasswordRef.current.value,
+          password: newPasswordRef.current.value,
+        }),
+      );
+      oldPasswordRef.current.reset();
     } else {
       oldPasswordRef.current.focus();
     }
   }, [isUpdate]);
 
   function toggleUpdateHandler() {
+    if (newPasswordRef.current) {
+      const isValid = newPasswordRef.current.isValid;
+      if (!isValid) return;
+      if (newPasswordRef.current.value === oldPasswordRef.current.value) {
+        toastRef.current.addToast({
+          type: 'error',
+          message: 'New password must not duplicate!',
+        });
+        return;
+      }
+    }
+
     setIsUpdate((prevState) => !prevState);
   }
 
@@ -70,6 +92,8 @@ const SecureInformation = () => {
               placeholder=""
               icon={<UilKeySkeleton className=" text-slate-400" size="20" />}
               type="password"
+              validateFunction={(value) => value.trim().length >= 8}
+              errorText="Password least 8 characters!"
             />
           </motion.div>
         )}

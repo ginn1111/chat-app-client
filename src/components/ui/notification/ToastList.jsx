@@ -19,7 +19,6 @@ const ToastList = forwardRef((props, ref) => {
 
   return (
     <>
-      '{' '}
       {createPortal(
         toastList.map((toast, index) => {
           return (

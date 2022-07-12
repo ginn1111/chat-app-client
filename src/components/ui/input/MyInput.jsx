@@ -32,7 +32,7 @@ export const InputInformation = ({ icon, type, title, width, placeholder }) => {
 const MyInput = forwardRef((props, ref) => {
   const {
     state: { value, isValid, isInValid },
-    actions: { onChange, onBlur, reset },
+    actions: { onChange, onBlur, reset, setValue },
   } = useInput(props.validationFunction);
 
   useImperativeHandle(ref, () => ({
@@ -41,6 +41,7 @@ const MyInput = forwardRef((props, ref) => {
     isInValid,
     reset,
     blur: onBlur,
+    setValue,
   }));
 
   const id = useId();

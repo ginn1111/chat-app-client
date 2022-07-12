@@ -14,7 +14,7 @@ const ProcessBar = ({ isShow }) => {
   useEffect(() => {
     const idTimer = setInterval(() => {
       setProcess((process) => (process < 100 ? process + 10 : process));
-    }, 1000);
+    }, 700);
 
     return () => clearInterval(idTimer);
   }, []);
@@ -25,7 +25,7 @@ const ProcessBar = ({ isShow }) => {
           {isShow && (
             <motion.div
               initial={{ width: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
               whileInView={{
                 width: `${process}%`,
                 height: '5px',
@@ -37,7 +37,6 @@ const ProcessBar = ({ isShow }) => {
         </AnimatePresence>,
         document.getElementById('process-bar'),
       )}
-      ,
     </>
   );
 };

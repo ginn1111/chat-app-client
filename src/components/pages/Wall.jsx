@@ -7,7 +7,7 @@ const Wall = () => {
   return (
     <div className="format-page-size flex items-center flex-col">
       <WallAvatar />
-      <section className="text-slate-600 mt-[100px] flex items-start gap-x-5 w-full h-full pb-5">
+      <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 w-full h-full pb-5">
         <Biography />
         <Friend />
       </section>

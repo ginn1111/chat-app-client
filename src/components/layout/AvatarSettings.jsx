@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   UilUserCircle,
@@ -8,8 +7,16 @@ import {
   UilSignout,
 } from '@iconscout/react-unicons';
 import AvatarSettingItem from './AvatarSettingItem';
+import { useDispatch } from 'react-redux';
+import { logoutThunk } from '../../store/authen-slice';
 
 const AvatarSettings = ({ isShowMenu }) => {
+  const dispatch = useDispatch();
+
+  function logoutHandler() {
+    dispatch(logoutThunk());
+  }
+
   return (
     <AnimatePresence>
       {isShowMenu && (
@@ -37,11 +44,13 @@ const AvatarSettings = ({ isShowMenu }) => {
               url="/message"
             />
             <hr />
-            <AvatarSettingItem
-              icon={<UilSignout />}
-              title="Sign out"
-              url="/sign-out"
-            />
+            <div
+              className=" hover:bg-blue-400 duration-200 hover:text-white px-2 py-1 rounded-sm font-[500] flex items-center  gap-x-2 "
+              onClick={logoutHandler}
+            >
+              <UilSignout />
+              <span>Logout</span>
+            </div>
           </ul>
         </motion.div>
       )}

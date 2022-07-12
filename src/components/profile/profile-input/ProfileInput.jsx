@@ -2,6 +2,7 @@ import { useId, forwardRef, useImperativeHandle, useRef } from 'react';
 import useInput, { useRadioInput } from '../../../hooks/useInput';
 import { motion } from 'framer-motion';
 import { UilEditAlt, UilCheck } from '@iconscout/react-unicons';
+import ErrorMessage from '../../ui/error/ErrorMessage';
 
 export const HeaderProfile = ({ title, isUpdate, onToggleUpdate }) => {
   const motionAnimate = {
@@ -33,12 +34,21 @@ export const HeaderProfile = ({ title, isUpdate, onToggleUpdate }) => {
 // value, isValid, isInValid, reset,
 export const InputInformation = forwardRef(
   (
-    { icon, title, type, placeholder, width, readOnly, validateFunction },
+    {
+      icon,
+      title,
+      type,
+      placeholder,
+      width,
+      readOnly,
+      validateFunction,
+      errorText,
+    },
     ref,
   ) => {
     const {
       state: { value, isValid, isInValid },
-      actions: { onChange, onBlur, reset },
+      actions: { onChange, onBlur, reset, setValue },
     } = useInput(validateFunction);
 
     const id = useId();
@@ -52,31 +62,33 @@ export const InputInformation = forwardRef(
       focus() {
         inputRef.current.focus();
       },
+      setValue,
     }));
 
     return (
-      <div
-        className={`w-${
-          width ?? '11/12'
-        } h-max flex  rounded-md bg-slate-200 px-2 py-1 gap-x-1`}
-      >
-        <div className="flex gap-x-2 basis-1/3 max-w-1/2 items-center">
-          {icon}
-          <label htmlFor={id} className="text-[14px] text-slate-600">
-            {title}
-          </label>
+      <div className={`w-${width ?? '11/12'} h-max `}>
+        <div
+          className={`w-full h-max flex  rounded-md bg-slate-200 px-2 py-1 gap-x-1`}
+        >
+          <div className="flex gap-x-2 basis-1/3 max-w-1/2 items-center">
+            {icon}
+            <label htmlFor={id} className="text-[14px] text-slate-600">
+              {title}
+            </label>
+          </div>
+          <input
+            ref={inputRef}
+            value={value}
+            onBlur={onBlur}
+            onChange={onChange}
+            readOnly={readOnly}
+            className="bg-transparent basis-3/4  w-max outline-none text-primary py-1 border-b-2 border-transparent focus:border-slate-400 duration-300"
+            id={id}
+            type={type ?? 'text'}
+            placeholder={placeholder}
+          />
         </div>
-        <input
-          ref={inputRef}
-          value={value}
-          onBlur={onBlur}
-          onChange={onChange}
-          readOnly={readOnly}
-          className="bg-transparent basis-3/4  w-max outline-none text-primary py-1 border-b-2 border-transparent focus:border-slate-400 duration-300"
-          id={id}
-          type={type ?? 'text'}
-          placeholder={placeholder}
-        />
+        <ErrorMessage isShow={isInValid} message={errorText} />
       </div>
     );
   },
@@ -89,7 +101,7 @@ export const TextAreaInformation = forwardRef(
   ) => {
     const {
       state: { value, isValid, isInValid },
-      actions: { onChange, onBlur, reset },
+      actions: { onChange, onBlur, reset, setValue },
     } = useInput(validateFunction);
 
     const id = useId();
@@ -99,6 +111,7 @@ export const TextAreaInformation = forwardRef(
       isValid,
       isInValid,
       reset,
+      setValue,
     }));
 
     return (
@@ -114,6 +127,7 @@ export const TextAreaInformation = forwardRef(
           </label>
         </div>
         <textarea
+          value={value}
           onChange={onChange}
           onBlur={onBlur}
           readOnly={readOnly}
@@ -129,10 +143,11 @@ export const TextAreaInformation = forwardRef(
 
 export const RadioInputInformation = forwardRef(
   ({ list, title, icon, readOnly }, ref) => {
-    const { value, onChange } = useRadioInput(list[0].value);
+    const { value, onChange, setValue } = useRadioInput(list[0].value);
 
     useImperativeHandle(ref, () => ({
       value,
+      setValue,
     }));
 
     return (

@@ -15,6 +15,6 @@ export const validateEmpty = (value) => {
 };
 
 export const validatePhone = (phone) => {
-  const regexPhone = /^0[\d]{2}[-_\s]*[\d]{3}[-_\s]*[\d]{4}$/g;
-  return [regexPhone.test(phone), phone.replace(/(-_\s)/g, '')];
+  const regexPhone = /^0[\d]{2}[\d]{3}[\d]{4}$/g;
+  return regexPhone.test(phone);
 };
