@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     if (!isLogged) dispatch(getUserInformation());
-  }, [isLogged]);
+  }, [isLogged, dispatch]);
 
   return (
     <Layout>

@@ -6,6 +6,7 @@ import Global from './components/ui/Global';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import { setUpInterceptor } from './axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,4 +18,5 @@ root.render(
     </Router>
   </Provider>,
 );
+// setUpInterceptor(store);
 reportWebVitals();

@@ -11,7 +11,7 @@ export const commonStyle =
 const Message = () => {
   const param = useParams();
   return (
-    <div className="format-page-size flex mt-[20px] pb-[20px] h-[calc(100vh_-_90px)] relative rounded-md">
+    <div className="format-page-size flex  h-[calc(100vh_-_90px)] relative rounded-md">
       <FriendList />
       {param.id ? <Outlet /> : <PseudoChat />}
       <Settings />

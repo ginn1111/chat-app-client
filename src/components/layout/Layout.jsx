@@ -8,7 +8,9 @@ const Layout = ({ children }) => {
   return (
     <div>
       {!isAuthPage && <Header />}
-      <main className={`${isAuthPage ? '' : 'mt-[70px]'}`}>{children}</main>
+      <main className={`${isAuthPage ? '' : 'mt-[70px]'} py-[10px]`}>
+        {children}
+      </main>
     </div>
   );
 };

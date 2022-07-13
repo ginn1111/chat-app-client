@@ -15,6 +15,7 @@ const convertData = (data) => ({
     id: data._id,
     join: data.createdAt,
     address: data.address,
+    friendRequest: data.friendRequest,
   },
 });
 
@@ -83,7 +84,10 @@ const AuthenticationSlice = createSlice({
         state.status = 'get-user/pending';
       })
       .addCase(getUserInformation.fulfilled, (state, { payload }) => {
-        state.userInformation = { ...payload.userInformation };
+        state.userInformation = {
+          ...state.userInformation,
+          ...payload.userInformation,
+        };
         state.status = 'get-user/success';
       })
       .addCase(getUserInformation.rejected, (state) => {
@@ -97,7 +101,6 @@ const AuthenticationSlice = createSlice({
       })
       .addCase(refreshToken.rejected, (state) => {
         state.accessToken = null;
-        state.status = 'refresh-token/failed';
       })
       .addCase(updateUser.pending, (state) => {
         state.status = 'update-user/pending';
@@ -106,9 +109,16 @@ const AuthenticationSlice = createSlice({
         state.status = 'update-user/failed';
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
-        state.accessToken = payload.accessToken;
         state.userInformation = { ...payload.userInformation };
         state.status = 'update-user/success';
+      })
+      .addCase(getFriendListOfUser.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.userInformation.friendList = payload;
+        state.status = 'get-friend-list-of-user/success';
+      })
+      .addCase(getFriendListOfUser.rejected, (state) => {
+        state.status = 'get-friend-list-of-user/failed';
       });
   },
 });
@@ -145,13 +155,12 @@ export const registerThunk = createAsyncThunk(
 
 export const refreshToken = createAsyncThunk(
   'authentication/refresh-token',
-  async (userId, { getState }) => {
-    const { data } = await privateRequest(
-      getState().authentication.accessToken,
-    ).post('/auth/refresh-token', {
+  async (userId) => {
+    const { data } = await privateRequest.post('/auth/refresh-token', {
       userId,
     });
 
+    localStorage.setItem('accessToken', data.accessToken);
     return data.accessToken;
   },
 );
@@ -166,22 +175,25 @@ export const logoutThunk = createAsyncThunk(
   },
 );
 
+const getFriendListOfUser = createAsyncThunk(
+  'authentication/get-list-friend-of-user',
+  async (_, { getState }) => {
+    const jwtData = jwtDecode(getState().authentication.accessToken);
+    const { data } = await privateRequest.get(`users/${jwtData.id}/friends`);
+    return data;
+  },
+);
+
 export const getUserInformation = createAsyncThunk(
   'authentication/get-user',
   async (_, { getState, dispatch }) => {
     const jwtData = jwtDecode(getState().authentication.accessToken);
 
     const userId = jwtData.id;
-    const expirationTime = jwtData.exp * 1000;
-    const currentTimeStamp = new Date().getTime();
+    const { data } = await privateRequest.get(`/users/find/${userId}`);
+    await dispatch(getFriendListOfUser());
 
-    if (expirationTime <= currentTimeStamp) {
-      await dispatch(refreshToken(userId));
-    }
-
-    const { data } = await privateRequest(
-      getState().authentication.accessToken,
-    ).get(`/users/find/${userId}`);
+    console.log(data);
 
     return convertData(data);
   },
@@ -190,13 +202,11 @@ export const getUserInformation = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'authentication/update-user',
   async (user, { getState }) => {
-    const accessToken = getState().authentication.accessToken;
     const userId = getState().authentication.userInformation.id;
 
-    const { data } = await privateRequest(accessToken).put(
-      `/users/${userId}/edit`,
-      { ...user },
-    );
+    const { data } = await privateRequest.put(`/users/${userId}/edit`, {
+      ...user,
+    });
 
     return convertData(data);
   },
