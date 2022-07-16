@@ -5,8 +5,9 @@ import { UilKeySkeleton } from '@iconscout/react-unicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStatus, getUser } from '../../../store/selectors';
 import { updateUser } from '../../../store/authen-slice';
+import withToast from '../../../hoc/withToast';
 
-const SecureInformation = ({ toastRef }) => {
+const SecureInformation = withToast(({ toast }) => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const [isUpdate, setIsUpdate] = useState(null);
@@ -38,7 +39,7 @@ const SecureInformation = ({ toastRef }) => {
       const isValid = newPasswordRef.current.isValid;
       if (!isValid) return;
       if (newPasswordRef.current.value === oldPasswordRef.current.value) {
-        toastRef.current.addToast({
+        toast.addToast({
           type: 'error',
           message: 'New password must not duplicate!',
         });
@@ -100,6 +101,6 @@ const SecureInformation = ({ toastRef }) => {
       </AnimatePresence>
     </div>
   );
-};
+});
 
 export default SecureInformation;

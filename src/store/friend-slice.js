@@ -1,6 +1,13 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { privateRequest } from '../axios';
+import { createSlice } from '@reduxjs/toolkit';
 import { notify } from './notification-slice';
+import * as friendService from '../services/friend';
+import { showLoading, hideLoading } from './ui-slice';
+import {
+  addFriendRequest,
+  removeFriendResponse,
+  addFriendList,
+  removeFriendList,
+} from './authen-slice';
 
 const convertData = (data) => ({
   slogan: data.biography,
@@ -29,7 +36,7 @@ const INIT_STATE = {
     slogan: '',
     address: '',
     join: '',
-    friendList: null,
+    friendList: [],
   },
   status: 'idle',
 };
@@ -41,84 +48,143 @@ const friendSlice = createSlice({
     resetStatus(state) {
       state.status = 'idle';
     },
+    setState(state, action) {
+      state.status = action.payload;
+    },
+    addFriendListOfFriend(state, action) {
+      state.friendInformation.friendList.push(action.payload);
+    },
+    setFriend(state, action) {
+      state.friendInformation = {
+        ...action.payload,
+      };
+    },
+    setFriendList(state, action) {
+      state.friendInformation.friendList = action.payload;
+    },
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
+    removeFriendListOfFriend(state, action) {
+      const { friendList } = state.friendInformation;
+      state.friendInformation.friendList = friendList.filter(
+        (friend) => friend._id !== action.payload,
+      );
+    },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getFriend.pending, (state) => {
-        state.status = 'get-friend/pending';
-      })
-      .addCase(getFriend.rejected, (state) => {
-        state.status = 'get-friend/failed';
-      })
-      .addCase(getFriend.fulfilled, (state, { payload }) => {
-        delete payload.friendList;
-        state.friendInformation = {
-          friendList: state.friendInformation.friendList,
-          ...payload,
-        };
-        state.status = 'get-friend/success';
-      })
-      .addCase(getListFriend.fulfilled, (state, { payload }) => {
-        state.friendInformation.friendList = payload;
-        state.status = 'get-list-friend/success';
-      })
-      .addCase(getListFriend.rejected, (state) => {
-        state.status = 'get-list-friend/failed';
-      })
-      .addCase(sendAddFriend.pending, (state) => {
-        state.status = 'send-add-friend/pending';
-      })
-      .addCase(sendAddFriend.fulfilled, (state) => {
-        state.status = 'send-add-friend/success';
-      })
-      .addCase(sendAddFriend.rejected, (state) => {
-        state.status = 'send-add-friend/failed';
+});
+
+export const unfriend = (receiverId) => async (dispatch, getState) => {
+  dispatch(showLoading());
+  try {
+    const userId = getState().authentication.userInformation.id;
+    await friendService.unfriend(userId, receiverId);
+
+    dispatch(removeFriendList(receiverId));
+    dispatch(removeFriendListOfFriend(userId));
+    dispatch(setStatus('unfriend/success'));
+  } catch (error) {
+    console.log(`unfriend error ${error}`);
+    dispatch(setStatus('unfriend/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const getFriend = (friendId) => async (dispatch) => {
+  dispatch(showLoading());
+  try {
+    const responseFriend = friendService.getFriend(friendId);
+    const responseFriendList = friendService.getFriendList(friendId);
+
+    const { data: friendData } = await responseFriend;
+    const { data: friendListData } = await responseFriendList;
+
+    const friendInfor = convertData(friendData);
+    friendInfor.friendList = friendListData;
+
+    console.log(friendInfor);
+
+    dispatch(setFriend(friendInfor));
+    dispatch(setStatus('get-friend/success'));
+  } catch (error) {
+    console.log(`geFriend error ${error}`);
+    dispatch(setStatus('get-friend/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const responseAddFriend =
+  ({ receiverId, accepted }) =>
+  async (dispatch, getState) => {
+    dispatch(showLoading());
+    try {
+      const userState = getState().authentication.userInformation;
+      const { data } = await friendService.responseAddFriend(userState.id, {
+        receiverId,
+        accepted,
       });
-  },
-});
 
-const getListFriend = createAsyncThunk('get-friend-list', async (userId) => {
-  const { data } = await privateRequest.get(`/users/${userId}/friends`);
-  return data;
-});
+      // add to user
+      accepted && dispatch(addFriendList(data));
 
-export const getFriend = createAsyncThunk(
-  'get-friend',
-  async (userId, { dispatch }) => {
-    const { data } = await privateRequest.get(`/users/find/${userId}`);
-    await dispatch(getListFriend(userId));
-    return convertData(data);
-  },
-);
+      // add to current friend
+      accepted &&
+        dispatch(
+          addFriendListOfFriend({
+            _id: userState.id,
+            firstName: userState.firstName,
+            lastName: userState.lastName,
+            avatar: userState.avatar,
+            biography: userState.slogan,
+            coverPicture: userState.coverPicture,
+          }),
+        );
+      dispatch(removeFriendResponse(receiverId));
+    } catch (error) {
+      console.log('response add friend error', error);
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
 
-export const sendAddFriend = createAsyncThunk(
-  'send-add-friend',
-  async (id, { getState, dispatch }) => {
-    const userState = getState().authentication.userInformation;
-    const { data } = await privateRequest.put(
-      `/users/${userState.id}/friends/add`,
-      null,
-      {
-        params: {
-          receiverId: id,
-        },
-      },
-    );
-
-    await dispatch(
+export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
+  const userState = getState().authentication.userInformation;
+  dispatch(showLoading());
+  try {
+    const addFriend = friendService.sendAddFriend(userState.id, receiverId);
+    const sendNotify = dispatch(
       notify({
         senderId: userState.id,
         senderName: `${userState.firstName} ${userState.lastName}`,
         senderAvatar: userState.avatar,
-        receiverId: id,
+        receiverId,
         notify: 'Make friend, happy together!',
         isResponse: false,
       }),
     );
 
-    console.log(data);
-  },
-);
+    await addFriend;
+    await sendNotify;
 
-export const { resetStatus } = friendSlice.actions;
+    // add to user
+    dispatch(addFriendRequest(receiverId));
+    dispatch(setStatus('send-add-friend/success'));
+  } catch (error) {
+    console.log(`send add friend error ${error}`);
+    dispatch(setStatus('send-add-friend/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const {
+  resetStatus,
+  addFriendListOfFriend,
+  setFriendList,
+  setFriend,
+  removeFriendListOfFriend,
+  setStatus,
+} = friendSlice.actions;
 export default friendSlice.reducer;

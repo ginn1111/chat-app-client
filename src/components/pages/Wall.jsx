@@ -11,7 +11,6 @@ import {
   getStatus,
 } from '../../store/selectors';
 import { getFriend, resetStatus } from '../../store/friend-slice';
-import ProcessBar from '../ui/loading/ProcessBar';
 
 const Wall = () => {
   const user = useSelector(getUser);
@@ -29,10 +28,6 @@ const Wall = () => {
   const dispatch = useDispatch();
 
   const isOwn = id === user.id || id === 'me';
-  const showProcessBar =
-    status === 'get-friend/pending' ||
-    userStatus === 'get-user/pending' ||
-    status === 'send-add-friend/pending';
 
   const isFriend = useMemo(() => {
     return user.friendList?.some((friend) => friend._id === id);
@@ -42,22 +37,24 @@ const Wall = () => {
     return user.friendRequest?.some((friendId) => friendId === id);
   }, [user.friendRequest, id]);
 
+  const isResponse = useMemo(() => {
+    return user.friendResponse?.some((friendId) => friendId === id);
+  }, [user.friendResponse, id]);
+
   useEffect(() => {
     if (status === 'get-friend/success') {
       setInformationOfWall(friend);
       dispatch(resetStatus());
     }
-    if (status === 'get-friend/failed' || status === 'get-list-friend/failed') {
+    if (status === 'get-friend/failed') {
       navigate(`/wall/me`);
       dispatch(resetStatus());
     }
   }, [status, friend, dispatch, navigate]);
 
   useEffect(() => {
-    if (userStatus === 'get-user/success' && isOwn) {
-      setInformationOfWall(user);
-    }
-  }, [userStatus, isOwn, user]);
+    setInformationOfWall(isOwn ? user : friend);
+  }, [userStatus, isOwn, user, friend]);
 
   useEffect(() => {
     if (!isOwn) {
@@ -66,22 +63,20 @@ const Wall = () => {
   }, [id, isOwn, dispatch]);
 
   return (
-    <>
-      <ProcessBar isShow={showProcessBar} />
-      <div className="format-page-size flex items-center flex-col mt-[-10px]">
-        <WallAvatar
-          fullName={`${firstName} ${lastName}`}
-          avatar=""
-          isOwn={isOwn}
-          isFriend={isFriend}
-          isPending={isPending}
-        />
-        <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 w-full h-full pb-5">
-          <Biography join={join} slogan={slogan} dob={dob} />
-          <Friend friendList={friendList} />
-        </section>
-      </div>
-    </>
+    <div className="format-page-size flex items-center flex-col mt-[-10px]">
+      <WallAvatar
+        fullName={`${firstName} ${lastName}`}
+        avatar=""
+        isOwned={isOwn}
+        isFriend={isFriend}
+        isPending={isPending}
+        isResponse={isResponse}
+      />
+      <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 w-full h-full pb-5">
+        <Biography join={join} slogan={slogan} dob={dob} />
+        <Friend friendList={friendList} />
+      </section>
+    </div>
   );
 };
 

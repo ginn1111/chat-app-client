@@ -73,6 +73,12 @@
     @apply content-[''] absolute w-full h-full bg-slate-600 top-0 left-0;
   }
   .toast {
-    @apply w-max p-2  gap-x-5 flex items-center rounded-sm shadow-lg;
+    @apply w-max p-2  gap-x-5 flex items-center rounded-sm shadow-lg z-[999999999];
+  }
+  .no-read::after {
+    @apply content-[''] absolute top-[5px] right-[-6px] w-[20px] h-[10px] bg-red-500 shadow-md;
+  }
+  .no-read::before {
+    @apply content-[''] absolute top-[15px] right-[-6px] border-t-[10px] border-r-[8px]  border-t-red-400 border-r-transparent;
   }
 }

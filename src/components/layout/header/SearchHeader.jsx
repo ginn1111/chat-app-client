@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import Search from '../ui/search/Search';
+import Search from '../../ui/search/Search';
 
 const SearchHeader = ({ isSearch }) => {
   return (

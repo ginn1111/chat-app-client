@@ -13,21 +13,20 @@ export const HeaderProfile = ({ title, isUpdate, onToggleUpdate }) => {
     transition: { duration: 0.4 },
   };
   return (
-    <div
-      className="text-[18px] text-start w-full px-2 py-1 bg-blue-200 rounded-sm text-white flex justify-between items-center"
-      onClick={onToggleUpdate}
-    >
+    <div className="text-[18px] text-start w-full px-2 py-1 bg-blue-200 rounded-sm text-white flex justify-between items-center">
       <h3>{title}</h3>
-      {!isUpdate && (
-        <motion.div {...motionAnimate}>
-          <UilEditAlt className="cursor-pointer p-0.5" size="30" />
-        </motion.div>
-      )}
-      {isUpdate && (
-        <motion.div {...motionAnimate}>
-          <UilCheck className="cursor-pointer p-0.5" size="30" />
-        </motion.div>
-      )}
+      <div onClick={onToggleUpdate}>
+        {!isUpdate && (
+          <motion.div {...motionAnimate}>
+            <UilEditAlt className="cursor-pointer p-0.5" size="30" />
+          </motion.div>
+        )}
+        {isUpdate && (
+          <motion.div {...motionAnimate}>
+            <UilCheck className="cursor-pointer p-0.5" size="30" />
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,38 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import NavBar from './NavBar';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import Avatar from '../../assets/img/avatar2.jpeg';
+
+import Avatar from '../../../assets/img/avatar2.jpeg';
 import AvatarSettings from './AvatarSettings';
-import SearchHeader from './SearchHeader';
 import NotificationList from './NotificationList';
-import Animation from '../../animation/Animation';
-import { fallAnimate } from '../../animation/models';
-import Search from '../ui/search/Search';
+import Animation from '../../../animation/Animation';
+import { fallAnimate } from '../../../animation/models';
+import Search from '../../ui/search/Search';
+import { getNotifications } from '../../../store/selectors';
+import { useSelector } from 'react-redux';
+import useSearch from '../../../hooks/useSearch';
 
 const Header = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowNotification, setIsShowNotification] = useState(false);
+  const notifications = useSelector(getNotifications);
+  const searchHandler = useSearch();
+
+  const isNotify = useMemo(
+    () => notifications?.some((notification) => !notification.isResponse),
+    [notifications],
+  );
 
   useEffect(() => {
     function handlerEvent(event) {
       const avatarMenuContainer = document.getElementById('avatar-container');
+      const notificationPanel = document.getElementById('notification-panel');
       const notificationContainer = document.getElementById(
         'notification-container',
       );
 
-      if (avatarMenuContainer.contains(event.target)) {
-        setIsShowMenu((prev) => !prev);
-      } else {
-        setIsShowMenu(false);
-      }
+      avatarMenuContainer.contains(event.target)
+        ? setIsShowMenu((prev) => !prev)
+        : setIsShowMenu(false);
 
-      if (notificationContainer.contains(event.target)) {
-        setIsShowNotification((prev) => !prev);
-      } else {
-        setIsShowNotification(false);
-      }
+      notificationContainer.contains(event.target)
+        ? notificationPanel?.contains(event.target)
+          ? setIsShowNotification(true)
+          : setIsShowNotification((prev) => !prev)
+        : setIsShowNotification(false);
     }
     document.addEventListener('mouseup', handlerEvent);
     return () => document.removeEventListener('mouseup', handlerEvent);
@@ -61,15 +68,25 @@ const Header = () => {
         <span className="mx-auto">Enjoy your moment</span>
       </div>
       <div className="w-1/3 text-gray-200">
-        <Search bgColor="bg-gray-200" placeholder="Search friend..." />
+        <Search
+          onSearch={searchHandler}
+          bgColor="bg-gray-200"
+          placeholder="Search friend..."
+        />
       </div>
       <div className="w-1/4 mr-auto flex text-[14px] items-center gap-x-5 relative justify-end">
         {/* Notify section */}
-        <div className="relative is-notify" id="notification-container">
+        <div
+          className={`relative ${isNotify && 'is-notify'}`}
+          id="notification-container"
+        >
           <motion.div {...hoverAnimation}>
             <NotificationsOutlinedIcon sx={{ fontSize: 22 }} />
           </motion.div>
-          <NotificationList isShow={isShowNotification} />
+          <NotificationList
+            isShow={isShowNotification}
+            notifications={notifications}
+          />
         </div>
 
         {/* Avatar section */}

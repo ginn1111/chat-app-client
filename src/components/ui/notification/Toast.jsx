@@ -16,7 +16,7 @@ const Toast = ({ type, message, onRemove, top }) => {
     <AnimatePresence>
       <motion.div
         initial={{
-          position: 'absolute',
+          position: 'fixed',
           top: `${top ?? '50px'}`,
           x: 1000,
           right: 0,

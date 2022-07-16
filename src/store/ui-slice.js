@@ -33,5 +33,5 @@ const uiSlice = createSlice({
   },
 });
 
-export const uiActions = uiSlice.actions;
+export const { showLoading, hideLoading } = uiSlice.actions;
 export default uiSlice.reducer;

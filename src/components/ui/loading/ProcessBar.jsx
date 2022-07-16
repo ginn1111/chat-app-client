@@ -28,7 +28,7 @@ const ProcessBar = ({ isShow }) => {
               transition={{ duration: 0.3 }}
               whileInView={{
                 width: `${process}%`,
-                height: '5px',
+                height: '3px',
                 backgroundColor: '#bfdbce',
               }}
               exit={{ width: '100%', height: 0 }}

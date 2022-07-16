@@ -18,5 +18,5 @@ root.render(
     </Router>
   </Provider>,
 );
-// setUpInterceptor(store);
+setUpInterceptor(store);
 reportWebVitals();

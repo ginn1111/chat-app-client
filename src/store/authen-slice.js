@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import jwtDecode from 'jwt-decode';
-import { publicRequest, privateRequest } from '../axios';
+import { createSlice } from '@reduxjs/toolkit';
+import { privateRequest, publicRequest } from '../axios';
+import { getLocal, setLocal, removeLocal } from '../services/localServices';
+import { showLoading, hideLoading } from './ui-slice';
+import { getNotifications } from './notification-slice';
+import * as authenticationService from '../services/authentication';
+import * as userService from '../services/user';
 
 const convertData = (data) => ({
   accessToken: data.accessToken,
@@ -16,6 +20,7 @@ const convertData = (data) => ({
     join: data.createdAt,
     address: data.address,
     friendRequest: data.friendRequest,
+    friendResponse: data.friendResponse,
   },
 });
 
@@ -36,181 +41,188 @@ const INIT_STATE = {
     join: '',
   },
   status: 'idle',
-  isLogged: false,
 };
 
-const AuthenticationSlice = createSlice({
+const authenticationSlice = createSlice({
   name: 'authentication',
   initialState: INIT_STATE,
   reducers: {
     resetStatus(state) {
       state.status = 'idle';
     },
-    setAccessToken(state, { payload }) {
-      state.accessToken = payload;
+    setToken(state, action) {
+      state.accessToken = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loginThunk.pending, (state) => {
-        state.status = 'login/pending';
-      })
-      .addCase(loginThunk.fulfilled, (state, { payload }) => {
-        Object.assign(state, {
-          ...payload,
-          status: 'login/success',
-          isLogged: true,
-        });
-      })
-      .addCase(loginThunk.rejected, (state) => {
-        state.status = 'login/failed';
-      })
-      .addCase(registerThunk.pending, (state) => {
-        state.status = 'register/pending';
-      })
-      .addCase(registerThunk.fulfilled, (state) => {
-        state.status = 'register/success';
-      })
-      .addCase(registerThunk.rejected, (state) => {
-        state.status = 'register/failed';
-      })
-      .addCase(logoutThunk.fulfilled, (state) => {
-        state.accessToken = null;
-      })
-      .addCase(logoutThunk.rejected, (state) => {
-        state.accessToken = null;
-      })
-      .addCase(getUserInformation.pending, (state) => {
-        state.status = 'get-user/pending';
-      })
-      .addCase(getUserInformation.fulfilled, (state, { payload }) => {
-        state.userInformation = {
-          ...state.userInformation,
-          ...payload.userInformation,
-        };
-        state.status = 'get-user/success';
-      })
-      .addCase(getUserInformation.rejected, (state) => {
-        state.accessToken = null;
-        // will migrate redux persist
-        localStorage.removeItem('accessToken');
-        state.status = 'get-user/failed';
-      })
-      .addCase(refreshToken.fulfilled, (state, { payload }) => {
-        state.accessToken = payload;
-      })
-      .addCase(refreshToken.rejected, (state) => {
-        state.accessToken = null;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.status = 'update-user/pending';
-      })
-      .addCase(updateUser.rejected, (state) => {
-        state.status = 'update-user/failed';
-      })
-      .addCase(updateUser.fulfilled, (state, { payload }) => {
-        state.userInformation = { ...payload.userInformation };
-        state.status = 'update-user/success';
-      })
-      .addCase(getFriendListOfUser.fulfilled, (state, { payload }) => {
-        console.log(payload);
-        state.userInformation.friendList = payload;
-        state.status = 'get-friend-list-of-user/success';
-      })
-      .addCase(getFriendListOfUser.rejected, (state) => {
-        state.status = 'get-friend-list-of-user/failed';
-      });
+    addFriendRequest(state, action) {
+      state.userInformation.friendRequest.push(action.payload);
+    },
+    removeFriendResponse(state, action) {
+      const friendResponseList = state.userInformation.friendResponse;
+      state.userInformation.friendResponse = friendResponseList.filter(
+        (friendId) => friendId !== action.payload,
+      );
+    },
+    removeFriendList(state, action) {
+      const { friendList } = state.userInformation;
+      state.userInformation.friendList = friendList.filter(
+        (friend) => friend._id !== action.payload,
+      );
+    },
+    addFriendList(state, action) {
+      console.log(action.payload);
+      state.userInformation.friendList = [
+        ...state.userInformation.friendList,
+        action.payload,
+      ];
+      // state.userInformation.friendList.push(action.payload);
+    },
+    setLogout(state) {
+      state.accessToken = null;
+      state.userInformation = {};
+    },
+    setUser(state, action) {
+      state.userInformation = action.payload.userInformation;
+    },
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
   },
 });
 
-export const loginThunk = createAsyncThunk(
-  'authentication/login',
-  async ({ email, password }) => {
-    const { data } = await publicRequest.post('/auth/login', {
-      email,
-      password,
-    });
+export const login =
+  ({ email, password }) =>
+  async (dispatch) => {
+    dispatch(showLoading());
+    try {
+      const { data } = await authenticationService.login(email, password);
+      dispatch(setToken(data.accessToken));
 
-    const userData = convertData(data);
-    localStorage.setItem('accessToken', userData.accessToken);
-    return userData;
-  },
-);
+      const userData = convertData(data);
+      const userId = userData?.userInformation?.id;
 
-export const registerThunk = createAsyncThunk(
-  'authentication/register',
-  async ({ firstName, lastName, email, password }) => {
-    const { data } = await publicRequest.post('/auth/register', {
-      firstName,
-      lastName,
-      email,
-      password,
-      gender: 'female',
-      birthday: new Date().toISOString(),
-      phone: new Date().getTime(),
-    });
-    return data;
-  },
-);
+      const getFriendList = userService.getFriendListOfUser(userId);
 
-export const refreshToken = createAsyncThunk(
-  'authentication/refresh-token',
-  async (userId) => {
-    const { data } = await privateRequest.post('/auth/refresh-token', {
-      userId,
-    });
+      const getNotificationsOfUser = dispatch(getNotifications(userId));
 
-    localStorage.setItem('accessToken', data.accessToken);
-    return data.accessToken;
-  },
-);
+      const { data: friendList } = await getFriendList;
+      await getNotificationsOfUser;
 
-export const logoutThunk = createAsyncThunk(
-  'authentication/logout',
-  async (_, { getState }) => {
-    await publicRequest.post(
-      `/auth/${getState().authentication.userInformation.id}/logout`,
-    );
-    localStorage.removeItem('accessToken');
-  },
-);
+      userData.userInformation.friendList = friendList;
 
-const getFriendListOfUser = createAsyncThunk(
-  'authentication/get-list-friend-of-user',
-  async (_, { getState }) => {
-    const jwtData = jwtDecode(getState().authentication.accessToken);
-    const { data } = await privateRequest.get(`users/${jwtData.id}/friends`);
-    return data;
-  },
-);
+      setLocal('userId', userId);
+      dispatch(setUser(userData));
+      dispatch(setStatus('login/success'));
+    } catch (error) {
+      console.log('login error', error);
+      dispatch(setStatus('login/failed'));
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
 
-export const getUserInformation = createAsyncThunk(
-  'authentication/get-user',
-  async (_, { getState, dispatch }) => {
-    const jwtData = jwtDecode(getState().authentication.accessToken);
+export const register =
+  ({ firstName, lastName, email, password }) =>
+  async (dispatch) => {
+    dispatch(showLoading());
+    try {
+      await authenticationService.register({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      dispatch(setStatus('register/success'));
+    } catch (error) {
+      console.log('register error: ', error);
+      dispatch(setStatus('register/failed'));
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
 
-    const userId = jwtData.id;
-    const { data } = await privateRequest.get(`/users/find/${userId}`);
-    await dispatch(getFriendListOfUser());
+export const refreshToken = (userId) => async (dispatch) => {
+  try {
+    const response = await authenticationService.refreshToken(userId);
+    console.log(response.data.accessToken);
+    dispatch(setToken(response.data.accessToken));
+    return response.data.accessToken;
+  } catch (error) {
+    console.log('refreshToken error: ', error);
+    dispatch(logout(userId));
+  }
+};
 
-    console.log(data);
+export const logout = (userId) => async (dispatch) => {
+  removeLocal('userId');
+  try {
+    await authenticationService.logout(userId);
+    dispatch(setLogout());
+  } catch (error) {
+    console.log('logout error: ', error);
+  }
+};
 
-    return convertData(data);
-  },
-);
+export const getUserInformation = (userId) => async (dispatch) => {
+  dispatch(showLoading());
+  try {
+    const responseUserInfor = userService.getUser(userId);
+    const responseFriendList = userService.getFriendListOfUser(userId);
+    const getNotificationsOfUser = dispatch(getNotifications(userId));
 
-export const updateUser = createAsyncThunk(
-  'authentication/update-user',
-  async (user, { getState }) => {
-    const userId = getState().authentication.userInformation.id;
+    const { data: user } = await responseUserInfor;
+    const friendList = await responseFriendList;
+    await getNotificationsOfUser;
 
-    const { data } = await privateRequest.put(`/users/${userId}/edit`, {
-      ...user,
-    });
+    const userData = convertData(user);
+    userData.userInformation.friendList = friendList;
 
-    return convertData(data);
-  },
-);
+    dispatch(setUser(userData));
+  } catch (error) {
+    console.log('get user error', error);
+  } finally {
+    dispatch(hideLoading());
+  }
+};
 
-export const { resetStatus, setAccessToken } = AuthenticationSlice.actions;
-export default AuthenticationSlice.reducer;
+export const updateUser = (userInfor) => async (dispatch, getState) => {
+  dispatch(showLoading());
+  try {
+    const userId = getState().authentication?.userInformation?.id;
+    const { data } = await userService.updateUser(userId, userInfor);
+
+    dispatch(setUser(convertData(data)));
+    dispatch(setStatus('update-user/success'));
+  } catch (error) {
+    console.log('update-user error: ', error);
+    dispatch(setStatus('update-user/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const persist = () => async (dispatch, getState) => {
+  const userId = getLocal('userId');
+  dispatch(showLoading());
+  try {
+    await dispatch(refreshToken(userId));
+    // await dispatch(getUserInformation(userId));
+  } catch (error) {
+    console.log(`persist error ${error}`);
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const {
+  resetStatus,
+  setAccessToken,
+  addFriendRequest,
+  removeFriendResponse,
+  addFriendList,
+  removeFriendList,
+  setUser,
+  setStatus,
+  setToken,
+  setLogout,
+} = authenticationSlice.actions;
+export default authenticationSlice.reducer;
