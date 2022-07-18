@@ -1,19 +1,25 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   UilUserExclamation,
   UilUserCheck,
   UilUserPlus,
   UilUserMinus,
   UilUserTimes,
+  UilCameraPlus,
+  UilCheck,
+  UilTimes,
 } from '@iconscout/react-unicons';
-import Avatar from '../../assets/img/avatar2.jpeg';
-import ControlCameraOutlinedIcon from '@mui/icons-material/ControlCameraOutlined';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import FriendState from './FriendState';
-import { getFriendStatus } from '../../store/selectors';
+import { getFriendStatus, getStatus } from '../../store/selectors';
+import {
+  updateAvatar,
+  resetStatus as userResetStatus,
+  updateCoverPicture,
+} from '../../store/authen-slice';
 import {
   sendAddFriend,
   responseAddFriend,
@@ -21,13 +27,37 @@ import {
   unfriend,
 } from '../../store/friend-slice';
 import withToast from '../../hoc/withToast';
+import { convertImageToBase64, fmtFromFileReader } from '../../utils/helper';
 
 const WallAvatar = withToast(
-  ({ fullName, avatar, isOwned, isFriend, isPending, isResponse, toast }) => {
+  ({
+    fullName,
+    avatar,
+    isOwned,
+    isFriend,
+    isPending,
+    isResponse,
+    coverPicture,
+    toast,
+  }) => {
     const dispatch = useDispatch();
     const param = useParams();
     const status = useSelector(getFriendStatus);
+    const userStatus = useSelector(getStatus);
 
+    const [isUpdateAvatar, setIsUpdateAvatar] = useState(false);
+    const [bgUrl, setBgUrl] = useState(null);
+    const [bgSrc, setBgSrc] = useState(null);
+
+    const avatarRef = useRef();
+
+    const updateAnimate = {
+      exit: { x: -10, opacity: 0 },
+      initial: { x: -10, opacity: 0 },
+      animate: { x: 0, opacity: 1 },
+      transition: { duration: 0.3 },
+      whileHover: { scale: 1.3 },
+    };
     const errorType = { color: 'salmon' };
     const warningType = { color: '#ffb100cf' };
     const safeType = { color: '#50f350' };
@@ -59,6 +89,20 @@ const WallAvatar = withToast(
       }
     }, [status]);
 
+    useEffect(() => {
+      if (userStatus === 'update-avatar/success') {
+        toast.addToast({ message: 'Change avatar successfully!' });
+        dispatch(userResetStatus());
+      }
+      if (userStatus === 'update-avatar/failed') {
+        toast.addToast({
+          message: 'Change avatar failed, something went wrong!',
+          type: 'error',
+        });
+        dispatch(userResetStatus());
+      }
+    }, [userStatus]);
+
     function sendAddFriendHandler() {
       dispatch(sendAddFriend(param.id));
     }
@@ -73,55 +117,157 @@ const WallAvatar = withToast(
       dispatch(unfriend(param.id));
     }
 
+    function clickFileInputHandler(e) {
+      // handle not change file when choose one file twice
+      e.target.value = '';
+    }
+
+    useEffect(() => {
+      if (bgSrc) {
+        setBgUrl(URL.createObjectURL(bgSrc));
+        return () => URL.revokeObjectURL(bgSrc);
+      }
+    }, [bgSrc]);
+
+    function changeAvatarHandler(e) {
+      e.target.files?.length > 0 &&
+        convertImageToBase64(e.target.files[0], (reader) => {
+          const base64Code = reader.target.result;
+          avatarRef.current.src = base64Code;
+          setIsUpdateAvatar(true);
+        });
+    }
+
+    function changeBackgroundHandler(e) {
+      e.target.files[0] && setBgSrc(e.target.files[0]);
+    }
+
+    function cancelUpdateBackgroundHandler() {
+      setBgUrl(coverPicture);
+      setBgSrc(null);
+    }
+
+    function updateBackgroundHandler() {
+      convertImageToBase64(bgSrc, (reader) => {
+        const base64Code = reader.target.result;
+        dispatch(updateCoverPicture(base64Code));
+      });
+      setBgSrc(null);
+    }
+
+    function cancelUpdateAvatarHandler() {
+      avatarRef.current.src = avatar;
+      setIsUpdateAvatar(false);
+    }
+
+    function updateAvatarHandler() {
+      dispatch(updateAvatar(avatarRef.current.src));
+      setIsUpdateAvatar(false);
+    }
+
     return (
       <section
-        className={`w-5/6 relative rounded-b-lg bg-[url('../assets/img/background.jpg')] bg-top-center pt-[25%]`}
+        className={`w-5/6 relative rounded-b-lg pt-[25%] `}
+        style={{
+          backgroundImage: `url('${bgUrl ?? coverPicture}')`,
+          backgroundAttachment: 'fixed',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
       >
-        {/*  will change --> user.coverPicture */}
         <div className="bottom-0 absolute-x-center translate-y-[50%] w-[120px] h-max">
-          <div className=" rounded-full border-2 border-blue-600 relative overflow-hidden">
+          <div className=" rounded-full border-2 border-blue-600 relative ">
             <img
-              src={Avatar} // will change --> user.avatar
+              ref={avatarRef}
+              src={avatar} // will change --> user.avatar
               alt="avatar"
-              className="w-full h-full rounded-full object-cover object-center border-2 border-white border-solid"
+              className="w-[120px] h-[120px] duration-300 rounded-full object-cover object-center border-2 border-white border-solid"
             />
             {isOwned && (
               <motion.div
-                whileHover={{
-                  backgroundColor: '#0000004a',
-                  color: '#fff',
-                  transition: { duration: 0.5 },
+                whileInView={{
+                  translateX: isUpdateAvatar ? '60%' : '0%',
+                  transition: { duration: 0.3 },
                 }}
-                className="cursor-pointer absolute-x-center bottom-0 text-transparent flex py-1 justify-center bg-transparent w-full h-1/2"
+                className="absolute bottom-0 right-0  text-slate-600 bg-white shadow-md  flex justify-center items-center  rounded-full"
               >
-                <motion.div
-                  initial={{ y: 10 }}
-                  whileHover={{
-                    y: 0,
-                    transition: { duration: 0.5 },
-                  }}
+                <label
+                  htmlFor="change-avatar"
+                  className="cursor-pointer p-[8px] "
                 >
-                  <label htmlFor="change-bg" className="cursor-pointer">
-                    <ControlCameraOutlinedIcon
-                      style={{ color: 'currentColor' }}
-                    />
-                  </label>
-                </motion.div>
+                  <UilCameraPlus size="22" />
+                </label>
+                <input
+                  onClick={clickFileInputHandler}
+                  onChange={changeAvatarHandler}
+                  accept="image/*"
+                  type="file"
+                  id="change-avatar"
+                  className="hidden outline-none border-none"
+                />{' '}
+                <AnimatePresence>
+                  {isUpdateAvatar && (
+                    <motion.div
+                      className="p-[8px] cursor-pointer"
+                      {...updateAnimate}
+                      onClick={updateAvatarHandler}
+                    >
+                      <UilCheck size="22" color="lightgreen" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <AnimatePresence>
+                  {isUpdateAvatar && (
+                    <motion.div
+                      onClick={cancelUpdateAvatarHandler}
+                      className="p-[8px] cursor-pointer"
+                      {...updateAnimate}
+                    >
+                      <UilTimes size="22" color="lightcoral" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </div>
         </div>
         <div className="absolute right-2 bottom-2 flex items-center gap-x-2">
           {isOwned && (
-            <div className=" hover:opacity-80 duration-300 bg-white flex cursor-pointer items-center w-max overflow-hidden px-2  rounded-md  py-1.5">
+            <div className=" bg-white flex cursor-pointer items-center w-max overflow-hidden px-2  rounded-md  py-1.5">
               <label
                 htmlFor="change-bg"
                 className="text-slate-600 flex items-center cursor-pointer text-[14px] font-bold  gap-x-1.5"
               >
-                <CameraAltOutlinedIcon sx={{ fontSize: 23 }} />
-                Thay đổi ảnh bìa
+                <motion.div {...updateAnimate}>
+                  <CameraAltOutlinedIcon sx={{ fontSize: 23 }} />
+                </motion.div>
               </label>
+              <AnimatePresence>
+                {bgSrc && (
+                  <motion.div
+                    onClick={updateBackgroundHandler}
+                    className="px-1"
+                    {...updateAnimate}
+                  >
+                    <UilCheck color="lightgreen" size="22" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {bgSrc && (
+                  <motion.div
+                    onClick={cancelUpdateBackgroundHandler}
+                    {...updateAnimate}
+                  >
+                    <UilTimes color="lightcoral" size="22" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <input
+                onClick={clickFileInputHandler}
+                onChange={changeBackgroundHandler}
+                accept="image/*"
                 type="file"
                 id="change-bg"
                 className="hidden outline-none border-none"

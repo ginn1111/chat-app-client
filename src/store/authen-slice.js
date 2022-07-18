@@ -5,6 +5,7 @@ import { showLoading, hideLoading } from './ui-slice';
 import { getNotifications } from './notification-slice';
 import * as authenticationService from '../services/authentication';
 import * as userService from '../services/user';
+import * as firebaseService from '../services/firebase';
 
 const convertData = (data) => ({
   accessToken: data.accessToken,
@@ -19,6 +20,8 @@ const convertData = (data) => ({
     id: data._id,
     join: data.createdAt,
     address: data.address,
+    avatar: data.avatar,
+    coverPicture: data.coverPicture,
     friendRequest: data.friendRequest,
     friendResponse: data.friendResponse,
   },
@@ -85,6 +88,12 @@ const authenticationSlice = createSlice({
     },
     setStatus(state, action) {
       state.status = action.payload;
+    },
+    setAvatar(state, action) {
+      state.userInformation.avatar = action.payload;
+    },
+    setCoverPicture(state, action) {
+      state.userInformation.coverPicture = action.payload;
     },
   },
 });
@@ -200,6 +209,40 @@ export const updateUser = (userInfor) => async (dispatch, getState) => {
   }
 };
 
+export const updateAvatar = (avatarSrc) => async (dispatch, getState) => {
+  const userState = getState().authentication.userInformation;
+  try {
+    dispatch(showLoading());
+    await firebaseService.uploadAvatar(userState.id, avatarSrc);
+    const { data } = await userService.updateAvatar(userState.id);
+    // const { data } = await firebaseService.getAvatar(userState.id);
+    dispatch(setAvatar(data));
+    dispatch(setStatus('update-avatar/success'));
+  } catch (error) {
+    console.log(`updateAvatar error ${error}`);
+    dispatch(setStatus('update-avatar/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
+export const updateCoverPicture = (bgSrc) => async (dispatch, getState) => {
+  const userState = getState().authentication.userInformation;
+  try {
+    dispatch(showLoading());
+    await firebaseService.uploadCoverPicture(userState.id, bgSrc);
+    const { data } = await userService.updateCoverPicture(userState.id);
+    // const { data } = await firebaseService.updateCoverPicture(userState.id);
+    dispatch(setCoverPicture(data));
+    dispatch(setStatus('update-avatar/success'));
+  } catch (error) {
+    console.log(`updateCoverPicture error ${error}`);
+    dispatch(setStatus('update-avatar/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
 export const persist = () => async (dispatch, getState) => {
   const userId = getLocal('userId');
   dispatch(showLoading());
@@ -224,5 +267,7 @@ export const {
   setStatus,
   setToken,
   setLogout,
+  setAvatar,
+  setCoverPicture,
 } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

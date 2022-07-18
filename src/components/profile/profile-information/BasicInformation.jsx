@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import withUpdateUser from '../../../hoc/withUpdateUser';
 import {
   HeaderProfile,
   InputInformation,
   RadioInputInformation,
   TextAreaInformation,
 } from '../profile-input/ProfileInput';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getUser } from '../../../store/selectors';
 import {
   UilUser,
@@ -14,8 +15,7 @@ import {
   UilSignRight,
   UilCalender,
 } from '@iconscout/react-unicons';
-import { formatDate } from '../../../utils/helper';
-import { updateUser } from '../../../store/authen-slice';
+import { checkInputIsValid, formatDate } from '../../../utils/helper';
 import { validateEmpty } from '../../../utils/validate';
 
 const LIST_GENDER = [
@@ -24,63 +24,59 @@ const LIST_GENDER = [
   { title: 'Khác', value: 'other' },
 ];
 
-const BasicInformation = () => {
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+const BasicInformation = withUpdateUser(
+  forwardRef(({ onUpdate, onShowUpdate, isUpdate, onReset }, ref) => {
+    const user = useSelector(getUser);
 
-  const [isUpdate, setIsUpdate] = useState(null);
+    const firstNameRef = useRef();
+    const lastNameRef = useRef();
+    const biographyRef = useRef();
+    const birthdayRef = useRef();
+    const genderRef = useRef();
+    const addressRef = useRef();
 
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const sloganRef = useRef();
-  const dobRef = useRef();
-  const genderRef = useRef();
-  const addressRef = useRef();
+    const colorIcon = 'text-slate-400';
 
-  useEffect(() => {
-    firstNameRef.current.setValue(user.firstName);
-    lastNameRef.current.setValue(user.lastName);
-    dobRef.current.setValue(formatDate(user.dob));
-    sloganRef.current.setValue(user.slogan);
-    addressRef.current.setValue(user.address);
-    genderRef.current.setValue(user.gender);
-  }, [user]);
+    useImperativeHandle(ref, () => ({
+      userData: {
+        firstNameRef,
+        lastNameRef,
+        biographyRef,
+        birthdayRef,
+        genderRef,
+        addressRef,
+      },
+      setDefaultValue() {
+        firstNameRef.current.setValue(user.firstName);
+        lastNameRef.current.setValue(user.lastName);
+        birthdayRef.current.setValue(formatDate(user.dob));
+        biographyRef.current.setValue(user.slogan);
+        addressRef.current.setValue(user.address);
+        genderRef.current.setValue(user.gender);
+      },
+      checkValid() {
+        return checkInputIsValid(
+          firstNameRef,
+          lastNameRef,
+          birthdayRef,
+          biographyRef,
+          addressRef,
+          genderRef,
+        );
+      },
+      focus() {
+        firstNameRef.current.focus();
+      },
+    }));
 
-  useEffect(() => {
-    if (isUpdate === null) return;
-
-    if (!isUpdate) {
-      dispatch(
-        updateUser({
-          ...user,
-          firstName: firstNameRef.current.value,
-          lastName: lastNameRef.current.value,
-          birthday: dobRef.current.value,
-          biography: sloganRef.current.value,
-          address: addressRef.current.value,
-          gender: genderRef.current.value,
-        }),
-      );
-    } else {
-      firstNameRef.current.focus();
-    }
-  }, [isUpdate]);
-
-  function toggleUpdateHandler() {
-    const isValid = firstNameRef.current.isValid && lastNameRef.current.isValid;
-    if (!isValid) return;
-
-    setIsUpdate((prevState) => !prevState);
-  }
-
-  const colorIcon = 'text-slate-400';
-  return (
-    <>
+    return (
       <div className="w-1/2 flex flex-col gap-y-2 items-center">
         <HeaderProfile
           title="Information"
-          onToggleUpdate={toggleUpdateHandler}
+          onShowUpdate={onShowUpdate}
+          onUpdate={onUpdate}
           isUpdate={isUpdate}
+          onReset={onReset}
         />
         <InputInformation
           ref={firstNameRef}
@@ -99,16 +95,16 @@ const BasicInformation = () => {
           errorText="Last name must not empty!"
         />
         <InputInformation
-          ref={dobRef}
+          ref={birthdayRef}
           readOnly={!isUpdate}
           type="date"
           title="Day of birth"
           icon={<UilCalender className={colorIcon} />}
         />
         <InputInformation
-          ref={sloganRef}
+          ref={biographyRef}
           readOnly={!isUpdate}
-          title="Slogan"
+          title="biography"
           icon={<UilFont className={colorIcon} />}
         />
         <RadioInputInformation
@@ -126,8 +122,8 @@ const BasicInformation = () => {
           icon={<UilSignRight className={colorIcon} />}
         />
       </div>
-    </>
-  );
-};
+    );
+  }),
+);
 
 export default BasicInformation;

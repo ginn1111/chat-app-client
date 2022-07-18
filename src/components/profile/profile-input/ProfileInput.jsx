@@ -1,10 +1,16 @@
 import { useId, forwardRef, useImperativeHandle, useRef } from 'react';
 import useInput, { useRadioInput } from '../../../hooks/useInput';
 import { motion } from 'framer-motion';
-import { UilEditAlt, UilCheck } from '@iconscout/react-unicons';
+import { UilTimes, UilEditAlt, UilCheck } from '@iconscout/react-unicons';
 import ErrorMessage from '../../ui/error/ErrorMessage';
 
-export const HeaderProfile = ({ title, isUpdate, onToggleUpdate }) => {
+export const HeaderProfile = ({
+  title,
+  isUpdate,
+  onUpdate,
+  onReset,
+  onShowUpdate,
+}) => {
   const motionAnimate = {
     initial: { opacity: 0 },
     animate: {
@@ -15,16 +21,21 @@ export const HeaderProfile = ({ title, isUpdate, onToggleUpdate }) => {
   return (
     <div className="text-[18px] text-start w-full px-2 py-1 bg-blue-200 rounded-sm text-white flex justify-between items-center">
       <h3>{title}</h3>
-      <div onClick={onToggleUpdate}>
+      <div>
         {!isUpdate && (
-          <motion.div {...motionAnimate}>
+          <motion.div {...motionAnimate} onClick={onShowUpdate}>
             <UilEditAlt className="cursor-pointer p-0.5" size="30" />
           </motion.div>
         )}
         {isUpdate && (
-          <motion.div {...motionAnimate}>
-            <UilCheck className="cursor-pointer p-0.5" size="30" />
-          </motion.div>
+          <div className="flex gap-x-2">
+            <motion.div {...motionAnimate} onClick={onUpdate}>
+              <UilCheck className="cursor-pointer p-0.5" size="30" />
+            </motion.div>
+            <motion.div {...motionAnimate} onClick={onReset}>
+              <UilTimes className="cursor-pointer p-0.5" size="30" />
+            </motion.div>
+          </div>
         )}
       </div>
     </div>
@@ -147,6 +158,7 @@ export const RadioInputInformation = forwardRef(
     useImperativeHandle(ref, () => ({
       value,
       setValue,
+      isValid: true,
     }));
 
     return (

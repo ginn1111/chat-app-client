@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { logoutThunk, refreshToken } from '../store/authen-slice';
+import { logout, refreshToken } from '../store/authen-slice';
 import jwt_decode from 'jwt-decode';
 
 export const publicRequest = axios.create({

@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../store/selectors';
 import Avatar from '../../../assets/img/avatar2.jpeg';
 import {
   UilInfoCircle,
@@ -41,6 +43,7 @@ const ProfileAvatarMenu = () => {
 };
 
 const ProfileAvatar = () => {
+  const { avatar } = useSelector(getUser);
   return (
     <section className="w-5/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh]">
       <div className="bg-white w-5/6 h-[55%] text-center mx-auto rounded-md overflow-hidden shadow-lg">
@@ -53,7 +56,7 @@ const ProfileAvatar = () => {
             marginBlock: 0,
           }}
           className="w-20 h-20 rounded-full object-center mx-auto mt-5 inline-block"
-          src={Avatar}
+          src={avatar}
           alt="avatar"
         />
         <span className="block py-2 text-slate-600 font-bold">Gin</span>

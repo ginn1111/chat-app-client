@@ -2,13 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
-import Avatar from '../../../assets/img/avatar2.jpeg';
 import AvatarSettings from './AvatarSettings';
 import NotificationList from './NotificationList';
 import Animation from '../../../animation/Animation';
 import { fallAnimate } from '../../../animation/models';
 import Search from '../../ui/search/Search';
-import { getNotifications } from '../../../store/selectors';
+import { getNotifications, getUser } from '../../../store/selectors';
 import { useSelector } from 'react-redux';
 import useSearch from '../../../hooks/useSearch';
 
@@ -17,6 +16,7 @@ const Header = () => {
   const [isShowNotification, setIsShowNotification] = useState(false);
   const notifications = useSelector(getNotifications);
   const searchHandler = useSearch();
+  const { avatar } = useSelector(getUser);
 
   const isNotify = useMemo(
     () => notifications?.some((notification) => !notification.isResponse),
@@ -97,7 +97,7 @@ const Header = () => {
           >
             <img
               className="w-full h-full object-cover object-center rounded-full"
-              src={Avatar}
+              src={avatar}
               alt="avatar"
             />
             <AvatarSettings isShowMenu={isShowMenu} />

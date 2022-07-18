@@ -21,6 +21,8 @@ const convertData = (data) => ({
   join: data.createdAt,
   address: data.address,
   friendList: data.friendList,
+  avatar: data.avatar,
+  coverPicture: data.coverPicture,
 });
 const INIT_STATE = {
   friendInformation: {
@@ -102,8 +104,6 @@ export const getFriend = (friendId) => async (dispatch) => {
 
     const friendInfor = convertData(friendData);
     friendInfor.friendList = friendListData;
-
-    console.log(friendInfor);
 
     dispatch(setFriend(friendInfor));
     dispatch(setStatus('get-friend/success'));

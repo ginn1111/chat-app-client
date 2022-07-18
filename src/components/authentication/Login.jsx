@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
@@ -16,6 +16,7 @@ import { getStatus } from '../../store/selectors';
 const Login = withToast((props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const status = useSelector(getStatus);
   const iconSize = { fontSize: 22 };
 
@@ -31,7 +32,7 @@ const Login = withToast((props) => {
     }
     dispatch(resetStatus());
     if (status === 'login/success') {
-      navigate('/wall/me');
+      navigate(location?.state?.from ?? '/wall/me');
       dispatch(resetStatus());
     }
   }, [status]);

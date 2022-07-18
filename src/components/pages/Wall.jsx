@@ -14,12 +14,21 @@ import { getFriend, resetStatus } from '../../store/friend-slice';
 
 const Wall = () => {
   const user = useSelector(getUser);
+  const friend = useSelector(getFriendInformation);
   const [
-    { firstName, lastName, dob, slogan, join, friendList },
+    {
+      firstName,
+      lastName,
+      dob,
+      slogan,
+      join,
+      friendList,
+      avatar,
+      coverPicture,
+    },
     setInformationOfWall,
   ] = useState(user);
 
-  const friend = useSelector(getFriendInformation);
   const navigate = useNavigate();
 
   const status = useSelector(getFriendStatus);
@@ -60,17 +69,18 @@ const Wall = () => {
     if (!isOwn) {
       dispatch(getFriend(id));
     }
-  }, [id, isOwn, dispatch]);
+  }, [id, isOwn]);
 
   return (
     <div className="format-page-size flex items-center flex-col mt-[-10px]">
       <WallAvatar
         fullName={`${firstName} ${lastName}`}
-        avatar=""
+        avatar={avatar}
         isOwned={isOwn}
         isFriend={isFriend}
         isPending={isPending}
         isResponse={isResponse}
+        coverPicture={coverPicture}
       />
       <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 w-full h-full pb-5">
         <Biography join={join} slogan={slogan} dob={dob} />

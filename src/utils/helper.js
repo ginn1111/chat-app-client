@@ -6,3 +6,15 @@ export const formatDate = (d) => {
 
   return `${year}-${month}-${day}`;
 };
+
+const check = (input) => input.current.isValid;
+export const checkInputIsValid = (...args) => args.every(check);
+
+export const fmtFromFileReader = (src) =>
+  src.replace(/(data:image\/.+\;base64,)/, '');
+
+export const convertImageToBase64 = (imgFile, loadHandler) => {
+  var reader = new FileReader();
+  reader.onload = loadHandler;
+  reader.readAsDataURL(imgFile); // --> when onload finish, we receive base64 code string
+};
