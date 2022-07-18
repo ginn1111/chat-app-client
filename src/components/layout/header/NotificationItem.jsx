@@ -41,11 +41,11 @@ const NotificationItem = ({
         <img
           src={avatar}
           alt="avatar-notify"
-          className="w-6 h-6 rounded-full border-solid border-2 border-white"
+          className="w-8 h-8 rounded-full object-center object-cover border-solid border-2 border-white"
         />
         <div className="flex flex-col w-full leading-tight">
-          <span className="text-[13px] font-bold">{name}</span>
-          <span className="text-[12px] ellipsis">{message}</span>
+          <span className="text-[14px] font-[500]">{name}</span>
+          <span className="text-[13px] ellipsis">{message}</span>
         </div>
         <motion.div
           whileHover={{

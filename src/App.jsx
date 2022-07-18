@@ -15,17 +15,17 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="auth" element={<Authentication />} />
 
-        {/* <Route element={<Persist />}> */}
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<Navigate to="/wall/me" />} />
-          <Route path="wall/:id" element={<Wall />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="message/" element={<Message />}>
-            <Route path=":id" element={<Chat />} />
+        <Route element={<Persist />}>
+          <Route element={<RequireAuth />}>
+            <Route path="/" element={<Navigate to="/wall/me" />} />
+            <Route path="wall/:id" element={<Wall />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="message/" element={<Message />}>
+              <Route path=":id" element={<Chat />} />
+            </Route>
+            <Route path="search" element={<Search />} />
           </Route>
-          <Route path="search" element={<Search />} />
         </Route>
-        {/* </Route> */}
         <Route path="*" element={<Navigate to="/auth" />} />
       </Route>
     </Routes>

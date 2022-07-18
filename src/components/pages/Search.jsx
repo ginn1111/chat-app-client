@@ -62,8 +62,8 @@ const Search = () => {
                 >
                   <div className="flex gap-x-2 items-center">
                     <img
-                      className="h-8 w-8 rounded-full object-center"
-                      src={Avatar}
+                      className="h-8 w-8 rounded-full object-center object-cover"
+                      src={user.avatar}
                       alt="avatar-search"
                     />
                     <span className="font-[500] hover:text-white">{`${user.firstName} ${user.lastName}`}</span>

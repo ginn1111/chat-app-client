@@ -101,6 +101,17 @@ const WallAvatar = withToast(
         });
         dispatch(userResetStatus());
       }
+      if (userStatus === 'update-background/success') {
+        toast.addToast({ message: 'Change background successfully!' });
+        dispatch(userResetStatus());
+      }
+      if (userStatus === 'update-background/failed') {
+        toast.addToast({
+          message: 'Change background failed, something went wrong!',
+          type: 'error',
+        });
+        dispatch(userResetStatus());
+      }
     }, [userStatus]);
 
     function sendAddFriendHandler() {
@@ -177,12 +188,13 @@ const WallAvatar = withToast(
         }}
       >
         <div className="bottom-0 absolute-x-center translate-y-[50%] w-[120px] h-max">
-          <div className=" rounded-full border-2 border-blue-600 relative ">
+          <div className="  relative ">
             <img
               ref={avatarRef}
-              src={avatar} // will change --> user.avatar
+              src={avatar}
+              r
               alt="avatar"
-              className="w-[120px] h-[120px] duration-300 rounded-full object-cover object-center border-2 border-white border-solid"
+              className="w-[120px] h-[120px] duration-300 rounded-full object-cover object-center shadow-[0_0_0_5px_#ffffff]"
             />
             {isOwned && (
               <motion.div

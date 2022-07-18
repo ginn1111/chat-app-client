@@ -7,8 +7,8 @@ const FriendList = ({ list }) => {
   return (
     <ul className="w-full h-max max-h-[50vh] overflow-auto grid gap-2 grid-cols-2 items-start justify-center p-2">
       {isEmpty && (
-        <span className="text-center w-full block col-span-2 row-span-2">
-          You are alone !^^
+        <span className="font-[500] text-center w-full block text-slate-400 col-span-2">
+          No friends found!
         </span>
       )}
       {!isEmpty &&
@@ -16,7 +16,7 @@ const FriendList = ({ list }) => {
           return (
             <FriendItem
               key={friend._id}
-              avatar={Avatar}
+              avatar={friend.avatar}
               name={`${friend.firstName} ${friend.lastName}`}
               slogan={friend.biography}
               id={friend._id}

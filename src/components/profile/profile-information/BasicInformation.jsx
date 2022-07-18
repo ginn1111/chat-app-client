@@ -72,7 +72,7 @@ const BasicInformation = withUpdateUser(
     return (
       <div className="w-1/2 flex flex-col gap-y-2 items-center">
         <HeaderProfile
-          title="Information"
+          title="Basic Information"
           onShowUpdate={onShowUpdate}
           onUpdate={onUpdate}
           isUpdate={isUpdate}
@@ -98,6 +98,8 @@ const BasicInformation = withUpdateUser(
           ref={birthdayRef}
           readOnly={!isUpdate}
           type="date"
+          validateFunction={validateEmpty}
+          errorText="Birthday must not empty!"
           title="Day of birth"
           icon={<UilCalender className={colorIcon} />}
         />

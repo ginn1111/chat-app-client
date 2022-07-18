@@ -24,7 +24,7 @@ const NotificationList = ({ isShow, notifications }) => {
               return (
                 <NotificationItem
                   key={notification._id}
-                  avatar={Avatar}
+                  avatar={notification.senderAvatar}
                   name={notification.senderName}
                   message={notification.notify}
                   isRead={notification.isResponse}

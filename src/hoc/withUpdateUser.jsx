@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../store/authen-slice';
 
-const withUpdateUser = (WrappedComponent, fnValid) => {
+const withUpdateUser = (WrappedComponent) => {
   return (props) => {
     const dispatch = useDispatch();
     const [isUpdate, setIsUpdate] = useState(null);

@@ -43,9 +43,9 @@ const ProfileAvatarMenu = () => {
 };
 
 const ProfileAvatar = () => {
-  const { avatar } = useSelector(getUser);
+  const { avatar, firstName, lastName } = useSelector(getUser);
   return (
-    <section className="w-5/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh]">
+    <section className="w-4/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh]">
       <div className="bg-white w-5/6 h-[55%] text-center mx-auto rounded-md overflow-hidden shadow-lg">
         <motion.img
           whileHover={{
@@ -55,11 +55,11 @@ const ProfileAvatar = () => {
             borderRadius: ['50%', '0%'],
             marginBlock: 0,
           }}
-          className="w-20 h-20 rounded-full object-center mx-auto mt-5 inline-block"
+          className="w-20 h-20 rounded-full object-center object-cover mx-auto mt-5 inline-block"
           src={avatar}
           alt="avatar"
         />
-        <span className="block py-2 text-slate-600 font-bold">Gin</span>
+        <span className=" py-2  px-1 text-slate-600 inline-block text-ellipsis overflow-hidden  w-full font-[600] text-[18px] whitespace-nowrap ">{`${firstName} ${lastName}`}</span>
       </div>
       {/* <ProfileAvatarMenu /> */}
     </section>

@@ -215,7 +215,6 @@ export const updateAvatar = (avatarSrc) => async (dispatch, getState) => {
     dispatch(showLoading());
     await firebaseService.uploadAvatar(userState.id, avatarSrc);
     const { data } = await userService.updateAvatar(userState.id);
-    // const { data } = await firebaseService.getAvatar(userState.id);
     dispatch(setAvatar(data));
     dispatch(setStatus('update-avatar/success'));
   } catch (error) {
@@ -232,12 +231,11 @@ export const updateCoverPicture = (bgSrc) => async (dispatch, getState) => {
     dispatch(showLoading());
     await firebaseService.uploadCoverPicture(userState.id, bgSrc);
     const { data } = await userService.updateCoverPicture(userState.id);
-    // const { data } = await firebaseService.updateCoverPicture(userState.id);
     dispatch(setCoverPicture(data));
-    dispatch(setStatus('update-avatar/success'));
+    dispatch(setStatus('update-background/success'));
   } catch (error) {
     console.log(`updateCoverPicture error ${error}`);
-    dispatch(setStatus('update-avatar/failed'));
+    dispatch(setStatus('update-background/failed'));
   } finally {
     dispatch(hideLoading());
   }
