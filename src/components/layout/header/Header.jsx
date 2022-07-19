@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
 import AvatarSettings from './AvatarSettings';
@@ -45,20 +45,6 @@ const Header = () => {
     return () => document.removeEventListener('mouseup', handlerEvent);
   }, []);
 
-  const hoverAnimation = {
-    whileHover: {
-      color: '#bfdbce',
-      scale: 1.5,
-      cursor: 'pointer',
-      transition: { duration: 0.2 },
-    },
-    whileTap: {
-      color: '#bfdbce',
-      scale: 3,
-      cursor: 'pointer',
-      transition: { duration: 0.2 },
-    },
-  };
   return (
     <header className="bg-white  z-[10] w-[90%] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600 fixed top-0 left-0 right-0">
       <div className="ml-auto flex  gap-x-2 relative w-5/12 ">
@@ -76,11 +62,32 @@ const Header = () => {
       </div>
       <div className="w-1/4 mr-auto flex text-[14px] items-center gap-x-5 relative justify-end">
         {/* Notify section */}
-        <div
-          className={`relative ${isNotify && 'is-notify'}`}
-          id="notification-container"
-        >
-          <motion.div {...hoverAnimation}>
+        <div className="relative cursor-pointer" id="notification-container">
+          <AnimatePresence>
+            {isNotify && (
+              <motion.span
+                initial={{ scale: 1 }}
+                animate={{ scale: [1.5, 1] }}
+                transition={{ duration: 0.3 }}
+                exit={{ scale: 0 }}
+                class="flex h-1.5 w-1.5 absolute right-[0px] top-[10px] z-[1000000]"
+              >
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          <motion.div
+            className="cursor-pointer"
+            initial={{
+              origin: 'center center',
+            }}
+            whileTap={{
+              transition: { duration: 0.3 },
+              scale: 2,
+            }}
+          >
             <NotificationsOutlinedIcon sx={{ fontSize: 22 }} />
           </motion.div>
           <NotificationList

@@ -1,6 +1,5 @@
 import React from 'react';
 import FriendItem from './FriendItem';
-import Avatar from '../../assets/img/avatar2.jpeg';
 
 const FriendList = ({ list }) => {
   const isEmpty = !list || list.length === 0;

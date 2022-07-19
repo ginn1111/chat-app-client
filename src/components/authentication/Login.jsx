@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
@@ -13,7 +13,7 @@ import { validateEmail, validateEmpty } from '../../utils/validate';
 import { login, resetStatus } from '../../store/authen-slice';
 import { getStatus } from '../../store/selectors';
 
-const Login = withToast((props) => {
+const Login = withToast(({ toast }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,17 +25,17 @@ const Login = withToast((props) => {
 
   useEffect(() => {
     if (status === 'login/failed') {
-      props.toast.addToast({
+      toast.addToast({
         message: 'Login failed, invalid email or password!',
         type: 'error',
       });
-    }
-    dispatch(resetStatus());
-    if (status === 'login/success') {
-      navigate(location?.state?.from ?? '/wall/me');
       dispatch(resetStatus());
     }
-  }, [status]);
+    if (status === 'login/success') {
+      navigate(location?.state?.from ?? '/');
+      dispatch(resetStatus());
+    }
+  }, [status, toast, dispatch, navigate, location?.state?.from]);
 
   useEffect(() => {
     emailRef.current.setValue('vanthuanjw@gmail.com');
@@ -95,13 +95,13 @@ const Login = withToast((props) => {
             <div className="ml-2 flex  justify-between">
               <span className="text-[16px] text-white opacity-50">
                 <span>Don't have account?</span>
-                <span
-                  onClick={props.onToggle}
+                <Link
+                  to="/auth/register"
                   className="text-blue-500 cursor-pointer"
                 >
                   {' '}
                   Register
-                </span>
+                </Link>
               </span>
             </div>
           </Animation>

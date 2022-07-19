@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../../store/selectors';
-import Avatar from '../../../assets/img/avatar2.jpeg';
 import {
   UilInfoCircle,
   UilKeyholeCircle,

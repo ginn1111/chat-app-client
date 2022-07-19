@@ -16,3 +16,5 @@ export const hasLoading = (state) => state.ui.isLoading;
 
 export const getSearchStatus = (state) => state.search.status;
 export const getSearchUsers = (state) => state.search.users;
+
+export const hasLoadingLogin = (state) => state.ui.isLoadingLogin;

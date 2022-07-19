@@ -11,7 +11,7 @@ const check = (input) => input.current.isValid;
 export const checkInputIsValid = (...args) => args.every(check);
 
 export const fmtFromFileReader = (src) =>
-  src.replace(/(data:image\/.+\;base64,)/, '');
+  src.replace(/(data:image\/.+;base64,)/, '');
 
 export const convertImageToBase64 = (imgFile, loadHandler) => {
   var reader = new FileReader();

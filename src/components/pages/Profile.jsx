@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import ProfileAvatar from '../profile/profile-avatar/ProfileAvatar';
 import ProfileInformation from '../profile/profile-information/ProfileInformation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ const Profile = withToast(({ toast }) => {
       });
       dispatch(resetStatus());
     }
-  }, [status]);
+  }, [status, toast, dispatch]);
 
   return (
     <div className="format-page-size flex py-5 gap-x-2">

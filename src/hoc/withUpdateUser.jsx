@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../store/authen-slice';
+import { HeaderProfile } from '../components/profile/profile-input/ProfileInput';
 
-const withUpdateUser = (WrappedComponent) => {
+const withUpdateUser = (WrappedComponent, title) => {
   return (props) => {
     const dispatch = useDispatch();
     const [isUpdate, setIsUpdate] = useState(null);
@@ -46,14 +47,23 @@ const withUpdateUser = (WrappedComponent) => {
     }
 
     return (
-      <WrappedComponent
-        {...props}
-        ref={childRef}
-        onUpdate={onUpdateHandler}
-        isUpdate={isUpdate}
-        onShowUpdate={showUpdateHandler}
-        onReset={resetHandler}
-      />
+      <div className="flex flex-col gap-y-2 items-center ">
+        <HeaderProfile
+          title={title}
+          onShowUpdate={showUpdateHandler}
+          onUpdate={onUpdateHandler}
+          isUpdate={isUpdate}
+          onReset={resetHandler}
+        />
+        <WrappedComponent
+          {...props}
+          ref={childRef}
+          onUpdate={onUpdateHandler}
+          isUpdate={isUpdate}
+          onShowUpdate={showUpdateHandler}
+          onReset={resetHandler}
+        />
+      </div>
     );
   };
 };

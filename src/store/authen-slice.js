@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { privateRequest, publicRequest } from '../axios';
-import { getLocal, setLocal, removeLocal } from '../services/localServices';
+import { setLocal, removeLocal } from '../services/localServices';
 import { showLoading, hideLoading } from './ui-slice';
 import { getNotifications } from './notification-slice';
 import * as authenticationService from '../services/authentication';
 import * as userService from '../services/user';
 import * as firebaseService from '../services/firebase';
 
-const convertData = (data) => ({
+export const convertData = (data) => ({
   accessToken: data.accessToken,
   userInformation: {
     slogan: data.biography,
@@ -151,21 +150,24 @@ export const register =
 
 export const refreshToken = (userId) => async (dispatch) => {
   try {
+    dispatch(showLoading());
     const response = await authenticationService.refreshToken(userId);
-    console.log(response.data.accessToken);
     dispatch(setToken(response.data.accessToken));
     return response.data.accessToken;
   } catch (error) {
     console.log('refreshToken error: ', error);
     dispatch(logout(userId));
+  } finally {
+    dispatch(hideLoading());
   }
 };
 
 export const logout = (userId) => async (dispatch) => {
-  removeLocal('userId');
   try {
-    await authenticationService.logout(userId);
+    removeLocal('userId');
     dispatch(setLogout());
+    await authenticationService.logout(userId);
+    console.log('logout done');
   } catch (error) {
     console.log('logout error: ', error);
   }
@@ -179,7 +181,7 @@ export const getUserInformation = (userId) => async (dispatch) => {
     const getNotificationsOfUser = dispatch(getNotifications(userId));
 
     const { data: user } = await responseUserInfor;
-    const friendList = await responseFriendList;
+    const { data: friendList } = await responseFriendList;
     await getNotificationsOfUser;
 
     const userData = convertData(user);
@@ -188,6 +190,7 @@ export const getUserInformation = (userId) => async (dispatch) => {
     dispatch(setUser(userData));
   } catch (error) {
     console.log('get user error', error);
+    dispatch(logout(userId));
   } finally {
     dispatch(hideLoading());
   }
@@ -236,19 +239,6 @@ export const updateCoverPicture = (bgSrc) => async (dispatch, getState) => {
   } catch (error) {
     console.log(`updateCoverPicture error ${error}`);
     dispatch(setStatus('update-background/failed'));
-  } finally {
-    dispatch(hideLoading());
-  }
-};
-
-export const persist = () => async (dispatch, getState) => {
-  const userId = getLocal('userId');
-  dispatch(showLoading());
-  try {
-    await dispatch(refreshToken(userId));
-    // await dispatch(getUserInformation(userId));
-  } catch (error) {
-    console.log(`persist error ${error}`);
   } finally {
     dispatch(hideLoading());
   }

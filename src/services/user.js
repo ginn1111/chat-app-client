@@ -1,4 +1,3 @@
-import { async } from '@firebase/util';
 import { privateRequest } from '../axios';
 
 export const getFriendListOfUser = async (userId) =>

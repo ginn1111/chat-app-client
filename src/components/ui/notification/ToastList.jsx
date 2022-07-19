@@ -1,21 +1,26 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useCallback,
+} from 'react';
 import { createPortal } from 'react-dom';
 import Toast from './Toast';
 
-const ToastList = forwardRef((props, ref) => {
+const ToastList = forwardRef((ref) => {
   const [toastList, setListToast] = useState([]);
 
   useImperativeHandle(ref, () => ({
     addToast: addToastHandler,
   }));
 
-  function removeToastHandler(id) {
+  const removeToastHandler = useCallback((id) => {
     setListToast((list) => list.filter((toast) => toast.id !== id));
-  }
+  }, []);
 
-  function addToastHandler(toast) {
+  const addToastHandler = (toast) => {
     setListToast((list) => list.concat({ ...toast, id: new Date().getTime() }));
-  }
+  };
 
   return (
     <>

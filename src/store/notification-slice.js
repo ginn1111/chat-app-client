@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { privateRequest } from '../axios';
+import { createSlice } from '@reduxjs/toolkit';
 import * as notificationService from '../services/notification';
 
 const INIT_STATE = {

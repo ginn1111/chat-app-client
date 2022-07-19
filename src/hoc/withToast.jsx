@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Toast from '../components/ui/notification/Toast';
 
@@ -6,15 +6,21 @@ const withToast = (WrappedComponent) => {
   return (props) => {
     const [toastList, setListToast] = useState([]);
 
-    function removeToastHandler(id) {
+    const removeToastHandler = useCallback((id) => {
       setListToast((list) => list.filter((toast) => toast.id !== id));
-    }
+    }, []);
 
-    function addToastHandler(toast) {
+    const addToastHandler = useCallback((toast) => {
       setListToast((list) =>
         list.concat({ ...toast, id: new Date().getTime() }),
       );
-    }
+    }, []);
+
+    const toast = useMemo(
+      () => ({ addToast: addToastHandler }),
+      [addToastHandler],
+    );
+
     return (
       <>
         {createPortal(
@@ -31,7 +37,7 @@ const withToast = (WrappedComponent) => {
           }),
           document.getElementById('root'),
         )}
-        <WrappedComponent {...props} toast={{ addToast: addToastHandler }} />
+        <WrappedComponent {...props} toast={toast} />
       </>
     );
   };

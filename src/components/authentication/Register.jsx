@@ -16,8 +16,9 @@ import {
   validateEmail,
   validateEmpty,
 } from '../../utils/validate';
+import { Link } from 'react-router-dom';
 
-const Register = withToast((props) => {
+const Register = withToast(({ toast }) => {
   const status = useSelector(getStatus);
   const dispatch = useDispatch();
 
@@ -28,20 +29,20 @@ const Register = withToast((props) => {
 
   useEffect(() => {
     if (status === 'register/success') {
-      props.toast.addToast({
+      toast.addToast({
         type: 'success',
         message: 'Create new account successfully!',
       });
       dispatch(resetStatus());
     }
     if (status === 'register/failed') {
-      props.toast.addToast({
+      toast.addToast({
         type: 'error',
         message: 'Your email is exist account!',
       });
       dispatch(resetStatus());
     }
-  }, [status]);
+  }, [status, toast, dispatch]);
 
   function submitRegisterHandler(event) {
     event.preventDefault();
@@ -84,13 +85,13 @@ const Register = withToast((props) => {
               <span className="tracking-wider text-gray-400 after:content-[test]">
                 Already a member?
               </span>
-              <span
-                onClick={props.onToggle}
+              <Link
+                to="/auth/login"
                 className="cursor-pointer no-underline text-blue-500"
               >
                 {' '}
                 Login
-              </span>
+              </Link>
             </span>
           </Animation>
         </div>

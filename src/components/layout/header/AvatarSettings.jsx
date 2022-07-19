@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { getUser } from '../../../store/selectors';
 import AvatarSettingItem from './AvatarSettingItem';
@@ -16,11 +15,9 @@ import {
 const AvatarSettings = ({ isShowMenu }) => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   function logoutHandler() {
     dispatch(logout(user?.id));
-    navigate('/auth');
   }
 
   return (

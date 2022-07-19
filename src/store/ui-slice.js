@@ -1,4 +1,3 @@
-import { ActionTypes } from '@mui/base';
 import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE = {

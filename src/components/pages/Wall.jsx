@@ -36,7 +36,7 @@ const Wall = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const isOwn = id === user.id || id === 'me';
+  const isOwn = useMemo(() => id === user.id || id === 'me', [id, user.id]);
 
   const isFriend = useMemo(() => {
     return user.friendList?.some((friend) => friend._id === id);
@@ -69,7 +69,7 @@ const Wall = () => {
     if (!isOwn) {
       dispatch(getFriend(id));
     }
-  }, [id, isOwn]);
+  }, [id, isOwn, dispatch]);
 
   return (
     <div className="format-page-size flex items-center flex-col mt-[-10px]">

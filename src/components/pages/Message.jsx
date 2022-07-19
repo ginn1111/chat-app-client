@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import FriendList from '../message/friends/FriendList';
-import Chat from '../message/chat/Chat';
 import Settings from '../message/settings/Settings';
 import PseudoChat from '../message/chat/PseudoChat';
 

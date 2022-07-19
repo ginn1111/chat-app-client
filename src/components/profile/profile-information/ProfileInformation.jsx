@@ -6,7 +6,9 @@ import SecureInformation from './SecureInformation';
 const ProfileInformation = () => {
   return (
     <section className="w-9/12 flex gap-x-2">
-      <BasicInformation />
+      <div className="w-1/2">
+        <BasicInformation />
+      </div>
       <div className="w-1/2 flex flex-col gap-y-1">
         <div className="basis-5/12">
           <SecureInformation />

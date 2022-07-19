@@ -27,7 +27,7 @@ import {
   unfriend,
 } from '../../store/friend-slice';
 import withToast from '../../hoc/withToast';
-import { convertImageToBase64, fmtFromFileReader } from '../../utils/helper';
+import { convertImageToBase64 } from '../../utils/helper';
 
 const WallAvatar = withToast(
   ({
@@ -87,7 +87,7 @@ const WallAvatar = withToast(
         });
         dispatch(resetStatus());
       }
-    }, [status]);
+    }, [status, dispatch, toast]);
 
     useEffect(() => {
       if (userStatus === 'update-avatar/success') {
@@ -112,7 +112,7 @@ const WallAvatar = withToast(
         });
         dispatch(userResetStatus());
       }
-    }, [userStatus]);
+    }, [userStatus, dispatch, toast]);
 
     function sendAddFriendHandler() {
       dispatch(sendAddFriend(param.id));
@@ -192,7 +192,6 @@ const WallAvatar = withToast(
             <img
               ref={avatarRef}
               src={avatar}
-              r
               alt="avatar"
               className="w-[120px] h-[120px] duration-300 rounded-full object-cover object-center shadow-[0_0_0_5px_#ffffff]"
             />

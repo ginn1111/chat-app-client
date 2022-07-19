@@ -1,7 +1,6 @@
 import React, { useRef, forwardRef, useImperativeHandle } from 'react';
 import withUpdateUser from '../../../hoc/withUpdateUser';
 import {
-  HeaderProfile,
   InputInformation,
   RadioInputInformation,
   TextAreaInformation,
@@ -24,108 +23,102 @@ const LIST_GENDER = [
   { title: 'Khác', value: 'other' },
 ];
 
-const BasicInformation = withUpdateUser(
-  forwardRef(({ onUpdate, onShowUpdate, isUpdate, onReset }, ref) => {
-    const user = useSelector(getUser);
+const BasicInformation = ({ isUpdate }, ref) => {
+  const user = useSelector(getUser);
 
-    const firstNameRef = useRef();
-    const lastNameRef = useRef();
-    const biographyRef = useRef();
-    const birthdayRef = useRef();
-    const genderRef = useRef();
-    const addressRef = useRef();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const biographyRef = useRef();
+  const birthdayRef = useRef();
+  const genderRef = useRef();
+  const addressRef = useRef();
 
-    const colorIcon = 'text-slate-400';
+  const colorIcon = 'text-slate-400';
 
-    useImperativeHandle(ref, () => ({
-      userData: {
+  useImperativeHandle(ref, () => ({
+    userData: {
+      firstNameRef,
+      lastNameRef,
+      biographyRef,
+      birthdayRef,
+      genderRef,
+      addressRef,
+    },
+    setDefaultValue() {
+      firstNameRef.current.setValue(user.firstName);
+      lastNameRef.current.setValue(user.lastName);
+      birthdayRef.current.setValue(formatDate(user.dob));
+      biographyRef.current.setValue(user.slogan);
+      addressRef.current.setValue(user.address);
+      genderRef.current.setValue(user.gender);
+    },
+    checkValid() {
+      return checkInputIsValid(
         firstNameRef,
         lastNameRef,
-        biographyRef,
         birthdayRef,
-        genderRef,
+        biographyRef,
         addressRef,
-      },
-      setDefaultValue() {
-        firstNameRef.current.setValue(user.firstName);
-        lastNameRef.current.setValue(user.lastName);
-        birthdayRef.current.setValue(formatDate(user.dob));
-        biographyRef.current.setValue(user.slogan);
-        addressRef.current.setValue(user.address);
-        genderRef.current.setValue(user.gender);
-      },
-      checkValid() {
-        return checkInputIsValid(
-          firstNameRef,
-          lastNameRef,
-          birthdayRef,
-          biographyRef,
-          addressRef,
-          genderRef,
-        );
-      },
-      focus() {
-        firstNameRef.current.focus();
-      },
-    }));
+        genderRef,
+      );
+    },
+    focus() {
+      firstNameRef.current.focus();
+    },
+  }));
 
-    return (
-      <div className="w-1/2 flex flex-col gap-y-2 items-center">
-        <HeaderProfile
-          title="Basic Information"
-          onShowUpdate={onShowUpdate}
-          onUpdate={onUpdate}
-          isUpdate={isUpdate}
-          onReset={onReset}
-        />
-        <InputInformation
-          ref={firstNameRef}
-          readOnly={!isUpdate}
-          title="First name"
-          icon={<UilUser className={colorIcon} />}
-          validateFunction={validateEmpty}
-          errorText="First name must not empty!"
-        />
-        <InputInformation
-          ref={lastNameRef}
-          readOnly={!isUpdate}
-          title="Last name"
-          icon={<UilUser className={colorIcon} />}
-          validateFunction={validateEmpty}
-          errorText="Last name must not empty!"
-        />
-        <InputInformation
-          ref={birthdayRef}
-          readOnly={!isUpdate}
-          type="date"
-          validateFunction={validateEmpty}
-          errorText="Birthday must not empty!"
-          title="Day of birth"
-          icon={<UilCalender className={colorIcon} />}
-        />
-        <InputInformation
-          ref={biographyRef}
-          readOnly={!isUpdate}
-          title="biography"
-          icon={<UilFont className={colorIcon} />}
-        />
-        <RadioInputInformation
-          ref={genderRef}
-          readOnly={!isUpdate}
-          list={LIST_GENDER}
-          title="Giới tính"
-          icon={<UilUsersAlt className={colorIcon} />}
-        />
-        <TextAreaInformation
-          ref={addressRef}
-          readOnly={!isUpdate}
-          rows={3}
-          title="Address"
-          icon={<UilSignRight className={colorIcon} />}
-        />
-      </div>
-    );
-  }),
+  return (
+    <div className="flex flex-col gap-y-2 items-center w-full">
+      <InputInformation
+        ref={firstNameRef}
+        readOnly={!isUpdate}
+        title="First name"
+        icon={<UilUser className={colorIcon} />}
+        validateFunction={validateEmpty}
+        errorText="First name must not empty!"
+      />
+      <InputInformation
+        ref={lastNameRef}
+        readOnly={!isUpdate}
+        title="Last name"
+        icon={<UilUser className={colorIcon} />}
+        validateFunction={validateEmpty}
+        errorText="Last name must not empty!"
+      />
+      <InputInformation
+        ref={birthdayRef}
+        readOnly={!isUpdate}
+        type="date"
+        validateFunction={validateEmpty}
+        errorText="Birthday must not empty!"
+        title="Day of birth"
+        icon={<UilCalender className={colorIcon} />}
+      />
+      <InputInformation
+        ref={biographyRef}
+        readOnly={!isUpdate}
+        title="biography"
+        icon={<UilFont className={colorIcon} />}
+      />
+      <RadioInputInformation
+        ref={genderRef}
+        readOnly={!isUpdate}
+        list={LIST_GENDER}
+        title="Giới tính"
+        icon={<UilUsersAlt className={colorIcon} />}
+      />
+      <TextAreaInformation
+        ref={addressRef}
+        readOnly={!isUpdate}
+        rows={3}
+        title="Address"
+        icon={<UilSignRight className={colorIcon} />}
+      />
+    </div>
+  );
+};
+
+export default withUpdateUser(
+  forwardRef(BasicInformation),
+  'Basic Information',
 );
-
-export default BasicInformation;

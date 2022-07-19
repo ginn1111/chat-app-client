@@ -1,32 +1,61 @@
-import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { refreshToken } from '../../services/authentication';
 import { getLocal } from '../../services/localServices';
-import { persist, setToken } from '../../store/authen-slice';
-import { hasLoading, getToken } from '../../store/selectors';
-import * as authenticationService from '../../services/authentication';
+import { getUser } from '../../services/user';
+import { convertData, setToken, setUser } from '../../store/authen-slice';
+import { getToken } from '../../store/selectors';
+import CircleLoading from '../ui/loading/CircleLoading';
 
 const Persist = () => {
-  console.log('persist call');
   const dispatch = useDispatch();
   const token = useSelector(getToken);
-  const isLoading = useSelector(hasLoading);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const userId = getLocal('userId');
-    !token &&
-      (async () => {
-        try {
-          const response = await authenticationService.refreshToken(userId);
-          console.log(response.data.accessToken);
-          dispatch(setToken(response.data.accessToken));
-        } catch (error) {
-          console.log(error);
-        }
-      })();
-  }, []);
+    const verifyRefreshToken = async () => {
+      try {
+        const { data } = await refreshToken(userId);
+        dispatch(setToken(data.accessToken));
+        const { data: userData } = await getUser(userId);
+        dispatch(setUser(convertData(userData)));
+      } catch (error) {
+        console.log('persis error', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    !token && userId ? verifyRefreshToken() : setIsLoading(false);
+  }, [dispatch, token]);
 
-  return <Outlet />;
+  const switchPageAnimate = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.3 },
+    exit: { opacity: 0 },
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div {...switchPageAnimate}>
+            <CircleLoading />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!isLoading && (
+          <motion.div {...switchPageAnimate}>
+            <Outlet />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 };
 
 export default Persist;

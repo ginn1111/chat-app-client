@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UilTimesSquare } from '@iconscout/react-unicons';
+import {
+  UilTimesSquare,
+  UilCheckCircle,
+  UilExclamationTriangle,
+} from '@iconscout/react-unicons';
 
 const Toast = ({ type, message, onRemove, top }) => {
   useEffect(() => {
@@ -9,9 +13,18 @@ const Toast = ({ type, message, onRemove, top }) => {
     }, 3500);
 
     return () => clearTimeout(idTimer);
-  }, []);
+  }, [onRemove]);
 
-  const color = type === 'error' ? 'bg-rose-600' : 'bg-green-400';
+  const typeToast =
+    type === 'error'
+      ? {
+          bg: 'bg-red-500',
+          icon: <UilExclamationTriangle color="white" size="22" />,
+        }
+      : {
+          bg: 'bg-green-500',
+          icon: <UilCheckCircle color="white" size="22" />,
+        };
   return (
     <AnimatePresence>
       <motion.div
@@ -24,11 +37,12 @@ const Toast = ({ type, message, onRemove, top }) => {
         transition={{ stiffness: 50, type: 'spring' }}
         animate={{ x: -50 }}
         exit={{ x: 1000 }}
-        className={`toast ${color}`}
+        className={`toast ${typeToast.bg}`}
       >
-        <span className="text-[14px] text-white">{message}</span>
-        <div className="cursor-pointer px-1" onClick={onRemove}>
-          <UilTimesSquare color="white" size="20" />
+        {typeToast.icon}
+        <span className="text-[15px] text-white">{message}</span>
+        <div className="cursor-pointer px-1 " onClick={onRemove}>
+          <UilTimesSquare color="white" />
         </div>
         <motion.div
           initial={{
