@@ -38,6 +38,7 @@ code {
   top: 0;
   width: 100%;
 }
+
 .ellipsis {
   overflow: hidden;
   display: -webkit-box;

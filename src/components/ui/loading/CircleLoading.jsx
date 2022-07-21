@@ -1,12 +1,10 @@
 import React from 'react';
 
-const CircleLoading = ({ title }) => {
+const CircleLoading = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <div
-        className={`w-[300px] h-[300px] relative rounded-full after:content-['${
-          title ?? 'Loading...'
-        }'] after:content-center  after:absolute-x-center after:top-[50%] after:translate-y-[-50%] after:animate-pulse`}
+        className={`w-[300px] h-[300px] relative rounded-full after:content-['Loading...'] after:content-center  after:absolute-x-center after:top-[50%] after:translate-y-[-50%] after:animate-pulse`}
       >
         {/* CircleLoading */}
         <div className="w-full animate-loading-1 h-full mix-blend-overlay absolute rounded-full border-[10px] border-r-red-200 border-solid border-l-transparent border-t-transparent border-b-transparent"></div>

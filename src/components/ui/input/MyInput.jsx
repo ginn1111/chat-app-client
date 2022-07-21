@@ -95,7 +95,7 @@ const MyInput = forwardRef((props, ref) => {
         </div>
       </motion.div>
       <ErrorMessage
-        message={props.errorText ?? 'Input is in valid!'}
+        message={props.errorText ?? 'Input is invalid!'}
         isShow={isInValid}
       />
     </>

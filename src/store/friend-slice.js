@@ -8,6 +8,8 @@ import {
   addFriendList,
   removeFriendList,
 } from './authen-slice';
+import { deleteConversation, addConversation } from './conversation-slice';
+import * as conversationService from '../services/conversation';
 
 const convertData = (data) => ({
   slogan: data.biography,
@@ -82,6 +84,21 @@ export const unfriend = (receiverId) => async (dispatch, getState) => {
     const userId = getState().authentication.userInformation.id;
     await friendService.unfriend(userId, receiverId);
 
+    console.log(getState().conversation.conversations)
+
+    const { _id: conversationId } = getState().conversation.conversations.find(
+      (con) => {
+        const members = con.members;
+        const membersId = members.map((mem) => mem.memberId);
+        return (
+          members.length === 2 &&
+          membersId.includes(userId) &&
+          membersId.includes(receiverId)
+        );
+      },
+    );
+
+    dispatch(deleteConversation(conversationId));
     dispatch(removeFriendList(receiverId));
     dispatch(removeFriendListOfFriend(userId));
     dispatch(setStatus('unfriend/success'));
@@ -117,37 +134,51 @@ export const getFriend = (friendId) => async (dispatch) => {
 
 export const responseAddFriend =
   ({ receiverId, accepted }) =>
-  async (dispatch, getState) => {
-    dispatch(showLoading());
-    try {
-      const userState = getState().authentication.userInformation;
-      const { data } = await friendService.responseAddFriend(userState.id, {
-        receiverId,
-        accepted,
-      });
+    async (dispatch, getState) => {
+      dispatch(showLoading());
+      try {
+        const userState = getState().authentication.userInformation;
+        const { data: receiver } = await friendService.responseAddFriend(userState.id, {
+          receiverId,
+          accepted,
+        });
 
-      // add to user
-      accepted && dispatch(addFriendList(data));
+        if (accepted) {
 
-      // add to current friend
-      accepted &&
-        dispatch(
-          addFriendListOfFriend({
-            _id: userState.id,
-            firstName: userState.firstName,
-            lastName: userState.lastName,
-            avatar: userState.avatar,
-            biography: userState.slogan,
-            coverPicture: userState.coverPicture,
-          }),
-        );
-      dispatch(removeFriendResponse(receiverId));
-    } catch (error) {
-      console.log('response add friend error', error);
-    } finally {
-      dispatch(hideLoading());
-    }
-  };
+          const createConRes = await conversationService.createConversation(
+            userState.id,
+            [
+              { memberId: userState.id, nickname: userState.lastName },
+              { memberId: receiverId, nickname: receiver.lastName },
+            ], false
+          );
+
+          dispatch(addConversation(createConRes.data))
+
+          // add to user
+          dispatch(addFriendList(receiver));
+
+          // add to current friend
+
+          dispatch(
+            addFriendListOfFriend({
+              _id: userState.id,
+              firstName: userState.firstName,
+              lastName: userState.lastName,
+              avatar: userState.avatar,
+              biography: userState.slogan,
+              coverPicture: userState.coverPicture,
+            }),
+          );
+        }
+
+        dispatch(removeFriendResponse(receiverId));
+      } catch (error) {
+        console.log('response add friend error', error);
+      } finally {
+        dispatch(hideLoading());
+      }
+    };
 
 export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
   const userState = getState().authentication.userInformation;

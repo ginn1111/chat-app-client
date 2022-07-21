@@ -6,8 +6,6 @@ const RequireAuth = () => {
   const token = useSelector(getToken);
   const { pathname } = useLocation();
 
-  console.log('requireAuth call');
-
   return token ? (
     <Outlet />
   ) : (

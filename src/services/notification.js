@@ -7,16 +7,9 @@ export const sendNotify = async (userId, notification) =>
   privateRequest.post(`/notifications/${userId}/create`, { ...notification });
 
 export const updateNotification = async (userId, notificationId) =>
-  await privateRequest.put(`/notifications/${userId}/edit`, {
-    notification: {
-      isResponse: true,
-    },
-    notificationId,
+  await privateRequest.put(`/notifications/${userId}/edit/${notificationId}`, {
+    isResponse: true,
   });
 
 export const removeNotification = async (userId, notificationId) =>
-  await privateRequest.delete(`/notifications/${userId}/delete`, null, {
-    params: {
-      notificationId,
-    },
-  });
+  await privateRequest.delete(`/notifications/${userId}/delete/${notificationId}`);

@@ -1,4 +1,5 @@
 // const getAuthenticationState = state => type => state.authentication[type]
+export const getMessageAuthen = (state) => state.authentication.message;
 export const getStatus = (state) => state.authentication.status;
 // export const getStatus = getAuthenticationState(state)('status')
 export const getToken = (state) => state.authentication.accessToken;
@@ -18,3 +19,8 @@ export const getSearchStatus = (state) => state.search.status;
 export const getSearchUsers = (state) => state.search.users;
 
 export const hasLoadingLogin = (state) => state.ui.isLoadingLogin;
+
+export const getConversationList = state => state.conversation.conversations;
+
+export const getMessageList = state => state.message.messages;
+export const getStatusMessage = state => state.message.status;

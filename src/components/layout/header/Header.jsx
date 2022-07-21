@@ -70,10 +70,10 @@ const Header = () => {
                 animate={{ scale: [1.5, 1] }}
                 transition={{ duration: 0.3 }}
                 exit={{ scale: 0 }}
-                class="flex h-1.5 w-1.5 absolute right-[0px] top-[10px] z-[1000000]"
+                className="flex h-1.5 w-1.5 absolute right-[0px] top-[10px] z-[1000000]"
               >
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
               </motion.span>
             )}
           </AnimatePresence>

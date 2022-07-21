@@ -18,3 +18,10 @@ export const convertImageToBase64 = (imgFile, loadHandler) => {
   reader.onload = loadHandler;
   reader.readAsDataURL(imgFile); // --> when onload finish, we receive base64 code string
 };
+
+export const formatTime = (time) => {
+  const date = new Date(time).toLocaleTimeString()
+  const splitDate = date.split(' ');
+  const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':')
+  return timeWithHourAndMinute + ' ' + splitDate[1]
+}

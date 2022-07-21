@@ -57,8 +57,11 @@
   .chat-item.not-own {
     @apply flex-row-reverse;
   }
+  .chat-item.not-own div{
+    @apply flex flex-col;
+  }
   .chat-item.not-own span {
-    @apply rounded-[10px_0_10px_10px] bg-gray-200;
+    @apply rounded-[10px_0_10px_10px] bg-gray-200 ml-auto;
   }
   .chat-item.not-own p {
     @apply block w-full text-end;

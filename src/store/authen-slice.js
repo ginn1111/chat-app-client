@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { setLocal, removeLocal } from '../services/localServices';
 import { showLoading, hideLoading } from './ui-slice';
 import { getNotifications } from './notification-slice';
+import { getConversation } from './conversation-slice';
 import * as authenticationService from '../services/authentication';
 import * as userService from '../services/user';
 import * as firebaseService from '../services/firebase';
@@ -43,6 +44,7 @@ const INIT_STATE = {
     join: '',
   },
   status: 'idle',
+  message: null,
 };
 
 const authenticationSlice = createSlice({
@@ -71,12 +73,10 @@ const authenticationSlice = createSlice({
       );
     },
     addFriendList(state, action) {
-      console.log(action.payload);
       state.userInformation.friendList = [
         ...state.userInformation.friendList,
         action.payload,
       ];
-      // state.userInformation.friendList.push(action.payload);
     },
     setLogout(state) {
       state.accessToken = null;
@@ -94,59 +94,64 @@ const authenticationSlice = createSlice({
     setCoverPicture(state, action) {
       state.userInformation.coverPicture = action.payload;
     },
+    setMessage(state, action) {
+      state.message = action.payload;
+    },
   },
 });
 
 export const login =
   ({ email, password }) =>
-  async (dispatch) => {
-    dispatch(showLoading());
-    try {
-      const { data } = await authenticationService.login(email, password);
-      dispatch(setToken(data.accessToken));
+    async (dispatch) => {
+      dispatch(showLoading());
+      try {
+        const { data } = await authenticationService.login(email, password);
+        dispatch(setToken(data.accessToken));
 
-      const userData = convertData(data);
-      const userId = userData?.userInformation?.id;
+        const userData = convertData(data);
+        const userId = userData.userInformation.id;
 
-      const getFriendList = userService.getFriendListOfUser(userId);
+        const getFriendList = userService.getFriendListOfUser(userId);
+        const getNotificationsOfUser = dispatch(getNotifications(userId));
+        const getConversationOfUser = dispatch(getConversation({ userId }))
 
-      const getNotificationsOfUser = dispatch(getNotifications(userId));
+        const { data: friendList } = await getFriendList;
+        await getNotificationsOfUser;
+        await getConversationOfUser;
 
-      const { data: friendList } = await getFriendList;
-      await getNotificationsOfUser;
+        userData.userInformation.friendList = friendList;
 
-      userData.userInformation.friendList = friendList;
-
-      setLocal('userId', userId);
-      dispatch(setUser(userData));
-      dispatch(setStatus('login/success'));
-    } catch (error) {
-      console.log('login error', error);
-      dispatch(setStatus('login/failed'));
-    } finally {
-      dispatch(hideLoading());
-    }
-  };
+        setLocal('userId', userId);
+        dispatch(setUser(userData));
+        dispatch(setStatus('login/success'));
+      } catch (error) {
+        console.log('login error', error);
+        dispatch(setStatus('login/failed'));
+        dispatch(setMessage(error.message));
+      } finally {
+        dispatch(hideLoading());
+      }
+    };
 
 export const register =
   ({ firstName, lastName, email, password }) =>
-  async (dispatch) => {
-    dispatch(showLoading());
-    try {
-      await authenticationService.register({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      dispatch(setStatus('register/success'));
-    } catch (error) {
-      console.log('register error: ', error);
-      dispatch(setStatus('register/failed'));
-    } finally {
-      dispatch(hideLoading());
-    }
-  };
+    async (dispatch) => {
+      dispatch(showLoading());
+      try {
+        await authenticationService.register({
+          firstName,
+          lastName,
+          email,
+          password,
+        });
+        dispatch(setStatus('register/success'));
+      } catch (error) {
+        console.log('register error: ', error);
+        dispatch(setStatus('register/failed'));
+      } finally {
+        dispatch(hideLoading());
+      }
+    };
 
 export const refreshToken = (userId) => async (dispatch) => {
   try {
@@ -244,6 +249,17 @@ export const updateCoverPicture = (bgSrc) => async (dispatch, getState) => {
   }
 };
 
+export const persistLogin = (userId) => async (dispatch) => {
+  try {
+    await dispatch(refreshToken(userId));
+    await dispatch(getUserInformation(userId));
+  } catch (error) {
+    console.log('persistLogin error', error)
+  } finally {
+    dispatch(setStatus('persist-login/finish'));
+  }
+}
+
 export const {
   resetStatus,
   setAccessToken,
@@ -257,5 +273,6 @@ export const {
   setLogout,
   setAvatar,
   setCoverPicture,
+  setMessage,
 } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

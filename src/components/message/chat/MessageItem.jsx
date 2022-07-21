@@ -4,7 +4,7 @@ const MessageItem = ({ isOwn, avatar, message, timeAt }) => {
   return (
     <li className={`chat-item ${isOwn ? 'own' : 'not-own'}`}>
       <img
-        className="w-6 h-6 rounded-full object-center"
+        className="w-6 h-6 rounded-full object-center object-cover"
         src={avatar}
         alt="own-avatar"
       />
