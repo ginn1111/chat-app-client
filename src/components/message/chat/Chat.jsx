@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom'
 import { getConversationList, getMessageList, getStatusMessage } from '../../../store/selectors'
 import { getMessages } from '../../../store/message-slice'
@@ -6,9 +6,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { commonStyle } from '../../pages/Message';
 import Send from './Send';
 import Header from './Header';
+import Settings from '../settings/Settings'
 import Messages from './Messages';
 import CircleLoading from '../../ui/loading/CircleLoading'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Chat = () => {
   const { id: conversationId } = useParams();
@@ -24,22 +25,32 @@ const Chat = () => {
 
   const conversatonInfor = useMemo(() => conversationList.find(con => con._id === conversationId), [conversationId, conversationList])
 
-  return (
-    <div
-      className={`basis-1/2 ${commonStyle} bg-transparent relative mt-[-6px]`}
-    >
+  const [isShowInfor, setIsShowInfor] = useState(false);
+  function toggleInfor() {
+    setIsShowInfor(prev => !prev)
+  }
 
-      <AnimatePresence>
-        {isPending && <CircleLoading />}
-      </AnimatePresence>
-      {!isPending &&
-        <>
-          <Header avatar={conversatonInfor?.avatar} name={conversatonInfor?.title} />
-          <Messages messages={messageList} conversationAvatar={conversatonInfor?.avatar} />
-          <Send conversationId={conversationId} />
-        </>
-      }
-    </div>
+  return (
+    <>
+      <div className={` ${isShowInfor ? 'w-1/2' : 'w-3/4'}  ${commonStyle} bg-transparent relative mt-[-6px]`} >
+
+        <AnimatePresence>
+          {isPending && <CircleLoading />}
+        </AnimatePresence>
+        {!isPending &&
+          <>
+            <Header avatar={conversatonInfor?.avatar} name={conversatonInfor?.title} isShowInfor={isShowInfor} onShowInfor={toggleInfor} />
+            <Messages messages={messageList} conversationAvatar={conversatonInfor?.avatar} />
+            <Send conversationId={conversationId} />
+          </>
+        }
+      </div>
+      {isShowInfor && <motion.div
+        className={`${commonStyle} flex flex-col basis-1/4 gap-y-2 relative text-primary items-center mt-2`}
+      >
+        <Settings />
+      </motion.div>}
+    </>
   );
 };
 
