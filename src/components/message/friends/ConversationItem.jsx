@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getOfflineTime } from '../../../utils/helper';
 
-const ConversationItem = ({ avatar, name, isOnline, fromOnline, conversationId, isChoosing}) => {
+const ConversationItem = ({ avatar, name, fromOnline, conversationId, isChoosing }) => {
   return (
     <li className={`h-max w-full bg-white px-3 py-2 rounded-md item-hovered text-slate-600 ${isChoosing ? 'bg-blue-200' : ''} `}>
       <Link to={`/message/${conversationId}`}>
         <div className="flex gap-x-2 w-full relative">
-          <div className={`relative  online ${isOnline ? '' : 'off'}`}>
+          <div className={`relative  online ${!fromOnline ? '' : 'off'}`}>
             <img
               className="h-8 w-8 object-center object-cover rounded-full"
               src={avatar}
@@ -18,10 +19,10 @@ const ConversationItem = ({ avatar, name, isOnline, fromOnline, conversationId, 
             <span>Some thing here</span>
           </div>
           <span
-            className={`ml-auto inline-block ${isOnline ? 'text-green-500 font-[500]' : ''
+            className={`ml-auto inline-block ${!fromOnline ? 'text-green-500 font-[500]' : ''
               }`}
           >
-            {isOnline ? 'online' : fromOnline}
+            {getOfflineTime(fromOnline) ?? 'online'}
           </span>
         </div>
       </Link>

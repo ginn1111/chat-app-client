@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom'
-import { getConversationList, getMessageList, getStatusMessage } from '../../../store/selectors'
+import { getConversationList, getStatusMessage } from '../../../store/selectors'
 import { getMessages } from '../../../store/message-slice'
 import { useSelector, useDispatch } from 'react-redux'
 import { commonStyle } from '../../pages/Message';
@@ -10,20 +10,22 @@ import Settings from '../settings/Settings'
 import Messages from './Messages';
 import CircleLoading from '../../ui/loading/CircleLoading'
 import { AnimatePresence, motion } from 'framer-motion'
+import { getUser } from '../../../store/selectors';
 
 const Chat = () => {
   const { id: conversationId } = useParams();
+  const { id: userId } = useSelector(getUser);
   const dispatch = useDispatch();
-  const messageList = useSelector(getMessageList)
   const conversationList = useSelector(getConversationList)
   const status = useSelector(getStatusMessage)
-  const isPending = useMemo(() => status === 'get-message/pending', [status])
 
   useEffect(() => {
     dispatch(getMessages(conversationId));
   }, [conversationId])
 
-  const conversatonInfor = useMemo(() => conversationList.find(con => con._id === conversationId), [conversationId, conversationList])
+  const isPending = useMemo(() => status === 'get-message/pending', [status])
+  const conversationInfor = useMemo(() => conversationList.find(con => con._id === conversationId), [conversationId, conversationList])
+  const receiverId = useMemo(() => conversationInfor?.members.filter(m => m.memberId !== userId)[0].memberId, [conversationInfor]);
 
   const [isShowInfor, setIsShowInfor] = useState(false);
   function toggleInfor() {
@@ -39,9 +41,9 @@ const Chat = () => {
         </AnimatePresence>
         {!isPending &&
           <>
-            <Header avatar={conversatonInfor?.avatar} name={conversatonInfor?.title} isShowInfor={isShowInfor} onShowInfor={toggleInfor} />
-            <Messages messages={messageList} conversationAvatar={conversatonInfor?.avatar} />
-            <Send conversationId={conversationId} />
+            <Header avatar={conversationInfor?.avatar} name={conversationInfor?.title} isShowInfor={isShowInfor} onShowInfor={toggleInfor} />
+            <Messages conversationAvatar={conversationInfor?.avatar} />
+            <Send conversationId={conversationId} receiverId={receiverId} />
           </>
         }
       </div>

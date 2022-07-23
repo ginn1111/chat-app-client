@@ -1,17 +1,19 @@
 import React from 'react';
 import { UilPaperclip, UilMessage, UilSmile } from '@iconscout/react-unicons';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { sendMessage } from '../../../store/message-slice'
 import useInput from '../../../hooks/useInput'
 import { validateEmpty } from '../../../utils/validate'
+import { sendMessage as sendMessageToSocket } from '../../../services/socketIO';
 
-const Send = ({ conversationId }) => {
+const Send = ({ conversationId, userId, receiverId }) => {
   const dispatch = useDispatch();
 
   const { state: { value, isValid }, actions: { onChange, onBlur, reset } } = useInput(validateEmpty);
 
   function send() {
     dispatch(sendMessage(conversationId, value))
+    sendMessageToSocket({ senderId: userId, text: value, receiverId, conversationId });
     reset();
   }
 

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUser } from '../../../store/selectors';
+import { getConversationList, getUser } from '../../../store/selectors';
 import AvatarSettingItem from './AvatarSettingItem';
 import { logout } from '../../../store/authen-slice';
 import {
@@ -11,12 +11,16 @@ import {
   UilComment,
   UilSignout,
 } from '@iconscout/react-unicons';
+import { socketDisconnect } from '../../../services/socketIO';
 
 const AvatarSettings = ({ isShowMenu }) => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
+  const conversationList = useSelector(getConversationList);
+  const conversationIdList = useMemo(() => conversationList.map(con => con._id), [conversationList]);
 
   function logoutHandler() {
+    socketDisconnect(conversationIdList);
     dispatch(logout(user?.id));
   }
 

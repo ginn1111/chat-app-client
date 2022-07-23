@@ -25,3 +25,22 @@ export const formatTime = (time) => {
   const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':')
   return timeWithHourAndMinute + ' ' + splitDate[1]
 }
+
+export const getOfflineTime = timestamp => {
+  if (!timestamp) return;
+  const timeObj = {
+    month: 2592000,
+    week: 648000,
+    day: 86400,
+    hour: 3600,
+    minute: 60
+  }
+  timestamp = (new Date().getTime() - timestamp) / 1000;
+  if (timestamp > (timeObj.month * 12)) return new Date(timestamp).toLocaleDateString({ day: 'numeric', month: 'numeric', year: 'numeric' });
+  return timestamp >= timeObj.month ? Math.round(timestamp / timeObj.month) + 'mon'
+    : timestamp >= timeObj.week ? Math.round(timestamp / timeObj.week) + 'w'
+      : timestamp >= timeObj.day ? Math.round(timestamp / timeObj.day) + 'd'
+        : timestamp >= timeObj.hour ? Math.round(timestamp / timeObj.hour) + 'h'
+          : timestamp >= timeObj.minute ? Math.round(timestamp / timeObj.minute) + 'm'
+            : 'just now';
+}

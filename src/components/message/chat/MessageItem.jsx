@@ -1,14 +1,9 @@
-import React, { forwardRef, useRef, useEffect } from 'react';
+import React from 'react';
 
-const MessageItem = forwardRef(({ isOwn, avatar, message, timeAt }, ref) => {
-  const scrollRef = useRef();
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [])
+const MessageItem = ({ isOwn, avatar, message, timeAt }) => {
 
   return (
-    <li className={`chat-item ${isOwn ? 'own' : 'not-own'}`} ref={ref}>
+    <li className={`chat-item ${isOwn ? 'own' : 'not-own'}`}>
       <img
         className="w-6 h-6 rounded-full object-center object-cover"
         src={avatar}
@@ -22,6 +17,6 @@ const MessageItem = forwardRef(({ isOwn, avatar, message, timeAt }, ref) => {
       </div>
     </li>
   );
-});
+};
 
 export default MessageItem;
