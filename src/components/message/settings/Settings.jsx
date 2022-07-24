@@ -1,25 +1,29 @@
 import React from 'react';
-import Blur from '../../ui/blur/Blur';
-import Avatar from '../../../assets/img/avatar2.jpeg';
-import MemberList from './MemberList';
+import { UilInfoCircle } from '@iconscout/react-unicons';
+import { Link } from 'react-router-dom';
 
-const Settings = () => {
+const Settings = ({ friendId, avatar, name }) => {
   return (
     <>
-      <Blur top="top-[0%]" left="left-[20%]" bgColor="bg-blue-300" />
-      <div className="pt-5">
+      <div className="pt-5 flex-none">
         <img
-          className="w-24 h-24 rounded-full object-center shadow-[0_0_0_8px_#ffffffa4]"
-          src={Avatar}
+          className="w-20 h-20 rounded-full object-center shadow-[0_0_0_8px_#bae6fd] object-cover"
+          src={avatar}
           alt="avatar-profile-chat"
         />
       </div>
-      <span className="font-[800] tracking-wider text-white text-center text-[20px] drop-shadow-sm">
-        IT Team
+      <span className="font-[600] tracking-wider text-center text-[20px] mt-[10px]">
+        {name}
       </span>
-      <MemberList />
+      <Link to={`/wall/${friendId}`} className="cursor-pointer px-2 py-1 flex justify-between items-center w-full rounded-[5px] duration-300 hover:bg-slate-100">
+        <p>Information</p>
+        <UilInfoCircle />
+      </Link>
+      <hr className="w-full" />
     </>
   );
 };
 
+
+//<MemberList />
 export default Settings;

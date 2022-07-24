@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const MyButton = ({ title, bgColor, textColor, width, onClick }) => {
+const MyButton = ({ title, bgColor, textColor, width, onClick, type }) => {
   return (
     <motion.button
       className={`${bgColor} ${textColor} ${width} rounded-[25px] px-3 py-2 text-[16px] font-[500] tracking-wide`}
@@ -13,6 +13,7 @@ const MyButton = ({ title, bgColor, textColor, width, onClick }) => {
         scale: 1.1,
       }}
       onClick={onClick}
+      type={type ?? 'submit'}
     >
       {title}
     </motion.button>

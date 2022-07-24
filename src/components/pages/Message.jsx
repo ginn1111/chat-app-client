@@ -4,13 +4,18 @@ import ConversationList from '../message/friends/ConversationList';
 import PseudoChat from '../message/chat/PseudoChat';
 
 export const commonStyle =
-  ' rounded-xl px-2 py-1 h-full after:bg-[#ffffffa] after:rounded-lg after:blur-[2px] after:z-[-1] after:w-full after:h-full after:absolute relative';
+  ' rounded-xl px-2 py-1 h-full relative';
 
 const Message = () => {
   const { id: conversationId } = useParams();
+
   return (
     <div className="format-page-size flex h-[calc(100vh_-_90px)] relative rounded-md">
-      <ConversationList conversationId={conversationId} />
+      <div
+        className={`w-[350px] flex-none ${commonStyle} flex flex-col items-center gap-y-2 text-[14px] bg-transparent pr-2 `}
+      >
+        <ConversationList conversationId={conversationId} />
+      </div>
       {conversationId ? <Outlet /> : <PseudoChat />}
     </div>
   );

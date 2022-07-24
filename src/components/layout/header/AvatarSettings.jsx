@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getConversationList, getUser } from '../../../store/selectors';
-import AvatarSettingItem from './AvatarSettingItem';
+import AvatarSettingItem, { Item } from './AvatarSettingItem';
 import { logout } from '../../../store/authen-slice';
 import {
   UilUserCircle,
@@ -52,11 +52,9 @@ const AvatarSettings = ({ isShowMenu }) => {
             />
             <hr />
             <div
-              className=" hover:bg-blue-400 duration-200 hover:text-white px-2 py-1 rounded-sm font-[500] flex items-center  gap-x-2 "
               onClick={logoutHandler}
             >
-              <UilSignout />
-              <span>Logout</span>
+              <Item title="Logout" icon={<UilSignout />} />
             </div>
           </ul>
         </motion.div>

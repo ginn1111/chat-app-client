@@ -24,3 +24,4 @@ export const getConversationList = state => state.conversation.conversations;
 
 export const getMessageList = state => state.message.messages;
 export const getStatusMessage = state => state.message.status;
+export const getLastedMessage = state => state.message.messages[state.message.messages.length - 1];

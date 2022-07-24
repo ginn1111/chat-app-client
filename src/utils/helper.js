@@ -19,11 +19,28 @@ export const convertImageToBase64 = (imgFile, loadHandler) => {
   reader.readAsDataURL(imgFile); // --> when onload finish, we receive base64 code string
 };
 
-export const formatTime = (time) => {
-  const date = new Date(time).toLocaleTimeString()
-  const splitDate = date.split(' ');
+const format2Digit = time => ('0' + time).slice(-2);
+
+const getFullDate = (date) => {
+  const day = format2Digit(date.getDate());
+  const mon = format2Digit(date.getMonth() + 1);
+  const year = date.getFullYear();
+
+  return `${day} ${mon} ${year}`;
+}
+
+const getFullTime = date => {
+  const splitDate = date.toLocaleTimeString().split(' ');
   const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':')
-  return timeWithHourAndMinute + ' ' + splitDate[1]
+
+  return `${timeWithHourAndMinute} ${splitDate[1]}`;
+}
+
+export const formatTime = (time) => {
+  const date = new Date(time);
+  const fmtTime = getFullTime(date);
+
+  return date.getTime() > Date.now() ? getFullDate(date) + ' ' + fmtTime : fmtTime;
 }
 
 export const getOfflineTime = timestamp => {

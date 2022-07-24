@@ -103,7 +103,7 @@ const Header = () => {
             className="relative cursor-pointer w-7 h-7 rounded-full"
           >
             <img
-              className="w-full h-full object-cover object-center rounded-full"
+              className="w-full h-full object-cover object-center rounded-full shadow-[0_0_0_5px_#bae6fd]"
               src={avatar}
               alt="avatar"
             />

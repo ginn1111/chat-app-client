@@ -18,7 +18,6 @@ const messageSlice = createSlice({
     }, addMessage(state, action) {
       state.messages.push(action.payload)
     }, setMessages(state, action) {
-      console.log(action.payload);
       state.messages = action.payload;
     }, setMessage(state, action) {
       state.message = action.payload

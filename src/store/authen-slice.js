@@ -28,21 +28,8 @@ export const convertData = (data) => ({
 });
 
 const INIT_STATE = {
-  accessToken: localStorage.getItem('accessToken'),
-  userInformation: {
-    avatar: '',
-    coverPicture: '',
-    id: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    gender: '',
-    email: '',
-    dob: '',
-    slogan: '',
-    address: '',
-    join: '',
-  },
+  accessToken: null,
+  userInformation: {},
   status: 'idle',
   message: null,
 };
@@ -100,58 +87,54 @@ const authenticationSlice = createSlice({
   },
 });
 
-export const login =
-  ({ email, password }) =>
-    async (dispatch) => {
-      dispatch(showLoading());
-      try {
-        const { data } = await authenticationService.login(email, password);
-        dispatch(setToken(data.accessToken));
+export const login = ({ email, password }) => async (dispatch) => {
+  dispatch(showLoading());
+  try {
+    const { data } = await authenticationService.login(email, password);
+    dispatch(setToken(data.accessToken));
 
-        const userData = convertData(data);
-        const userId = userData.userInformation.id;
+    const userData = convertData(data);
+    const userId = userData.userInformation.id;
 
-        const getFriendList = userService.getFriendListOfUser(userId);
-        const getNotificationsOfUser = dispatch(getNotifications(userId));
-        const getConversationOfUser = dispatch(getConversation({ userId }))
+    const getFriendList = userService.getFriendListOfUser(userId);
+    const getNotificationsOfUser = dispatch(getNotifications(userId));
+    const getConversationOfUser = dispatch(getConversation({ userId }))
 
-        const { data: friendList } = await getFriendList;
-        await getNotificationsOfUser;
-        await getConversationOfUser;
+    const { data: friendList } = await getFriendList;
+    await getNotificationsOfUser;
+    await getConversationOfUser;
 
-        userData.userInformation.friendList = friendList;
+    userData.userInformation.friendList = friendList;
 
-        setLocal('userId', userId);
-        dispatch(setUser(userData));
-        dispatch(setStatus('login/success'));
-      } catch (error) {
-        console.log('login error', error);
-        dispatch(setStatus('login/failed'));
-        dispatch(setMessage(error.message));
-      } finally {
-        dispatch(hideLoading());
-      }
-    };
+    setLocal('userId', userId);
+    dispatch(setUser(userData));
+    dispatch(setStatus('login/success'));
+  } catch (error) {
+    console.log('login error', error);
+    dispatch(setStatus('login/failed'));
+    dispatch(setMessage(error.message));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
 
-export const register =
-  ({ firstName, lastName, email, password }) =>
-    async (dispatch) => {
-      dispatch(showLoading());
-      try {
-        await authenticationService.register({
-          firstName,
-          lastName,
-          email,
-          password,
-        });
-        dispatch(setStatus('register/success'));
-      } catch (error) {
-        console.log('register error: ', error);
-        dispatch(setStatus('register/failed'));
-      } finally {
-        dispatch(hideLoading());
-      }
-    };
+export const register = ({ firstName, lastName, email, password }) => async (dispatch) => {
+  dispatch(showLoading());
+  try {
+    await authenticationService.register({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    dispatch(setStatus('register/success'));
+  } catch (error) {
+    console.log('register error: ', error);
+    dispatch(setStatus('register/failed'));
+  } finally {
+    dispatch(hideLoading());
+  }
+};
 
 export const refreshToken = (userId) => async (dispatch) => {
   try {

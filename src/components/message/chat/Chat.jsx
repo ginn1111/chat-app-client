@@ -25,7 +25,7 @@ const Chat = () => {
 
   const isPending = useMemo(() => status === 'get-message/pending', [status])
   const conversationInfor = useMemo(() => conversationList.find(con => con._id === conversationId), [conversationId, conversationList])
-  const receiverId = useMemo(() => conversationInfor?.members.filter(m => m.memberId !== userId)[0].memberId, [conversationInfor]);
+  const receiverId = useMemo(() => !conversationInfor?.isGroup && conversationInfor?.members.filter(m => m.memberId !== userId)[0].memberId, [conversationInfor]);
 
   const [isShowInfor, setIsShowInfor] = useState(false);
   function toggleInfor() {
@@ -34,7 +34,7 @@ const Chat = () => {
 
   return (
     <>
-      <div className={` ${isShowInfor ? 'w-1/2' : 'w-3/4'}  ${commonStyle} bg-transparent relative mt-[-6px]`} >
+      <div className={`w-full duration-500 ${commonStyle} bg-transparent relative mt-[-6px]`} >
 
         <AnimatePresence>
           {isPending && <CircleLoading />}
@@ -47,11 +47,11 @@ const Chat = () => {
           </>
         }
       </div>
-      {isShowInfor && <motion.div
-        className={`${commonStyle} flex flex-col basis-1/4 gap-y-2 relative text-primary items-center mt-2`}
+      {isShowInfor && <div
+        className={`${commonStyle} flex flex-col w-[300px] gap-y-2 relative text-primary items-center mt-2 flex-none`}
       >
-        <Settings />
-      </motion.div>}
+        <Settings friendId={receiverId} avatar={conversationInfor?.avatar} name={conversationInfor?.title} />
+      </div>}
     </>
   );
 };

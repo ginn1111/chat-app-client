@@ -17,8 +17,10 @@ import {
   validateEmpty,
 } from '../../utils/validate';
 import { Link } from 'react-router-dom';
+import CommingSoon from '../ui/error/CommingSoon';
+import withModal from '../../hoc/withModal';
 
-const Register = withToast(({ toast }) => {
+const Register = withToast(({ toast, modal, children }) => {
   const status = useSelector(getStatus);
   const dispatch = useDispatch();
 
@@ -71,8 +73,13 @@ const Register = withToast(({ toast }) => {
     );
   }
 
+  function changeMethodHandler() {
+    modal.openModal();
+  }
+
   return (
     <Animation animationCreator={slideInFromLeft}>
+      {children}
       <section className="pt-[50px] ml-[100px] h-full flex flex-col justify-center w-full">
         <div className="flex flex-col items-start">
           <Animation animationCreator={itemAnimate.bind(null, 0)}>
@@ -150,6 +157,8 @@ const Register = withToast(({ toast }) => {
                 bgColor="bg-gray-500"
                 textColor="text-white"
                 width="w-1/2"
+                onClick={changeMethodHandler}
+                type="button"
               />
               <MyButton
                 title="Create account"
@@ -165,4 +174,4 @@ const Register = withToast(({ toast }) => {
   );
 });
 
-export default Register;
+export default withModal(Register, CommingSoon);

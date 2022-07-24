@@ -17,13 +17,13 @@ const Toast = ({ type, message, onRemove, top }) => {
   const typeToast =
     type === 'error'
       ? {
-          bg: 'bg-red-500',
-          icon: <UilExclamationTriangle color="white" size="22" />,
-        }
+        bg: 'bg-red-500',
+        icon: <UilExclamationTriangle color="white" size="22" />,
+      }
       : {
-          bg: 'bg-green-500',
-          icon: <UilCheckCircle color="white" size="22" />,
-        };
+        bg: 'bg-green-500',
+        icon: <UilCheckCircle color="white" size="22" />,
+      };
   return (
     <motion.div
       initial={{
@@ -52,7 +52,7 @@ const Toast = ({ type, message, onRemove, top }) => {
         }}
         animate={{ width: '0%' }}
         transition={{ duration: 3, delay: 0.5 }}
-        className=" bg-blue-500"
+        className="bg-sky-500"
       ></motion.div>
     </motion.div>
   );
