@@ -11,17 +11,20 @@ import {
   UilComment,
   UilSignout,
 } from '@iconscout/react-unicons';
-import { socketDisconnect } from '../../../services/socketIO';
+import getSocketIO, { socketDisconnect } from '../../../services/socketIO';
 
 const AvatarSettings = ({ isShowMenu }) => {
-  const user = useSelector(getUser);
+  const { id: userId } = useSelector(getUser);
   const dispatch = useDispatch();
   const conversationList = useSelector(getConversationList);
-  const conversationIdList = useMemo(() => conversationList.map(con => con._id), [conversationList]);
+  const conversationIdList = useMemo(
+    () => conversationList.map((con) => con._id),
+    [conversationList],
+  );
 
   function logoutHandler() {
-    socketDisconnect(conversationIdList);
-    dispatch(logout(user?.id));
+    socketDisconnect({ conversationIdList, userId }, getSocketIO());
+    dispatch(logout(userId));
   }
 
   return (
@@ -51,9 +54,7 @@ const AvatarSettings = ({ isShowMenu }) => {
               url="/message"
             />
             <hr />
-            <div
-              onClick={logoutHandler}
-            >
+            <div onClick={logoutHandler}>
               <Item title="Logout" icon={<UilSignout />} />
             </div>
           </ul>

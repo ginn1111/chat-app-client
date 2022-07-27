@@ -1,19 +1,34 @@
 import React from 'react';
 import { UilPaperclip, UilMessage, UilSmile } from '@iconscout/react-unicons';
-import { useDispatch, useSelector } from 'react-redux'
-import { sendMessage } from '../../../store/message-slice'
-import useInput from '../../../hooks/useInput'
-import { validateEmpty } from '../../../utils/validate'
-import { sendMessage as sendMessageToSocket } from '../../../services/socketIO';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendMessage } from '../../../store/message-slice';
+import useInput from '../../../hooks/useInput';
+import { validateEmpty } from '../../../utils/validate';
+import getSocketIO, {
+  sendMessage as sendMessageToSocketIO,
+} from '../../../services/socketIO';
+import { getUser } from '../../../store/selectors';
 
-const Send = ({ conversationId, userId, receiverId }) => {
+const Send = ({ conversationId, receiverId }) => {
   const dispatch = useDispatch();
+  const { id: userId } = useSelector(getUser);
 
-  const { state: { value, isValid }, actions: { onChange, onBlur, reset } } = useInput(validateEmpty);
+  const {
+    state: { value, isValid },
+    actions: { onChange, onBlur, reset },
+  } = useInput(validateEmpty);
 
   function send() {
-    dispatch(sendMessage(conversationId, value))
-    sendMessageToSocket({ senderId: userId, text: value, receiverId, conversationId });
+    dispatch(sendMessage(conversationId, value));
+    sendMessageToSocketIO(
+      {
+        senderId: userId,
+        text: value,
+        receiverId,
+        conversationId,
+      },
+      getSocketIO(),
+    );
     reset();
   }
 
@@ -43,7 +58,10 @@ const Send = ({ conversationId, userId, receiverId }) => {
       <div className="flex gap-x-2 text-slate-400 text-[16px] items-center">
         <UilPaperclip className="cursor-pointer" />
         <UilSmile className="cursor-pointer" />
-        <div className="w-max h-max p-1 rounded-[8px] bg-blue-300 cursor-pointer" onClick={sendMessageHandler}>
+        <div
+          className="w-max h-max p-1 rounded-[8px] bg-blue-300 cursor-pointer"
+          onClick={sendMessageHandler}
+        >
           <UilMessage size="20" color="white" className="" />
         </div>
       </div>

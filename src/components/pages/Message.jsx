@@ -3,8 +3,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import ConversationList from '../message/friends/ConversationList';
 import PseudoChat from '../message/chat/PseudoChat';
 
-export const commonStyle =
-  ' rounded-xl px-2 py-1 h-full relative';
+export const commonStyle = ' rounded-xl px-2 py-1 h-full relative';
 
 const Message = () => {
   const { id: conversationId } = useParams();

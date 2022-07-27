@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const withModal = (WrappedComponent, ChildComponent) => {
   return (props) => {
-    const [isShow, setIsShow] = React.useState(false);
+    const [isShow, setIsShow] = useState(false);
 
-    const openModalHandler = React.useCallback(() => {
+    const openModalHandler = useCallback(() => {
       setIsShow(true);
     }, []);
 
-    const closeModalHandler = React.useCallback(() => {
+    const closeModalHandler = useCallback(() => {
       setIsShow(false);
     }, []);
 
-    const modal = React.useMemo(
+    const modal = useMemo(
       () => ({
         openModal: openModalHandler,
         closeModal: closeModalHandler,
@@ -23,7 +23,7 @@ const withModal = (WrappedComponent, ChildComponent) => {
     );
 
     return (
-      <WrappedComponent {...props} modal={modal}>
+      <>
         {ReactDOM.createPortal(
           <>
             {/* Backdrop */}
@@ -33,7 +33,7 @@ const withModal = (WrappedComponent, ChildComponent) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.2, backgroundColor: '#000000' }}
                   transition={{ duration: 0.5 }}
-                  className="fixed w-screen h-[calc(100vh_+_70px)] z-[99] mt-[-70px]"
+                  className="fixed w-screen h-screen z-[99] mt-[-70px]"
                   exit={{ opacity: 0 }}
                   onClick={closeModalHandler}
                 ></motion.div>
@@ -48,7 +48,7 @@ const withModal = (WrappedComponent, ChildComponent) => {
                   animate={{ y: '-40%' }}
                   exit={{ y: '-100vh' }}
                   transition={{ stiffness: 200, damping: 15, type: 'spring' }}
-                  className="fixed top-[50%] left-[50%]   w-[50%] lg:w-[30%] xl:w-[30%] z-[100]"
+                  className="fixed top-[50%] left-[50%] w-[50%] lg:w-[30%] xl:w-[30%] z-[100]"
                 >
                   <ChildComponent onClose={closeModalHandler} />
                 </motion.div>
@@ -57,7 +57,8 @@ const withModal = (WrappedComponent, ChildComponent) => {
           </>,
           document.getElementById('modal'),
         )}
-      </WrappedComponent>
+        <WrappedComponent {...props} modal={modal} />
+      </>
     );
   };
 };

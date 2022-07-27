@@ -19,45 +19,65 @@ export const convertImageToBase64 = (imgFile, loadHandler) => {
   reader.readAsDataURL(imgFile); // --> when onload finish, we receive base64 code string
 };
 
-const format2Digit = time => ('0' + time).slice(-2);
+const format2Digit = (time) => ('0' + time).slice(-2);
+
+const getDayAndMonth = (date) =>
+  `${format2Digit(date.getDate())}/${format2Digit(date.getMonth() + 1)}`;
 
 const getFullDate = (date) => {
-  const day = format2Digit(date.getDate());
-  const mon = format2Digit(date.getMonth() + 1);
   const year = date.getFullYear();
 
-  return `${day} ${mon} ${year}`;
-}
+  return `${getDayAndMonth(date)}/${year}`;
+};
 
-const getFullTime = date => {
+const getFullTime = (date) => {
   const splitDate = date.toLocaleTimeString().split(' ');
-  const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':')
+  const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':');
 
   return `${timeWithHourAndMinute} ${splitDate[1]}`;
-}
+};
+
+const timeObj = {
+  month: 2592000,
+  week: 648000,
+  day: 86400,
+  hour: 3600,
+  minute: 60,
+};
 
 export const formatTime = (time) => {
   const date = new Date(time);
-  const fmtTime = getFullTime(date);
+  const diffDay = (Date.now() - date.getTime()) / 1000;
+  return diffDay < timeObj.minute
+    ? 'just now'
+    : diffDay < timeObj.hour
+    ? getRemainTime(diffDay)(timeObj.minute) + 'm'
+    : diffDay < timeObj.day
+    ? getFullTime(date)
+    : diffDay < timeObj.month * 12
+    ? getDayAndMonth(date)
+    : getFullDate(date);
+};
 
-  return date.getTime() > Date.now() ? getFullDate(date) + ' ' + fmtTime : fmtTime;
-}
+const getRemainTime = (timestamp) => (num) => Math.round(timestamp / num);
 
-export const getOfflineTime = timestamp => {
+export const getOfflineTime = (timestamp) => {
   if (!timestamp) return;
-  const timeObj = {
-    month: 2592000,
-    week: 648000,
-    day: 86400,
-    hour: 3600,
-    minute: 60
-  }
   timestamp = (new Date().getTime() - timestamp) / 1000;
-  if (timestamp > (timeObj.month * 12)) return new Date(timestamp).toLocaleDateString({ day: 'numeric', month: 'numeric', year: 'numeric' });
-  return timestamp >= timeObj.month ? Math.round(timestamp / timeObj.month) + 'mon'
-    : timestamp >= timeObj.week ? Math.round(timestamp / timeObj.week) + 'w'
-      : timestamp >= timeObj.day ? Math.round(timestamp / timeObj.day) + 'd'
-        : timestamp >= timeObj.hour ? Math.round(timestamp / timeObj.hour) + 'h'
-          : timestamp >= timeObj.minute ? Math.round(timestamp / timeObj.minute) + 'm'
-            : 'just now';
-}
+
+  const iGetRemainTime = getRemainTime(timestamp);
+
+  return timestamp < timeObj.minute
+    ? 'just now'
+    : timestamp < timeObj.hour
+    ? iGetRemainTime(timeObj.minute) + 'm'
+    : timestamp < timeObj.day
+    ? iGetRemainTime(timeObj.hour) + 'h'
+    : timestamp < timeObj.week
+    ? iGetRemainTime(timeObj.day) + 'd'
+    : timestamp < timeObj.month
+    ? iGetRemainTime(timeObj.week) + 'w'
+    : timestamp < timeObj.month * 12
+    ? getDayAndMonth(new Date(timestamp * 1000))
+    : getFullDate(new Date(timestamp * 1000));
+};

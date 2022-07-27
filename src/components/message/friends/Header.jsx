@@ -26,7 +26,7 @@ const NewConversationPanel = ({ onClose }) => {
   );
 };
 
-const Header = ({ modal, children }) => {
+const Header = ({ modal }) => {
   return (
     <>
       <header className="flex justify-between items-center w-full py-1 text-slate-600">
@@ -42,7 +42,6 @@ const Header = ({ modal, children }) => {
           onClick={modal.openModal}
         />
       </header>
-      {children}
     </>
   );
 };
