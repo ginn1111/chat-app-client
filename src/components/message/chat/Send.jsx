@@ -8,6 +8,7 @@ import getSocketIO, {
   sendMessage as sendMessageToSocketIO,
 } from '../../../services/socketIO';
 import { getUser } from '../../../store/selectors';
+import { setLastMsg } from '../../../store/conversation-slice';
 
 const Send = ({ conversationId, receiverId }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,16 @@ const Send = ({ conversationId, receiverId }) => {
 
   function send() {
     dispatch(sendMessage(conversationId, value));
+    dispatch(
+      setLastMsg({
+        conversationId,
+        lastMsg: {
+          text: value,
+          senderId: userId,
+          createdAt: new Date().toISOString(),
+        },
+      }),
+    );
     sendMessageToSocketIO(
       {
         senderId: userId,

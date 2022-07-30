@@ -6,10 +6,15 @@ import { formatTime } from '../../../utils/helper';
 import getSocketIO, {
   getMessage,
   removeGetMessage,
+  updateStateConversation as updateStateConversationToSocket,
 } from '../../../services/socketIO';
 import { addMessage } from '../../../store/message-slice';
+import {
+  setLastMsg,
+  updateStateConversation,
+} from '../../../store/conversation-slice';
 
-const Messages = ({ conversationAvatar }) => {
+const Messages = ({ conversationAvatar, visitedConversationId }) => {
   const { id: userId, avatar: userAvatar } = useSelector(getUser);
   const messages = useSelector(getMessageList);
   const dispatch = useDispatch();
@@ -20,15 +25,27 @@ const Messages = ({ conversationAvatar }) => {
     const socket = getSocketIO();
     if (socket?.connected) {
       const getMessageHandler = ({ senderId, text, conversationId }) => {
+        const date = new Date();
         dispatch(
-          addMessage({
-            _id: new Date().getTime(),
-            senderId,
-            text,
+          setLastMsg({
             conversationId,
-            createdAt: new Date().toISOString(),
+            lastMsg: { senderId, text, createdAt: date.toISOString() },
           }),
         );
+        if (conversationId === visitedConversationId) {
+          dispatch(
+            addMessage({
+              _id: date.getTime(),
+              senderId,
+              text,
+              conversationId,
+              createdAt: date.toISOString(),
+            }),
+            // call socket this conversation was seen
+            updateStateConversationToSocket(true, socket),
+          );
+        } else
+          dispatch(updateStateConversation({ conversationId, isSeen: false }));
       };
       getMessage(getMessageHandler, socket);
       return () => removeGetMessage(socket, getMessageHandler);

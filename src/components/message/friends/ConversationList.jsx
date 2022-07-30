@@ -3,23 +3,19 @@ import Search from '../../ui/search/Search';
 import ConversationItem from './ConversationItem';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getConversationList,
-  getLastedMessage,
-  getUser,
-} from '../../../store/selectors';
+import { getConversationList, getUser } from '../../../store/selectors';
 import { getConversation } from '../../../store/conversation-slice';
 import getSocketIO, {
-  callUserOnline,
-  getUserOnline,
+  initConversations,
+  getInitConversations,
   removeGetUserOnline,
-  removeCallUserOnline,
+  getUserOnline,
+  removeInitConversations,
 } from '../../../services/socketIO';
 
 const ConversationList = ({ conversationId }) => {
   const dispatch = useDispatch();
   const { id: userId } = useSelector(getUser);
-  const lastedMsg = useSelector(getLastedMessage);
   const conversationList = useSelector(getConversationList);
   const [usersOnline, setUsersOnline] = useState({});
 
@@ -43,12 +39,19 @@ const ConversationList = ({ conversationId }) => {
 
   useEffect(() => {
     const socket = getSocketIO();
-    callUserOnline(socket);
+
+    initConversations(userId, socket);
+    getInitConversations(({ usersOnline, stateConversationList }) => {
+      setUsersOnline(usersOnline);
+      // calc once when user visited page
+      console.log({ stateConversationList });
+    }, socket);
+
     getUserOnline(setUsersOnline, socket);
 
     return () => {
+      removeInitConversations(socket);
       removeGetUserOnline(socket);
-      removeCallUserOnline(socket);
     };
   }, [getSocketIO()]);
 
@@ -78,7 +81,7 @@ const ConversationList = ({ conversationId }) => {
               }
               conversationId={conversation._id}
               isChoosing={conversationId === conversation._id}
-              lastedMsg={lastedMsg}
+              lastMsg={conversation.lastMsg}
             />
           );
         })}

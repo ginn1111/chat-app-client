@@ -17,10 +17,10 @@ import {
   validateEmpty,
 } from '../../utils/validate';
 import { Link } from 'react-router-dom';
-import CommingSoon from '../ui/error/CommingSoon';
+import ComingSoon from '../ui/error/ComingSoon';
 import withModal from '../../hoc/withModal';
 
-const Register = withToast(({ toast, modal, children }) => {
+const Register = withToast(({ toast, modal }) => {
   const status = useSelector(getStatus);
   const dispatch = useDispatch();
 
@@ -79,7 +79,6 @@ const Register = withToast(({ toast, modal, children }) => {
 
   return (
     <Animation animationCreator={slideInFromLeft}>
-      {children}
       <section className="pt-[50px] ml-[100px] h-full flex flex-col justify-center w-full">
         <div className="flex flex-col items-start">
           <Animation animationCreator={itemAnimate.bind(null, 0)}>
@@ -174,4 +173,4 @@ const Register = withToast(({ toast, modal, children }) => {
   );
 });
 
-export default withModal(Register, CommingSoon);
+export default withModal(Register, ComingSoon);

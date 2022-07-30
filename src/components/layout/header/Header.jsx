@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
 import AvatarSettings from './AvatarSettings';
@@ -10,6 +10,7 @@ import Search from '../../ui/search/Search';
 import { getNotifications, getUser } from '../../../store/selectors';
 import { useSelector } from 'react-redux';
 import useSearch from '../../../hooks/useSearch';
+import NotifyBubble from '../../ui/notification/NotifyBubble';
 
 const Header = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -63,21 +64,7 @@ const Header = () => {
       <div className="w-1/4 mr-auto flex text-[14px] items-center gap-x-5 relative justify-end">
         {/* Notify section */}
         <div className="relative cursor-pointer" id="notification-container">
-          <AnimatePresence>
-            {isNotify && (
-              <motion.span
-                initial={{ scale: 1 }}
-                animate={{ scale: [1.5, 1] }}
-                transition={{ duration: 0.3 }}
-                exit={{ scale: 0 }}
-                className="flex h-1.5 w-1.5 absolute right-[0px] top-[10px] z-[1000000]"
-              >
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
-              </motion.span>
-            )}
-          </AnimatePresence>
-
+         // <NotifyBubble top="top-[10px]" right="right-[0px]" isNotify={isNotify} color="bg-red-500" />
           <motion.div
             className="cursor-pointer"
             initial={{
