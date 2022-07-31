@@ -8,7 +8,7 @@ const NotifyBubble = ({ color, top, right, isNotify }) => {
           animate={{ scale: [1.5, 1] }}
           transition={{ duration: 0.3 }}
           exit={{ scale: 0 }}
-          className={`w-1.5 h-1.5 absolute flex ${top ?? 'top-[5px]'} ${top ??
+          className={`w-1.5 h-1.5 absolute flex ${top ?? 'top-[5px]'} ${right ??
             'right-[7px]'} z-[100]`}
         >
           <span

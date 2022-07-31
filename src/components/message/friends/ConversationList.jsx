@@ -4,23 +4,30 @@ import ConversationItem from './ConversationItem';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversationList, getUser } from '../../../store/selectors';
-import { getConversation } from '../../../store/conversation-slice';
+import {
+  getConversation,
+  updateStateConversation,
+} from '../../../store/conversation-slice';
 import getSocketIO, {
   initConversations,
-  getInitConversations,
   removeGetUserOnline,
   getUserOnline,
-  removeInitConversations,
+  getStateConversations,
+  removeGetStateConversations,
+  updateStateConversation as updateStateConversationToSocket
 } from '../../../services/socketIO';
 
 const ConversationList = ({ conversationId }) => {
   const dispatch = useDispatch();
-  const { id: userId } = useSelector(getUser);
   const conversationList = useSelector(getConversationList);
+  const { id: userId } = useSelector(getUser);
+
   const [usersOnline, setUsersOnline] = useState({});
+  const [stateConversations, setStateConversations] = useState({});
 
   const conversationListWithOnline = useMemo(() => {
     const usersIdOnline = Object.keys(usersOnline);
+    const stateConversationsId = Object.keys(stateConversations);
     return conversationList.map((con) => {
       const memberId = con.members.find(
         ({ memberId }) =>
@@ -29,31 +36,42 @@ const ConversationList = ({ conversationId }) => {
       return {
         ...con,
         fromOnline: memberId ? usersOnline[memberId] : con.fromOnline,
+        isUnSeen: con?.isUnSeen ?? (stateConversationsId.includes(con._id)
+          ? !stateConversations[con._id]
+          : false),
       };
     });
-  }, [usersOnline, conversationList]);
+  }, [usersOnline, conversationList, stateConversations]);
 
   useEffect(() => {
     dispatch(getConversation({}));
   }, []);
 
   useEffect(() => {
+    dispatch(updateStateConversation({ conversationId, isUnSeen: false }));
+  }, [conversationId]);
+
+  useEffect(() => {
+    const socket = getSocketIO();
+    socket &&
+      updateStateConversationToSocket({ conversationId, isSeen: true }, socket)
+  }, [getSocketIO(), conversationId])
+
+  useEffect(() => {
     const socket = getSocketIO();
 
     initConversations(userId, socket);
-    getInitConversations(({ usersOnline, stateConversationList }) => {
-      setUsersOnline(usersOnline);
-      // calc once when user visited page
-      console.log({ stateConversationList });
-    }, socket);
-
+    getStateConversations(setStateConversations, socket);
     getUserOnline(setUsersOnline, socket);
 
     return () => {
-      removeInitConversations(socket);
-      removeGetUserOnline(socket);
+      removeGetStateConversations(setStateConversations, socket);
+      removeGetUserOnline(setUsersOnline, socket);
     };
   }, [getSocketIO()]);
+
+  console.log({ conversationList })
+  console.log({ conversationListWithOnline })
 
   return (
     <>
@@ -80,8 +98,8 @@ const ConversationList = ({ conversationId }) => {
                 conversation?.isOnline ? null : conversation?.fromOnline
               }
               conversationId={conversation._id}
-              isChoosing={conversationId === conversation._id}
-              lastMsg={conversation.lastMsg}
+              lastMsg={conversation?.lastMsg}
+              isUnSeen={conversation?.isUnSeen}
             />
           );
         })}

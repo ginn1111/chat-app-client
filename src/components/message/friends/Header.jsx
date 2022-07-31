@@ -15,6 +15,7 @@ const NewConversationPanel = ({ onClose }) => {
       <div className="w-full mt-5 gap-x-2 flex">
         <MyButton title="Ok" bgColor="bg-slate-200" width="w-[50%]" />
         <MyButton
+          type="button"
           title="Cancel"
           bgColor="bg-slate-800"
           textColor="text-slate-200"

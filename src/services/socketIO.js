@@ -1,4 +1,6 @@
 import io from 'socket.io-client';
+import store from '../store';
+import { setStateConversations } from '../store/conversation-slice';
 
 const GET_MESSAGE = 'GET_MESSAGE';
 const SEND_MESSAGE = 'SEND_MESSAGE';
@@ -6,6 +8,9 @@ const ADD_USER = 'ADD_USER';
 const GET_USER_ONLINE = 'GET_USER_ONLINE';
 const CALL_USER_ONLINE = 'CALL_USER_ONLINE';
 const UPDATE_CONVERSATION = 'UPDATE_CONVERSATION';
+const INIT_CONVERSATION = 'INIT_CONVERSATIONS';
+const GET_STATE_CONVERSATIONS = 'GET_STATE_CONVERSATIONS';
+const UPDATE_STATE_CONVERSATION = 'UPDATE_STATE_CONVERSATION';
 
 const getSocketIO = (() => {
   let socket = null;
@@ -17,6 +22,21 @@ const getSocketIO = (() => {
     }
     socket?.on('connect', () => {
       console.log('connect successfully');
+
+      // get conversation for join room
+      const conversationGroupList = store
+        .getState()
+        .conversation.conversations.filter((con) => con.isGroup);
+      console.log({ conversationGroupList });
+      console.log('join room here');
+
+      // get conversation seen/unseen
+      socket?.on('STATE_CONVERSATIONS', (stateConversations) =>
+        // calc to conversation in store
+        store.dispatch(setStateConversations(stateConversations)),
+      );
+
+      socket?.on('WELCOME', console.log);
     });
 
     socket?.on('connect_error', (error) => {
@@ -29,32 +49,55 @@ const getSocketIO = (() => {
 
 export const connectHandler = (callback, socket) =>
   socket?.on('connect', callback);
+
 export const connectErrorHandler = (callback, socket) =>
   socket?.on('connect_error', callback);
+
 export const getMessage = (callback, socket) => {
-  socket?.once(GET_MESSAGE, callback);
+  console.log('get message');
+  socket?.on(GET_MESSAGE, callback);
 };
+
+export const initConversations = (userId, socket) =>
+  socket?.emit(INIT_CONVERSATION, userId);
+
+export const getInitConversations = (callback, socket) =>
+  socket?.on(INIT_CONVERSATION, callback);
+
 export const getUserOnline = (callback, socket) =>
   socket?.on(GET_USER_ONLINE, callback);
 export const callUserOnline = (socket) => socket?.emit(CALL_USER_ONLINE);
 
 export const addUser = (userId, socket) => socket?.emit(ADD_USER, userId);
-export const sendMessage = (payload, socket) => {
-  console.log('send message');
-  socket?.emit(SEND_MESSAGE, payload);
-};
 
-export const removeGetMessage = (socket, callback) => {
-  console.log('remove get message', socket);
+export const sendMessage = (payload, socket) =>
+  socket?.emit(SEND_MESSAGE, payload);
+
+export const getStateConversations = (callback, socket) =>
+  socket?.on(GET_STATE_CONVERSATIONS, callback);
+
+export const removeGetMessage = (socket, callback) =>
   socket?.off(GET_MESSAGE, callback);
-};
-export const removeGetUserOnline = (socket) => socket?.off(GET_USER_ONLINE);
-export const removeCallUserOnline = (socket) => socket?.off(CALL_USER_ONLINE);
+
+export const removeGetUserOnline = (callback, socket) =>
+  socket?.off(GET_USER_ONLINE, callback);
+
+export const removeCallUserOnline = (callback, socket) =>
+  socket?.off(CALL_USER_ONLINE, callback);
+
+export const removeInitConversations = (callback, socket) =>
+  socket?.off(INIT_CONVERSATION, callback);
+
+export const updateStateConversation = (payload, socket) =>
+  socket?.emit(UPDATE_STATE_CONVERSATION, payload);
 
 export const socketDisconnect = (payload, socket) => {
   console.log('disconnect handler', payload);
   socket?.emit(UPDATE_CONVERSATION, payload);
   socket?.disconnect();
 };
+
+export const removeGetStateConversations = (callback, socket) =>
+  socket?.off(GET_STATE_CONVERSATIONS, callback);
 
 export default getSocketIO;
