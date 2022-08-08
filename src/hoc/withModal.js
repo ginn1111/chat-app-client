@@ -1,63 +1,24 @@
-import React, { useState, useCallback, useMemo } from 'react';
 import ReactDOM from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import Backdrop from '../components/ui/modal/Backdrop';
+import Modal from '../components/ui/modal/Modal';
+import useModal from '../hooks/useModal';
 
 const withModal = (WrappedComponent, ChildComponent) => {
   return (props) => {
-    const [isShow, setIsShow] = useState(false);
-
-    const openModalHandler = useCallback(() => {
-      setIsShow(true);
-    }, []);
-
-    const closeModalHandler = useCallback(() => {
-      setIsShow(false);
-    }, []);
-
-    const modal = useMemo(
-      () => ({
-        openModal: openModalHandler,
-        closeModal: closeModalHandler,
-      }),
-      [openModalHandler, closeModalHandler],
-    );
+    const {isShow, onClose, onOpen} = useModal()
 
     return (
       <>
         {ReactDOM.createPortal(
           <>
-            {/* Backdrop */}
-            <AnimatePresence>
-              {isShow && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.2, backgroundColor: '#000000' }}
-                  transition={{ duration: 0.5 }}
-                  className="fixed w-screen h-[calc(100vh_+_70px)] z-[99] mt-[-70px]"
-                  exit={{ opacity: 0 }}
-                  onClick={closeModalHandler}
-                ></motion.div>
-              )}
-            </AnimatePresence>
-            {/* Modal */}
-            <AnimatePresence>
-              {isShow && (
-                <motion.div
-                  initial={{ y: '-100vh', x: '-50%' }}
-                  whileInView={{ y: '-50%', x: '-50%' }}
-                  animate={{ y: '-40%' }}
-                  exit={{ y: '-100vh' }}
-                  transition={{ stiffness: 200, damping: 15, type: 'spring' }}
-                  className="fixed top-[50%] left-[50%] w-[50%] lg:w-[30%] xl:w-[30%] z-[100]"
-                >
-                  <ChildComponent onClose={closeModalHandler} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Backdrop isShow={isShow} onClose={onClose} />
+            <Modal isShow={isShow}>
+              <ChildComponent onClose={onClose} />
+            </Modal>
           </>,
           document.getElementById('modal'),
         )}
-        <WrappedComponent {...props} modal={modal} />
+        <WrappedComponent {...props} modal={{close: onClose, open: onOpen}} />
       </>
     );
   };

@@ -1,15 +1,20 @@
 import React from 'react';
-import Avatar from '../../../assets/img/avatar2.jpeg';
 import MemberItem from './MemberItem';
 
-const MemberList = () => {
+const MemberList = ({ memberList }) => {
   return (
     <>
-      <span className=" text-[18px] text-end w-full block px-5">Members</span>
       <ul className="flex flex-col gap-y-0.5 w-full h-max overflow-auto pr-2">
-        <MemberItem avatar={Avatar} name="Shin" linkProfile="/abc" />
-        <MemberItem avatar={Avatar} name="Ned" linkProfile="/abc" />
-        <MemberItem avatar={Avatar} name="Gin" linkProfile="/abc" />
+        {memberList?.map((member) => {
+          return (
+            <MemberItem
+              key={member.memberId}
+              avatar={member.avatar}
+              name={member.nickname}
+              linkProfile={`/wall/${member.memberId}`}
+            />
+          );
+        })}
       </ul>
     </>
   );

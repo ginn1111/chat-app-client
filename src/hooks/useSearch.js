@@ -1,10 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+const useSearch = (callback) => {
+  const searchHandler = (() => {
+    let id = null;
+    return (e) => {
+      id && clearTimeout(id);
+      id = setTimeout(() => {
+        callback(e.target.value.trim());
+      }, 500);
+    };
+  })();
 
-const useSearch = () => {
-  const navigate = useNavigate();
-  function searchHandler(e) {
-    navigate('/search', { state: e.target.value });
-  }
+
   return searchHandler;
 };
 

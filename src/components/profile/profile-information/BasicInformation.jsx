@@ -110,7 +110,7 @@ const BasicInformation = ({ isUpdate }, ref) => {
       <TextAreaInformation
         ref={addressRef}
         readOnly={!isUpdate}
-        rows={3}
+        rows={2}
         title="Address"
         icon={<UilSignRight className={colorIcon} />}
       />

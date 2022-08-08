@@ -4,14 +4,15 @@ import { showLoading, hideLoading } from './ui-slice';
 
 const INIT_STATE = {
   conversations: [
-    {
-      _id: '',
-      theme: '',
-      members: [{ memberId: '', avatar: '', nickName: '' }],
-    },
+    // {
+    //   _id: '',
+    //   theme: '',
+    //   members: [{ memberId: '', avatar: '', nickName: '' }],
+    // },
   ],
   status: 'idle',
   message: null,
+  isGroup: false,
 };
 
 const conversationSlice = createSlice({
@@ -53,8 +54,7 @@ const conversationSlice = createSlice({
       const updatedConversation = state.conversations.find(
         (con) => con._id === action.payload.conversationId,
       );
-      if (updatedConversation)
-        updatedConversation.isUnSeen = action.payload.isUnSeen;
+      updatedConversation && (updatedConversation.isUnSeen = action.payload.isUnSeen);
     },
     setStateConversations(state, action) {
       const stateConversations = action.payload;
@@ -67,11 +67,14 @@ const conversationSlice = createSlice({
           : false,
       }));
     },
+    setIsGroup(state, action) {
+      state.isGroup = action.payload;
+    },
   },
 });
 
 export const createConversation =
-  ({ members, isGroup }) =>
+  ({ members, isGroup, title }) =>
     async (dispatch, getState) => {
       dispatch(showLoading());
       const {
@@ -82,8 +85,10 @@ export const createConversation =
           userId,
           members,
           isGroup,
+          title,
         );
-        dispatch(addConversation(data));
+        getState().conversation.isGroup === isGroup &&
+          dispatch(addConversation(data));
         dispatch(setStatus('create-conversation/success'));
       } catch (error) {
         console.dir('createConversation error', error);
@@ -98,13 +103,16 @@ export const getConversation =
     async (dispatch, getState) => {
       const { userInformation: userState } = getState().authentication;
       dispatch(showLoading());
+      dispatch(setStatus('conversation-get/pending'));
       try {
         const { data } = await conversationService.getConversation(
           userState.id ?? userId,
           isGroup,
         );
         dispatch(setConversation(data));
+        dispatch(setStatus('conversation-get/success'));
       } catch (error) {
+        dispatch(setStatus('conversation-get/failed'));
         console.log('getConversation error', error);
       } finally {
         dispatch(hideLoading());
@@ -151,6 +159,7 @@ export const {
   setConversation,
   setLastMsg,
   updateStateConversation,
-  setStateConversations
+  setStateConversations,
+  setIsGroup,
 } = conversationSlice.actions;
 export default conversationSlice.reducer;

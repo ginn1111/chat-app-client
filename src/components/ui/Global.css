@@ -24,6 +24,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   overflow-x: hidden;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
 }
 
 code {
@@ -38,7 +42,12 @@ code {
   top: 0;
   width: 100%;
 }
-
+#root {
+  /* width: 100%; */
+}
+#modal {
+  /* height: 100vh; */
+}
 .ellipsis {
   overflow: hidden;
   display: -webkit-box;

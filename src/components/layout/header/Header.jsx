@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
 import AvatarSettings from './AvatarSettings';
@@ -16,7 +17,14 @@ const Header = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowNotification, setIsShowNotification] = useState(false);
   const notifications = useSelector(getNotifications);
-  const searchHandler = useSearch();
+  const navigate = useNavigate();
+
+  const searchHandler = useSearch((value) =>
+    navigate('/search', { state: value }),
+  );
+
+  const focusHandler = () => navigate('/search');
+
   const { avatar } = useSelector(getUser);
 
   const isNotify = useMemo(
@@ -28,9 +36,7 @@ const Header = () => {
     function handlerEvent(event) {
       const avatarMenuContainer = document.getElementById('avatar-container');
       const notificationPanel = document.getElementById('notification-panel');
-      const notificationContainer = document.getElementById(
-        'notification-container',
-      );
+      const notificationContainer = document.getElementById( 'notification-container');
 
       avatarMenuContainer.contains(event.target)
         ? setIsShowMenu((prev) => !prev)
@@ -56,6 +62,7 @@ const Header = () => {
       </div>
       <div className="w-1/3 text-gray-200">
         <Search
+          onFocus={focusHandler}
           onSearch={searchHandler}
           bgColor="bg-gray-200"
           placeholder="Search friend..."

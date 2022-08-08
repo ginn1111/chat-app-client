@@ -74,7 +74,7 @@ const Register = withToast(({ toast, modal }) => {
   }
 
   function changeMethodHandler() {
-    modal.openModal();
+    modal.open();
   }
 
   return (

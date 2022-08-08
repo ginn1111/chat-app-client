@@ -42,4 +42,11 @@ export const opacityAnimate = {
   animate: { opacity: 1 },
   transition: { duration: 0.3 },
   exit: { opacity: 0 },
+};
+
+export const scaleAnimate = {
+  initial: { scale: 0, opacity: 0 },
+  exit: { scale: 0, opacity: 0 },
+  animate: { scale: 1, opacity: 1 },
+  transition: { dusation: 0.3 }
 }

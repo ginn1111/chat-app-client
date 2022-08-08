@@ -7,7 +7,7 @@ const MemberItem = ({ avatar, name, linkProfile }) => {
     <li className="flex justify-between items-center w-full px-2 py-1 bg-white rounded-md item-hovered">
       <div className="flex items-center gap-x-2">
         <img
-          className="w-6 h-6 rounded-full"
+          className="w-6 object-cover object-center h-6 rounded-full"
           src={avatar}
           alt="avatar-information-member"
         />

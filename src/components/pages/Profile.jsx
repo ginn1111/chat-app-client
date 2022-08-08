@@ -27,7 +27,7 @@ const Profile = withToast(({ toast }) => {
   }, [status, toast, dispatch]);
 
   return (
-    <div className="format-page-size flex py-5 gap-x-2">
+    <div className="format-page-size flex py-2 gap-x-2">
       <ProfileAvatar />
       <ProfileInformation />
     </div>

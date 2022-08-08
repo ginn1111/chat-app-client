@@ -1,8 +1,11 @@
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-const Search = ({ placeholder, bgColor, onSearch }) => {
+const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
   function changeHandler(e) {
     onSearch(e);
+  }
+  function focusHandler() {
+    onFocus?.();
   }
 
   return (
@@ -11,6 +14,7 @@ const Search = ({ placeholder, bgColor, onSearch }) => {
     >
       <SearchOutlinedIcon sx={{ fontSize: 20, color: 'gray' }} />
       <input
+        onFocus={focusHandler}
         onChange={changeHandler}
         placeholder={placeholder}
         onClick={(e) => e.stopPropagation()}

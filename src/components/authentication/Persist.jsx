@@ -6,25 +6,25 @@ import { getLocal } from '../../services/localServices';
 import { resetStatus, persistLogin } from '../../store/authen-slice';
 import { getToken, getStatus } from '../../store/selectors';
 import CircleLoading from '../ui/loading/CircleLoading';
-import { opacityAnimate } from '../../animation/models'
+import { opacityAnimate } from '../../animation/models';
 
 const Persist = () => {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
-  const status = useSelector(getStatus)
+  const status = useSelector(getStatus);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const userId = getLocal('userId')
+    const userId = getLocal('userId');
     !token && userId ? dispatch(persistLogin(userId)) : setIsLoading(false);
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (status === 'persist-login/finish') {
-      setIsLoading(false)
-      dispatch(resetStatus())
+      setIsLoading(false);
+      dispatch(resetStatus());
     }
-  }, [status])
+  }, [status]);
 
   return (
     <>

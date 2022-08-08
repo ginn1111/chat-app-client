@@ -20,8 +20,11 @@ export const getSearchUsers = (state) => state.search.users;
 
 export const hasLoadingLogin = (state) => state.ui.isLoadingLogin;
 
-export const getConversationList = state => state.conversation.conversations;
+export const getConversationList = (state) => state.conversation.conversations;
+export const isGroup = (state) => state.conversation.isGroup;
+export const getConversationsStatus = (state) => state.conversation.status;
 
-export const getMessageList = state => state.message.messages;
-export const getStatusMessage = state => state.message.status;
-export const getLastedMessage = state => state.message.messages[state.message.messages.length - 1];
+export const getMessageList = (state) => state.message.messages;
+export const getStatusMessage = (state) => state.message.status;
+export const getLastedMessage = (state) =>
+  state.message.messages[state.message.messages.length - 1];

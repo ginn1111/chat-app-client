@@ -17,7 +17,10 @@ const SkeletonSearch = () => {
                 <Skeleton variant="text" height="15px" width="50%" />
               </div>
               <div>
-                <Skeleton variant="text" height="15px" width="100%" />
+                <Skeleton 
+                  variant="text" 
+                  height="15px" width="100%" 
+                 />
                 <Skeleton variant="text" height="15px" width="100%" />
               </div>
             </div>
@@ -35,11 +38,7 @@ const Search = () => {
   const isLoading = useSelector(hasLoading);
 
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      name?.trim().length !== 0 && dispatch(search(name));
-    }, 500);
-
-    return () => clearTimeout(timerId);
+    name && name?.trim() !== '' && dispatch(search(name));
   }, [name, dispatch]);
 
   return (

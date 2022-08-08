@@ -4,30 +4,53 @@ import { UilEyeSlash } from '@iconscout/react-unicons';
 import useInput from '../../../hooks/useInput';
 import ErrorMessage from '../../ui/error/ErrorMessage';
 
-export const InputInformation = ({ icon, type, title, width, placeholder }) => {
+export const InputInformation = forwardRef(({ icon, type, title, width, placeholder, validateFn, errorText }, ref) => {
+
+  const {
+    state: { value, isValid, isInValid },
+    actions: { onChange, onBlur, reset, setValue },
+  } = useInput(validateFn);
+
+  useImperativeHandle(ref, () => ({
+    value,
+    isValid,
+    isInValid,
+    reset,
+    blur: onBlur,
+    setValue,
+  }));
+
   const id = useId();
   return (
-    <div
-      className={`w-${
-        width ?? 'full'
-      } rounded-md bg-transparent px-2 py-1 border border-slate-300`}
-    >
-      <div className="flex flex-col w-full">
-        <label className="text-[12px]  opacity-50" htmlFor={id}>
-          {title}
-        </label>
-        <input
-          required
-          placeholder={placeholder}
-          className="text-[16px] text-slate-600 outline-none border-none bg-transparent w-full font-[500] placeholder:font-normal placeholder:text-[14px] placeholder:pl-2"
-          id={id}
-          type={type ?? 'text'}
-        />
+    <>
+      <div
+        className={`w-${width ?? 'full'
+          } rounded-md bg-transparent px-2 py-1 border border-slate-300`}
+      >
+        <div className="flex flex-col w-full">
+          <label className="text-[12px]  opacity-50" htmlFor={id}>
+            {title}
+          </label>
+          <input
+            onChange={onChange}
+            onBlur={onBlur}
+            value={value}
+            required
+            placeholder={placeholder}
+            className="text-[16px] text-slate-600 outline-none border-none bg-transparent w-full font-[500] placeholder:font-normal placeholder:text-[14px] placeholder:pl-2"
+            id={id}
+            type={type ?? 'text'}
+          />
+        </div>
+        <div className="opacity-50">{icon}</div>
       </div>
-      <div className="opacity-50">{icon}</div>
-    </div>
+      <ErrorMessage
+        message={errorText ?? 'Input is invalid!'}
+        isShow={isInValid}
+      />
+    </>
   );
-};
+});
 
 const MyInput = forwardRef((props, ref) => {
   const {
@@ -80,9 +103,8 @@ const MyInput = forwardRef((props, ref) => {
         </div>
         <div
           onClick={togglePasswordHandler}
-          className={`opacity-50 ${
-            props.type === 'password' ? 'cursor-pointer' : ''
-          }`}
+          className={`opacity-50 ${props.type === 'password' ? 'cursor-pointer' : ''
+            }`}
         >
           {!isPassword && (
             <motion.div {...passwordAnimate}>{props.icon}</motion.div>
@@ -105,9 +127,8 @@ const MyInput = forwardRef((props, ref) => {
 export const InputRadio = ({ list, width, title }) => {
   return (
     <div
-      className={`w-${
-        width ?? 'full'
-      } rounded-md bg-transparent px-2 py-1 border border-slate-300 gap-y-2 flex flex-col`}
+      className={`w-${width ?? 'full'
+        } rounded-md bg-transparent px-2 py-1 border border-slate-300 gap-y-2 flex flex-col`}
     >
       <span className="text-[14px] text-slate-400">{title}</span>
       {list.map((item) => (
@@ -138,9 +159,8 @@ export const InputArea = ({ width, rows, title, placeholder }) => {
   const id = useId();
   return (
     <div
-      className={`w-${
-        width ?? 'full'
-      } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
+      className={`w-${width ?? 'full'
+        } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
     >
       <label className="text-[12px]  opacity-50 basis-1/3" htmlFor={id}>
         {title}

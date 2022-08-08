@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
-import { getToken, hasLoading } from '../../store/selectors';
+import { Outlet } from 'react-router-dom';
+import { hasLoading } from '../../store/selectors';
 import ProcessBar from '../ui/loading/ProcessBar';
 
 const Authentication = () => {
-  const token = useSelector(getToken);
   const isLoading = useSelector(hasLoading);
   return (
     <>

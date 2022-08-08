@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo, memo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getUser } from '../../../store/selectors';
 import { getOfflineTime } from '../../../utils/helper';
 import { useSelector } from 'react-redux';
 import NotifyBubble from '../../ui/notification/NotifyBubble';
+import GroupAvatar from '../GroupAvatar';
 
 const ConversationItem = ({
   avatar,
@@ -12,10 +13,21 @@ const ConversationItem = ({
   conversationId,
   lastMsg,
   isUnSeen,
+  isGroup,
+  members,
 }) => {
   const { id: userId } = useSelector(getUser);
   const { id: visitedConversationId } = useParams();
-  const isChoosing = visitedConversationId === conversationId;
+  const isChoosing = useMemo(
+    () => visitedConversationId === conversationId,
+    [conversationId, visitedConversationId],
+  );
+
+  const twoEarlyAvatarMember = useMemo(
+    () => isGroup && members.slice(0, 2).map((m) => m.avatar),
+    [members, isGroup],
+  );
+
   return (
     <li
       className={`h-max w-full bg-white px-3 py-2 rounded-md item-hovered text-slate-600 ${isChoosing ? 'bg-slate-200' : ''
@@ -27,11 +39,18 @@ const ConversationItem = ({
           <div
             className={`relative  online ${!fromOnline ? '' : 'off'} flex-none`}
           >
-            <img
-              className="h-8 w-8 object-center object-cover rounded-full border-2 border-white border-solid"
-              src={avatar}
-              alt="avatar-chat"
-            />
+            {isGroup ? (
+              <GroupAvatar
+                img1={twoEarlyAvatarMember[0]}
+                img2={twoEarlyAvatarMember[1]}
+              />
+            ) : (
+              <img
+                className="h-8 w-8 object-center object-cover rounded-full border-2 border-white border-solid"
+                src={avatar}
+                alt="avatar-chat"
+              />
+            )}
           </div>
           <div className="flex flex-col overflow-hidden justify-center">
             <span className="text-[15px] font-[500]">{name}</span>
@@ -58,4 +77,4 @@ const ConversationItem = ({
   );
 };
 
-export default ConversationItem;
+export default memo(ConversationItem);

@@ -24,19 +24,19 @@ const getSocketIO = (() => {
       console.log('connect successfully');
 
       // get conversation for join room
-      const conversationGroupList = store
-        .getState()
-        .conversation.conversations.filter((con) => con.isGroup);
-      console.log({ conversationGroupList });
-      console.log('join room here');
+      // const conversationGroupList = store
+      //   .getState()
+      //   .conversation.conversations.filter((con) => con.isGroup);
+      // console.log({ conversationGroupList });
+      // console.log('join room here');
 
       // get conversation seen/unseen
-      socket?.on('STATE_CONVERSATIONS', (stateConversations) =>
-        // calc to conversation in store
-        store.dispatch(setStateConversations(stateConversations)),
-      );
+      // socket?.on('STATE_CONVERSATIONS', (stateConversations) =>
+      //   // calc to conversation in store
+      //   store.dispatch(setStateConversations(stateConversations)),
+      // );
 
-      socket?.on('WELCOME', console.log);
+      // socket?.on('WELCOME', console.log);
     });
 
     socket?.on('connect_error', (error) => {
@@ -53,10 +53,8 @@ export const connectHandler = (callback, socket) =>
 export const connectErrorHandler = (callback, socket) =>
   socket?.on('connect_error', callback);
 
-export const getMessage = (callback, socket) => {
-  console.log('get message');
+export const getMessage = (callback, socket) =>
   socket?.on(GET_MESSAGE, callback);
-};
 
 export const initConversations = (userId, socket) =>
   socket?.emit(INIT_CONVERSATION, userId);
@@ -76,7 +74,7 @@ export const sendMessage = (payload, socket) =>
 export const getStateConversations = (callback, socket) =>
   socket?.on(GET_STATE_CONVERSATIONS, callback);
 
-export const removeGetMessage = (socket, callback) =>
+export const removeGetMessage = (callback, socket) =>
   socket?.off(GET_MESSAGE, callback);
 
 export const removeGetUserOnline = (callback, socket) =>

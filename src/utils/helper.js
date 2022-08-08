@@ -51,12 +51,12 @@ export const formatTime = (time) => {
   return diffDay < timeObj.minute
     ? 'just now'
     : diffDay < timeObj.hour
-    ? getRemainTime(diffDay)(timeObj.minute) + 'm'
-    : diffDay < timeObj.day
-    ? getFullTime(date)
-    : diffDay < timeObj.month * 12
-    ? getDayAndMonth(date)
-    : getFullDate(date);
+      ? getRemainTime(diffDay)(timeObj.minute) + 'm'
+      : diffDay < timeObj.day
+        ? getFullTime(date)
+        : diffDay < timeObj.month * 12
+          ? getDayAndMonth(date)
+          : getFullDate(date);
 };
 
 const getRemainTime = (timestamp) => (num) => Math.round(timestamp / num);
@@ -70,14 +70,15 @@ export const getOfflineTime = (timestamp) => {
   return timestamp < timeObj.minute
     ? 'just now'
     : timestamp < timeObj.hour
-    ? iGetRemainTime(timeObj.minute) + 'm'
-    : timestamp < timeObj.day
-    ? iGetRemainTime(timeObj.hour) + 'h'
-    : timestamp < timeObj.week
-    ? iGetRemainTime(timeObj.day) + 'd'
-    : timestamp < timeObj.month
-    ? iGetRemainTime(timeObj.week) + 'w'
-    : timestamp < timeObj.month * 12
-    ? getDayAndMonth(new Date(timestamp * 1000))
-    : getFullDate(new Date(timestamp * 1000));
+      ? iGetRemainTime(timeObj.minute) + 'm'
+      : timestamp < timeObj.day
+        ? iGetRemainTime(timeObj.hour) + 'h'
+        : timestamp < timeObj.week
+          ? iGetRemainTime(timeObj.day) + 'd'
+          : timestamp < timeObj.month
+            ? iGetRemainTime(timeObj.week) + 'w'
+            : timestamp < timeObj.month * 12
+              ? getDayAndMonth(new Date(timestamp * 1000))
+              : getFullDate(new Date(timestamp * 1000));
 };
+
