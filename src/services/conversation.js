@@ -14,9 +14,9 @@ export const getConversation = async (userId, isGroup) =>
     },
   });
 
-export const addNewMember = async (conversationId, newMember) =>
-  await privateRequest.put(`conversations/${conversationId}/add-member`, null, {
-    newMember,
+export const addNewMember = async (conversationId, newMembers) =>
+  await privateRequest.put(`conversations/${conversationId}/add-member`, {
+    newMembers,
   });
 
 export const deleteConversation = async (conversationId) =>

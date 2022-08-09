@@ -18,7 +18,7 @@ const AvatarSettings = ({ isShowMenu }) => {
   const dispatch = useDispatch();
   const conversationList = useSelector(getConversationList);
   const conversationIdList = useMemo(
-    () => conversationList.map((con) => con._id),
+    () => conversationList?.map((con) => con._id),
     [conversationList],
   );
 

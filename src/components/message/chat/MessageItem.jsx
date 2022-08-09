@@ -1,6 +1,16 @@
-import React from 'react';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getConversationList } from '../../../store/selectors';
 
-const MessageItem = ({ isOwn, avatar, message, timeAt }) => {
+const MessageItem = ({ isOwn, senderId, message, timeAt }) => {
+  const { id: conversationId } = useParams();
+  const conversationList = useSelector(getConversationList);
+  const avatar = useMemo(() => {
+    return conversationList
+      .find((con) => con._id === conversationId)
+      ?.members?.find((m) => m.memberId === senderId)?.avatar;
+  }, [conversationList, senderId, conversationId]);
 
   return (
     <li className={`chat-item ${isOwn ? 'own' : 'not-own'}`}>
@@ -9,7 +19,7 @@ const MessageItem = ({ isOwn, avatar, message, timeAt }) => {
         src={avatar}
         alt="own-avatar"
       />
-      <div className="w-full" >
+      <div className="w-full">
         <span className="inline-block mb-1 h-max break-all px-2 py-1 ">
           {message}
         </span>

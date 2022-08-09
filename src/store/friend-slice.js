@@ -84,7 +84,7 @@ export const unfriend = (receiverId) => async (dispatch, getState) => {
     const userId = getState().authentication.userInformation.id;
     await friendService.unfriend(userId, receiverId);
 
-    console.log(getState().conversation.conversations)
+    console.log(getState().conversation.conversations);
 
     const { _id: conversationId } = getState().conversation.conversations.find(
       (con) => {
@@ -134,51 +134,55 @@ export const getFriend = (friendId) => async (dispatch) => {
 
 export const responseAddFriend =
   ({ receiverId, accepted }) =>
-    async (dispatch, getState) => {
-      dispatch(showLoading());
-      try {
-        const userState = getState().authentication.userInformation;
-        const { data: receiver } = await friendService.responseAddFriend(userState.id, {
+  async (dispatch, getState) => {
+    dispatch(showLoading());
+    try {
+      const userState = getState().authentication.userInformation;
+      const { data: receiver } = await friendService.responseAddFriend(
+        userState.id,
+        {
           receiverId,
           accepted,
-        });
+        },
+      );
 
-        if (accepted) {
+      if (accepted) {
+        // create conversation
+        const createConRes = await conversationService.createConversation(
+          userState.id,
+          [
+            { memberId: userState.id, nickname: `${userState.firstName} ${userState.lastName}` },
+            { memberId: receiverId, nickname: `${receiver.firstName} ${receiver.lastName}` },
+          ],
+          false,
+        );
 
-          const createConRes = await conversationService.createConversation(
-            userState.id,
-            [
-              { memberId: userState.id, nickname: userState.lastName },
-              { memberId: receiverId, nickname: receiver.lastName },
-            ], false
-          );
+        dispatch(addConversation(createConRes.data));
 
-          dispatch(addConversation(createConRes.data))
+        // add to user
+        dispatch(addFriendList(receiver));
 
-          // add to user
-          dispatch(addFriendList(receiver));
+        // add to current friend
 
-          // add to current friend
-
-          dispatch(
-            addFriendListOfFriend({
-              _id: userState.id,
-              firstName: userState.firstName,
-              lastName: userState.lastName,
-              avatar: userState.avatar,
-              biography: userState.slogan,
-              coverPicture: userState.coverPicture,
-            }),
-          );
-        }
-
-        dispatch(removeFriendResponse(receiverId));
-      } catch (error) {
-        console.log('response add friend error', error);
-      } finally {
-        dispatch(hideLoading());
+        dispatch(
+          addFriendListOfFriend({
+            _id: userState.id,
+            firstName: userState.firstName,
+            lastName: userState.lastName,
+            avatar: userState.avatar,
+            biography: userState.slogan,
+            coverPicture: userState.coverPicture,
+          }),
+        );
       }
-    };
+
+      dispatch(removeFriendResponse(receiverId));
+    } catch (error) {
+      console.log('response add friend error', error);
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
 
 export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
   const userState = getState().authentication.userInformation;

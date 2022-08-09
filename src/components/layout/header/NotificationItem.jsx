@@ -43,7 +43,7 @@ const NotificationItem = ({
           alt="avatar-notify"
           className="w-8 h-8 rounded-full object-center object-cover border-solid border-2 border-white"
         />
-        <div className="flex flex-col w-full leading-tight">
+        <div className="flex flex-col w-full leading-tight self-center">
           <span className="text-[14px] font-[500]">{name}</span>
           <span className="text-[13px] ellipsis">{message}</span>
         </div>

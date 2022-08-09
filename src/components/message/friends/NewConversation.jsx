@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { InputInformation } from '../../ui/input/MyInput';
 import MyButton from '../../ui/button/MyButton';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -7,7 +7,6 @@ import { validateEmpty } from '../../../utils/validate';
 import { getConversationsStatus, getUser } from '../../../store/selectors';
 import { useDispatch } from 'react-redux';
 import { createConversation } from '../../../store/conversation-slice';
-import withToast from '../../../hoc/withToast';
 import useAddMembers from '../../../hooks/useAddMembers';
 
 export const MemberItem = ({
@@ -17,10 +16,10 @@ export const MemberItem = ({
   onAddMember,
   isChoosy,
 }) => {
+
   function changeHandler(e) {
     onAddMember({ memberId: e.target.value, nickname: fullName, avatar });
   }
-
   return (
     <li className="flex items-center gap-x-2 mt-2 justify-between px-2 py-1 rounded-md text-slate-600 font-[500]">
       <div className="flex items-center gap-x-2">
@@ -32,8 +31,9 @@ export const MemberItem = ({
         <span className="text-[15px]">{fullName}</span>
       </div>
       <label
-        className={`${isChoosy ? 'text-sky-700' : ''
-          } cursor-pointer px-2 duration-300`}
+        className={`${
+          isChoosy ? 'text-sky-700' : ''
+        } cursor-pointer px-2 duration-300`}
         htmlFor={friendId}
       >
         <GroupAddIcon sx={{ fontSize: 22 }} />
@@ -50,11 +50,7 @@ export const MemberItem = ({
   );
 };
 
-export const MemberList = ({
-  friendList,
-  onAddMember,
-  choosyFriendList,
-}) => {
+export const MemberList = ({ friendList, onAddMember, choosyFriendList }) => {
   return (
     <ul className=" overflow-y-auto max-h-[30vh]">
       {friendList?.map((friend) => {
@@ -75,22 +71,19 @@ export const MemberList = ({
   );
 };
 
-const NewConversation = withToast(({ onClose, toast }) => {
+const NewConversation = ({ onClose }) => {
   const dispatch = useDispatch();
-
+  const status = useSelector(getConversationsStatus);
   const { choosyFriendList, onAddMember } = useAddMembers();
   const user = useSelector(getUser);
 
   const nameRef = useRef();
 
-  const status = useSelector(getConversationsStatus);
-
   useEffect(() => {
-    if (status === 'create-conversation/success')
-      toast.addToast({ message: 'Add new group successfully!' });
-    if (status === 'create-conversation/failed')
-      toast.addToast({ type: 'error', message: 'Add new group failed!' });
-  }, [status]);
+    if(status.split('/')[1] !== 'pending' && status !== 'idle') {
+      onClose();
+    }
+  }, [status])
 
   function submitHandler(e) {
     e.preventDefault();
@@ -148,6 +141,6 @@ const NewConversation = withToast(({ onClose, toast }) => {
       </div>
     </form>
   );
-});
+};
 
 export default NewConversation;

@@ -11,7 +11,6 @@ import { formatTime } from '../../../utils/helper';
 import getSocketIO, {
   getMessage,
   removeGetMessage,
-  updateStateConversation as updateStateConversationToSocket,
 } from '../../../services/socketIO';
 import { addMessage, getMessages } from '../../../store/message-slice';
 import {
@@ -39,6 +38,7 @@ const Messages = ({ conversationAvatar }) => {
     const socket = getSocketIO();
     if (socket?.connected) {
       const getMessageHandler = ({ senderId, text, conversationId }) => {
+        console.log('new msg');
         const date = new Date();
         const isVisited = conversationId === visitedConversationId;
         dispatch(
@@ -49,18 +49,17 @@ const Messages = ({ conversationAvatar }) => {
         );
         isVisited
           ? dispatch(
-            addMessage({
-              _id: date.getTime(),
-              senderId,
-              text,
-              conversationId,
-              createdAt: date.toISOString(),
-            }),
-          )
-          :
-          dispatch(
-            updateStateConversation({ conversationId, isUnSeen: true }),
-          );
+              addMessage({
+                _id: date.getTime(),
+                senderId,
+                text,
+                conversationId,
+                createdAt: date.toISOString(),
+              }),
+            )
+          : dispatch(
+              updateStateConversation({ conversationId, isUnSeen: true }),
+            );
       };
 
       getMessage(getMessageHandler, socket);
@@ -69,7 +68,8 @@ const Messages = ({ conversationAvatar }) => {
   }, [getSocketIO()?.connected, visitedConversationId]);
 
   useEffect(() => {
-    scrollRef.current && (scrollRef.current.scrollTop = scrollRef.current?.scrollHeight);
+    scrollRef.current &&
+      (scrollRef.current.scrollTop = scrollRef.current?.scrollHeight);
   }, [messages]);
 
   return (
@@ -81,15 +81,17 @@ const Messages = ({ conversationAvatar }) => {
           ref={scrollRef}
           className="h-[65vh] w-full flex flex-col gap-y-5 p-2 overflow-auto bg-gradient-b from-transparent to-white z-9 shadow-[0_0_10px_-5px_#0000004a]"
         >
-          {messages?.length === 0 && <p className="text-center text-[16px] font-[500] text-slate-600">Let's chat here!</p>}
+          {messages?.length === 0 && (
+            <p className="text-center text-[16px] font-[500] text-slate-600">
+              Let's chat here!
+            </p>
+          )}
           {messages?.map((message) => {
             return (
               <MessageItem
                 key={message._id}
                 isOwn={message.senderId === userId}
-                avatar={
-                  message.senderId === userId ? userAvatar : conversationAvatar
-                }
+                senderId={message.senderId}
                 message={message.text}
                 timeAt={formatTime(message.createdAt)}
               />

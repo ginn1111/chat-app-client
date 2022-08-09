@@ -1,19 +1,29 @@
-import React from 'react';
-
+import { useMemo } from 'react';
+import { getConversationList } from '../../../store/selectors';
+import { useSelector } from 'react-redux';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import withModal from '../../../hoc/withModal';
 import Search from '../../ui/search/Search';
 import NewConversation from './NewConversation';
 
-const Header = ({ modal, onSearch}) => {
+const Header = ({ modal, onSearch }) => {
+  const conversationList = useSelector(getConversationList);
+  const newInbox = useMemo(() => {
+    return conversationList.reduce(
+      (acc, con) => acc + +(con?.isUnSeen ?? 0),
+      0,
+    );
+  }, [conversationList]);
   return (
     <>
       <header className="flex justify-between items-center w-full py-1 text-slate-600">
         <div className="w-full flex items-center gap-x-2 ">
           <span className="font-bold">Inbox</span>
-          <span className="px-2 py-0.5 rounded-md bg-green-100 text-green-400 font-bold">
-            2 New
-          </span>
+          {newInbox > 0 && (
+            <span className="px-2 py-0.5 rounded-md bg-green-100 text-green-400 font-bold">
+              {newInbox} New
+            </span>
+          )}
         </div>
         <GroupAddIcon
           className="cursor-pointer"

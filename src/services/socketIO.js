@@ -1,6 +1,4 @@
 import io from 'socket.io-client';
-import store from '../store';
-import { setStateConversations } from '../store/conversation-slice';
 
 const GET_MESSAGE = 'GET_MESSAGE';
 const SEND_MESSAGE = 'SEND_MESSAGE';
@@ -11,6 +9,7 @@ const UPDATE_CONVERSATION = 'UPDATE_CONVERSATION';
 const INIT_CONVERSATION = 'INIT_CONVERSATIONS';
 const GET_STATE_CONVERSATIONS = 'GET_STATE_CONVERSATIONS';
 const UPDATE_STATE_CONVERSATION = 'UPDATE_STATE_CONVERSATION';
+const JOIN_ROOM = 'JOIN_ROOM';
 
 const getSocketIO = (() => {
   let socket = null;
@@ -22,21 +21,6 @@ const getSocketIO = (() => {
     }
     socket?.on('connect', () => {
       console.log('connect successfully');
-
-      // get conversation for join room
-      // const conversationGroupList = store
-      //   .getState()
-      //   .conversation.conversations.filter((con) => con.isGroup);
-      // console.log({ conversationGroupList });
-      // console.log('join room here');
-
-      // get conversation seen/unseen
-      // socket?.on('STATE_CONVERSATIONS', (stateConversations) =>
-      //   // calc to conversation in store
-      //   store.dispatch(setStateConversations(stateConversations)),
-      // );
-
-      // socket?.on('WELCOME', console.log);
     });
 
     socket?.on('connect_error', (error) => {
@@ -97,5 +81,12 @@ export const socketDisconnect = (payload, socket) => {
 
 export const removeGetStateConversations = (callback, socket) =>
   socket?.off(GET_STATE_CONVERSATIONS, callback);
+
+export const joinRoom = (rooms, socket) => socket?.emit(JOIN_ROOM, rooms);
+
+export const getStateConversation = (callback, socket) => socket?.on(UPDATE_STATE_CONVERSATION, callback);
+
+export const removeGetStateConversation = (callback, socket) => socket?.off(UPDATE_STATE_CONVERSATION, callback);
+
 
 export default getSocketIO;

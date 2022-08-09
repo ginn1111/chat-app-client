@@ -1,7 +1,7 @@
 import React, { useState, useMemo, memo } from 'react';
 import { useParams } from 'react-router-dom';
-import { getConversationList, getUser } from '../../../store/selectors';
 import { useSelector } from 'react-redux';
+import { getConversationList, getUser } from '../../../store/selectors';
 import { commonStyle } from '../../pages/Message';
 import Send from './Send';
 import Header from './Header';
@@ -21,18 +21,16 @@ const Chat = () => {
     );
     return conversation?.isGroup
       ? {
-        ...conversation,
-        avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
-      }
+          ...conversation,
+          avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
+        }
       : conversation;
   }, [conversationId, conversationList]);
 
-  const receiverId = useMemo(
-    () =>
-      !conversationInfor?.isGroup &&
-      conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId,
-    [conversationInfor],
-  );
+  const receiverId = useMemo(() =>
+    !conversationInfor?.isGroup
+      && conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId
+  ,[conversationInfor]);
 
   function toggleInfor() {
     setIsShowInfor((prev) => !prev);

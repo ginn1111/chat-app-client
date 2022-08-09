@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { getConversationsStatus, isGroup } from '../../../store/selectors';
 import GroupAvatar from '../GroupAvatar';
 import InfoIcon from '@mui/icons-material/Info';
+import {CircularProgress} from '@mui/material'
 
 const Header = ({ avatar, name, isShowInfor, onShowInfor }) => {
   const isGroupTab = useSelector(isGroup);
@@ -10,7 +11,7 @@ const Header = ({ avatar, name, isShowInfor, onShowInfor }) => {
   return (
     <header className="w-full h-max flex items-center shadow-[0_10px_20px_-5px_#0000003f] py-2 px-5 rounded-[20px_20px_0_0] gap-x-4">
       {status === 'conversation-get/pending' || !avatar ? (
-        <p>Loading...</p>
+      <CircularProgress />
       ) : (
         <>
           <div className="flex-none">

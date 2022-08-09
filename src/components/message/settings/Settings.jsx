@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getConversationList,
   getConversationsStatus,
@@ -17,12 +17,15 @@ import MemberList from './MemberList';
 import GroupAvatar from '../GroupAvatar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scaleAnimate } from '../../../animation/models';
-import withModal from '../../../hoc/withModal';
 import useAddMembers from '../../../hooks/useAddMembers';
 import { MemberList as MemberListAdd } from '../friends/NewConversation';
 import MyButton from '../../ui/button/MyButton';
 import { CircularProgress } from '@mui/material';
 import withToggleModal from '../../../hoc/withToggleModal';
+import {
+  addMember,
+  deleteConversation,
+} from '../../../store/conversation-slice';
 
 const MenuItem = ({ icon, title, onClick }) => {
   return (
@@ -41,6 +44,8 @@ const AddMemberDialog = ({ onClose }) => {
   const user = useSelector(getUser);
   const conversationList = useSelector(getConversationList);
   const { id: visitedConversationId } = useParams();
+  const dispatch = useDispatch();
+  const status = useSelector(getConversationsStatus);
   const visitedConversation = useMemo(
     () => conversationList.find((con) => con._id === visitedConversationId),
     [conversationList, visitedConversationId],
@@ -58,7 +63,12 @@ const AddMemberDialog = ({ onClose }) => {
   function submitHandler(e) {
     e.preventDefault();
 
-    console.log(choosyFriendList);
+    dispatch(
+      addMember({
+        members: choosyFriendList,
+        conversationId: visitedConversationId,
+      }),
+    );
   }
 
   return (
@@ -79,13 +89,19 @@ const AddMemberDialog = ({ onClose }) => {
         choosyFriendList={choosyFriendList}
         onAddMember={onAddMember}
       />
-      <div className="w-full mt-5 gap-x-2 flex">
+      <div className="w-full mt-5 gap-x-2 flex max-h-[50px]">
         <MyButton
-          title="Ok"
           bgColor="bg-slate-200"
           width="w-[50%]"
           disabled={choosyFriendList?.length === 0}
-        />
+        >
+          {status === 'add-member/pending' ? (
+            <CircularProgress size="1rem" />
+          ) : (
+            'OK'
+          )}
+        </MyButton>
+
         <MyButton
           type="button"
           title="Cancel"
@@ -108,6 +124,12 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
+    if (status.split('/')[1] !== 'pending') {
+      modal.close();
+    }
+  }, [status]);
+
+  useEffect(() => {
     const triggerConversationMenu = document.getElementById(
       'trigger-conversation-menu',
     );
@@ -123,7 +145,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
 
   const visitedConversation = useMemo(
     () => conversationList.find((con) => con._id === conversationId),
-    [conversationId],
+    [conversationId, conversationList],
   );
 
   const members = useMemo(
@@ -144,7 +166,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
   return (
     <>
       {status === 'conversation-get/pending' ? (
-        <p>Loading</p>
+        <CircularProgress />
       ) : (
         <>
           <div className="pt-5 flex-none">
@@ -227,6 +249,12 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
 };
 
 const DeleteConversationDialog = ({ onClose }) => {
+  const { id: conversationId } = useParams();
+  const dispatch = useDispatch();
+
+  function deleteHandler() {
+    dispatch(deleteConversation(conversationId));
+  }
   return (
     <div className="shadow-md rounded-md px-3 py-2 bg-white">
       <h3 className="text-[20px] font-[500] text-center text-slate-600 py-2">
@@ -236,12 +264,17 @@ const DeleteConversationDialog = ({ onClose }) => {
         Are you sure about that?
       </span>
       <div className="w-full mt-5 gap-x-2 flex">
-        <MyButton title="Ok" bgColor="bg-slate-200" width="w-[50%]" />
+        <MyButton
+          title="Ok"
+          bgColor="bg-red-500"
+          width="w-[50%]"
+          textColor="text-slate-200"
+          onClick={deleteHandler}
+        />
         <MyButton
           type="button"
           title="Cancel"
-          bgColor="bg-slate-800"
-          textColor="text-slate-200"
+          bgColor="bg-slate-200"
           width="w-[50%]"
           onClick={onClose}
         />

@@ -51,7 +51,6 @@ const Send = ({ conversationId, receiverId }) => {
 
   function enterHandler(e) {
     if (e.code !== 'Enter' || !isValid) return;
-
     send();
   }
 

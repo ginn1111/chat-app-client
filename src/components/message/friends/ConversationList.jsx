@@ -21,11 +21,15 @@ import getSocketIO, {
   getStateConversations,
   removeGetStateConversations,
   updateStateConversation as updateStateConversationToSocket,
+  joinRoom,
+  getStateConversation,
+  removeGetStateConversation,
 } from '../../../services/socketIO';
 import useSearch from '../../../hooks/useSearch';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const ConversationList = () => {
   const dispatch = useDispatch();
@@ -47,17 +51,21 @@ const ConversationList = () => {
 
   useEffect(() => {
     setFilterConversation('');
-  }, [isGroupTab])
+  }, [isGroupTab]);
 
   useEffect(() => {
+    const id = conversationList?.[0]?._id;
     status === 'conversation-get/success' &&
-      navigate(`/message/${conversationList?.[0]?._id}`, { replace: true });
+      navigate(`/message/${id ?? ''}`, { replace: true });
   }, [status]);
 
   useEffect(() => {
-    conversationId &&
-      dispatch(updateStateConversation({ conversationId, isUnSeen: false }));
-  }, [conversationId]);
+    const socket = getSocketIO();
+    if (socket?.connected && isGroupTab && conversationList?.length > 0) {
+      const rooms = conversationList.map((con) => con._id);
+      joinRoom(rooms, socket);
+    }
+  }, [conversationList, getSocketIO()?.connected, isGroupTab]);
 
   useEffect(() => {
     dispatch(getConversation({ userId, isGroup: isGroupTab }));
@@ -72,23 +80,42 @@ const ConversationList = () => {
   }, [isGroupTab]);
 
   useEffect(() => {
+    conversationId &&
+      dispatch(updateStateConversation({ conversationId, isUnSeen: false }));
+  }, [conversationId]);
+
+  useEffect(() => {
     const socket = getSocketIO();
-    socket?.connected &&
-      conversationId &&
+    if (socket?.connected && conversationId) {
       updateStateConversationToSocket({ conversationId, isSeen: true }, socket);
+    }
   }, [getSocketIO()?.connected, conversationId]);
+
+  useEffect(() => {
+    const socket = getSocketIO();
+    if (socket?.connected) {
+      const updateStateConversationHandler = (conversationId) => {
+        dispatch(updateStateConversation({ conversationId, isUnSeen: false }));
+      };
+
+      getStateConversation(updateStateConversationHandler, socket);
+
+      return () =>
+        removeGetStateConversation(updateStateConversationHandler, socket);
+    }
+  }, [getSocketIO()?.connected]);
 
   useEffect(() => {
     const socket = getSocketIO();
 
     if (socket?.connected) {
       initConversations(userId, socket);
-      getStateConversations(setStateConversations, socket);
       getUserOnline(setUsersOnline, socket);
+      getStateConversations(setStateConversations, socket);
 
       return () => {
-        removeGetStateConversations(setStateConversations, socket);
         removeGetUserOnline(setUsersOnline, socket);
+        removeGetStateConversations(setStateConversations, socket);
       };
     }
   }, [getSocketIO()?.connected]);
@@ -152,7 +179,7 @@ const ConversationList = () => {
   );
 
   if (status === 'conversation-get/pending')
-    conversationListRender = <p>Loading</p>;
+    conversationListRender = <CircularProgress />;
   if (status === 'conversation-get/error')
     conversationListRender = <p>Something went wrong :(</p>;
 
