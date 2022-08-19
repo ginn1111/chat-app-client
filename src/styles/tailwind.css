@@ -3,7 +3,7 @@
 @tailwind utilities;
 @tailwind variants;
 
-@layer utilities {
+@layer components {
   .nav-bar {
     @apply relative  transition-colors duration-300 ease-in-out;
   }
@@ -57,7 +57,7 @@
   .chat-item.not-own {
     @apply flex-row-reverse;
   }
-  .chat-item.not-own div{
+  .chat-item.not-own div {
     @apply flex flex-col;
   }
   .chat-item.not-own span {
@@ -78,10 +78,28 @@
   .toast {
     @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[999999999];
   }
+  .toast + .toast {
+    @apply mt-1;
+  }
   .no-read::after {
     @apply content-[''] absolute top-[5px] right-[-6px] w-[20px] h-[10px] bg-red-500 shadow-md;
   }
   .no-read::before {
     @apply content-[''] absolute top-[15px] right-[-6px] border-t-[10px] border-r-[8px]  border-t-red-400 border-r-transparent;
+  }
+  .menu-icon::after, .menu-icon::before {
+    @apply content-[''] absolute w-full h-[2px] origin-right duration-300 bg-[#64748b];
+  }
+  .menu-icon::after {
+    @apply shadow-[0_9px_0_0_#64748b];
+  }
+  .menu-icon::before {
+    @apply bottom-0;
+  }
+  .menu-icon.close::after {
+    @apply rotate-[-45deg] shadow-[0_0_0_0_#64748b] translate-x-[-3px];
+  }
+  .menu-icon.close::before {
+    @apply rotate-[45deg] translate-x-[-3px];
   }
 }

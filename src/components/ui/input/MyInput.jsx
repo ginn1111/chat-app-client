@@ -84,7 +84,7 @@ const MyInput = forwardRef((props, ref) => {
   return (
     <>
       <motion.div
-        className={`flex basis-${props.basis} items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
+        className={`flex items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
       >
         <div className="flex flex-col w-full">
           <label className="text-[12px]  opacity-50" htmlFor={id}>
@@ -96,7 +96,7 @@ const MyInput = forwardRef((props, ref) => {
             onBlur={onBlur}
             required
             placeholder={props.placeholder}
-            className=" outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
+            className="block outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
             id={id}
             type={fieldIsPassword ? 'password' : 'text'}
           />

@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getConversationList } from '../../../store/selectors';
+import { forwardRef, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getConversationList } from "../../../store/selectors";
 
-const MessageItem = ({ isOwn, senderId, message, timeAt }) => {
+const MessageItem = ({ isOwn, senderId, message, timeAt }, ref) => {
   const { id: conversationId } = useParams();
   const conversationList = useSelector(getConversationList);
+
   const avatar = useMemo(() => {
     return conversationList
       .find((con) => con._id === conversationId)
@@ -13,7 +14,11 @@ const MessageItem = ({ isOwn, senderId, message, timeAt }) => {
   }, [conversationList, senderId, conversationId]);
 
   return (
-    <li className={`chat-item ${isOwn ? 'own' : 'not-own'}`}>
+    <li
+      ref={ref}
+      data-scroll
+      className={`chat-item ${isOwn ? "own" : "not-own"}`}
+    >
       <img
         className="w-6 h-6 rounded-full object-center object-cover"
         src={avatar}
@@ -29,4 +34,4 @@ const MessageItem = ({ isOwn, senderId, message, timeAt }) => {
   );
 };
 
-export default MessageItem;
+export default forwardRef(MessageItem);

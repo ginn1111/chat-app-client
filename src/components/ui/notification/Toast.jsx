@@ -1,40 +1,39 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   UilTimesSquare,
   UilCheckCircle,
   UilExclamationTriangle,
-} from '@iconscout/react-unicons';
+} from "@iconscout/react-unicons";
 
-const Toast = ({ type, message, onRemove, top }) => {
+const Toast = ({ type, message, onRemove, autoClose = true }) => {
   useEffect(() => {
-    const idTimer = setTimeout(() => {
-      onRemove();
-    }, 3500);
-    return () => clearTimeout(idTimer);
+    if (autoClose) {
+      const idTimer = setTimeout(() => {
+        onRemove();
+      }, 3500);
+      return () => clearTimeout(idTimer);
+    }
   }, []);
 
   const typeToast =
-    type === 'error'
+    type === "error"
       ? {
-        bg: 'bg-red-500',
+        bg: "bg-red-500",
         icon: <UilExclamationTriangle color="white" size="22" />,
       }
       : {
-        bg: 'bg-green-500',
+        bg: "bg-green-500",
         icon: <UilCheckCircle color="white" size="22" />,
       };
   return (
     <motion.div
       initial={{
-        position: 'fixed',
-        top: `${top ?? '50px'}`,
-        x: 1000,
-        right: 0,
+        x: 800,
+        top: 50,
       }}
-      transition={{ stiffness: 50, type: 'spring' }}
-      animate={{ x: -50 }}
-      exit={{ x: 1000 }}
+      transition={{ stiffness: 50, type: "spring" }}
+      animate={{ x: -10 }}
       className={`toast ${typeToast.bg}`}
     >
       {typeToast.icon}
@@ -44,13 +43,13 @@ const Toast = ({ type, message, onRemove, top }) => {
       </div>
       <motion.div
         initial={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           left: 0,
-          width: '100%',
-          height: '3px',
+          width: "100%",
+          height: "3px",
         }}
-        animate={{ width: '0%' }}
+        animate={{ width: "0%" }}
         transition={{ duration: 3, delay: 0.5 }}
         className="bg-sky-500"
       ></motion.div>

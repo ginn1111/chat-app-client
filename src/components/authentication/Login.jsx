@@ -1,17 +1,17 @@
-import React, { useRef, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import React, { useRef, useEffect } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
-import MyInput from '../ui/input/MyInput';
-import MyButton from '../ui/button/MyButton';
-import Animation from '../../animation/Animation';
-import withToast from '../../hoc/withToast';
-import { itemAnimate, slideInFromRight } from '../../animation/models/index';
-import { validateEmail, validateEmpty } from '../../utils/validate';
-import { login, resetStatus } from '../../store/authen-slice';
-import { getStatus } from '../../store/selectors';
+import MyInput from "../ui/input/MyInput";
+import MyButton from "../ui/button/MyButton";
+import Animation from "../../animation/Animation";
+import withToast from "../../hoc/withToast";
+import { itemAnimate, slideInFromRight } from "../../animation/models/index";
+import { validateEmail, validateEmpty } from "../../utils/validate";
+import { login, resetStatus } from "../../store/authen-slice";
+import { getStatus } from "../../store/selectors";
 
 const Login = withToast(({ toast }) => {
   const dispatch = useDispatch();
@@ -24,22 +24,22 @@ const Login = withToast(({ toast }) => {
   const passwordRef = useRef();
 
   useEffect(() => {
-    if (status === 'login/failed') {
+    if (status === "login/failed") {
       toast.addToast({
-        message: 'Login failed, invalid email or password!',
-        type: 'error',
+        message: "Login failed, invalid email or password!",
+        type: "error",
       });
-      dispatch(resetStatus());
+    } else if (status === "login/success") {
+      navigate(location?.state?.from ?? "/");
     }
-    if (status === 'login/success') {
-      navigate(location?.state?.from ?? '/');
+    if (status !== "login/pending" && status !== "idle") {
       dispatch(resetStatus());
     }
   }, [status, toast, dispatch, navigate, location?.state?.from]);
 
   useEffect(() => {
-    emailRef.current.setValue('vanthuanjw@gmail.com');
-    passwordRef.current.setValue('Thu@n12312');
+    emailRef.current.setValue("vanthuanjw@gmail.com");
+    passwordRef.current.setValue("Thu@n12312");
   }, []);
 
   function submitLogInHandler(event) {
@@ -57,65 +57,64 @@ const Login = withToast(({ toast }) => {
 
   return (
     <Animation animationCreator={slideInFromRight}>
-      <section className="pr-[100px] pt-[100px] h-full flex flex-col items-end w-full ">
-        <div className="flex flex-col items-start">
+      <section className="lg:pr-[100px] lg:pt-[100px] pt-[30%] sm:text-[1.4rem] ">
+        <div className="md:mx-auto md:w-[80%] md:block sm:mx-[1rem] sm:items-center sm:w-auto h-full w-full flex flex-col justify-center items-end">
           <Animation animationCreator={itemAnimate.bind(null, 0)}>
-            <h1 className="text-white text-3xl font-[600] relative after:absolute after:w-[10px] after:h-[10px] after:rounded-[50%] after:bg-blue-500 after:bottom-[5px] after:right-[-11px] before:w-[8px] before:h-[60%] before:bg-white before:absolute before:bottom-[20px] before:right-[-10px] before:rounded-[8px]">
+            <h1 className="text-white text-3xl sm:text-[1.6rem] w-max font-[600] relative after:absolute after:w-[10px] after:h-[10px] after:rounded-[50%] after:bg-blue-500 after:bottom-[5px] after:right-[-11px] before:w-[8px] before:h-[60%] before:bg-white before:absolute before:bottom-[20px] before:right-[-10px] before:rounded-[8px]">
               Welcome Back
             </h1>
           </Animation>
-        </div>
-        <form
-          onSubmit={submitLogInHandler}
-          className="mt-5 flex flex-col  md:w-5/6 xl:w-2/5 gap-y-3"
-        >
-          <Animation animationCreator={itemAnimate.bind(null, 0.1)}>
-            <MyInput
-              validationFunction={validateEmail}
-              errorText="Email is not valid!"
-              ref={emailRef}
-              title="Email"
-              basis="1"
-              type="email"
-              icon={<MarkunreadOutlinedIcon sx={iconSize} />}
-            />
-          </Animation>
-          <Animation animationCreator={itemAnimate.bind(null, 0.2)}>
-            <MyInput
-              validationFunction={validateEmpty}
-              errorText="Password is not empty!"
-              ref={passwordRef}
-              title="Password"
-              basis="1"
-              type="password"
-              icon={<RemoveRedEyeOutlinedIcon sx={iconSize} />}
-            />
-          </Animation>
-          <Animation animationCreator={itemAnimate.bind(null, 0.3)}>
-            <div className="ml-2 flex  justify-between">
-              <span className="text-[16px] text-white opacity-50">
-                <span>Don't have account?</span>
-                <Link
-                  to="/auth/register"
-                  className="text-blue-500 cursor-pointer"
-                >
-                  {' '}
-                  Register
-                </Link>
-              </span>
-            </div>
-          </Animation>
-          <Animation animationCreator={itemAnimate.bind(null, 0.4)}>
-            <div className="mt-5 w-full">
-              <MyButton
-                title="Continue"
-                bgColor="bg-blue-500"
-                textColor="text-white"
-                width="w-full"
+          <form
+            onSubmit={submitLogInHandler}
+            className="mt-5 flex flex-col lg:w-1/2 gap-y-3"
+          >
+            <Animation animationCreator={itemAnimate.bind(null, 0.1)}>
+              <MyInput
+                validationFunction={validateEmail}
+                errorText="Email is not valid!"
+                ref={emailRef}
+                title="Email"
+                type="email"
+                icon={<MarkunreadOutlinedIcon sx={iconSize} />}
               />
-            </div>
-          </Animation>
-        </form>
+            </Animation>
+            <Animation animationCreator={itemAnimate.bind(null, 0.2)}>
+              <MyInput
+                validationFunction={validateEmpty}
+                errorText="Password is not empty!"
+                ref={passwordRef}
+                title="Password"
+                type="password"
+                icon={<RemoveRedEyeOutlinedIcon sx={iconSize} />}
+              />
+            </Animation>
+            <Animation animationCreator={itemAnimate.bind(null, 0.3)}>
+              <div className="ml-2 flex  justify-between">
+                <span className="text-[16px] text-white opacity-50">
+                  <span>Don't have account?</span>
+                  <Link
+                    to="/auth/register"
+                    className="text-blue-500 cursor-pointer"
+                  >
+                    {" "}
+                    Register
+                  </Link>
+                </span>
+              </div>
+            </Animation>
+            <Animation animationCreator={itemAnimate.bind(null, 0.4)}>
+              <div className="mt-5 w-full">
+                <MyButton
+                  title="Continue"
+                  bgColor="bg-blue-500"
+                  textColor="text-white"
+                  width="w-full"
+                  disabled={status === "login/pending"}
+                />
+              </div>
+            </Animation>
+          </form>
+        </div>
       </section>
     </Animation>
   );

@@ -6,16 +6,19 @@ import Global from './components/ui/Global';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import UIProvider from './context/UIContext';
 import { setUpInterceptor } from './axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <Router>
-      <Global>
-        <App />
-      </Global>
-    </Router>
+    <UIProvider>
+      <Router>
+        <Global>
+          <App />
+        </Global>
+      </Router>
+    </UIProvider>
   </Provider>,
 );
 setUpInterceptor(store);

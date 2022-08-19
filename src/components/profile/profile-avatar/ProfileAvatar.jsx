@@ -44,7 +44,7 @@ const ProfileAvatarMenu = () => {
 const ProfileAvatar = () => {
   const { avatar, firstName, lastName } = useSelector(getUser);
   return (
-    <section className="w-4/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh]">
+    <section className="lg:w-4/12 bg-blue-100 py-7 px-3 rounded-md h-[75vh] lg:block hidden">
       <div className="bg-white w-5/6 h-[55%] text-center mx-auto rounded-md overflow-hidden shadow-lg">
         <motion.img
           whileHover={{

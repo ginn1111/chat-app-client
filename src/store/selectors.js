@@ -28,3 +28,5 @@ export const getMessageList = (state) => state.message.messages;
 export const getStatusMessage = (state) => state.message.status;
 export const getLastedMessage = (state) =>
   state.message.messages[state.message.messages.length - 1];
+export const hasMore = (state) => state.message.hasMore;
+export const hasGetMore = (state) => state.message.hasGetMore;

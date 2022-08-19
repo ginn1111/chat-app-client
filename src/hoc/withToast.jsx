@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-import Toast from '../components/ui/notification/Toast';
+import React, { useMemo, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
+import Toast from "../components/ui/notification/Toast";
 
 const withToast = (WrappedComponent) => {
   return (props) => {
@@ -12,30 +12,32 @@ const withToast = (WrappedComponent) => {
 
     const addToastHandler = useCallback((toast) => {
       setListToast((list) =>
-        list.concat({ ...toast, id: new Date().getTime() }),
+        list.concat({ ...toast, id: new Date().getTime() })
       );
     }, []);
 
     const toast = useMemo(
       () => ({ addToast: addToastHandler }),
-      [addToastHandler],
+      [addToastHandler]
     );
 
     return (
       <>
         {createPortal(
-          toastList.map((toast, index) => {
-            return (
-              <Toast
-                key={toast.id}
-                top={`${(index + 1) * 50}px`}
-                message={toast.message}
-                type={toast.type}
-                onRemove={removeToastHandler.bind(null, toast.id)}
-              />
-            );
-          }),
-          document.getElementById('root'),
+          <div className="fixed top-0 right-0 h-max w-max mt-4">
+            {toastList.map((toast) => {
+              return (
+                <Toast
+                  key={toast.id}
+                  autoClose={toast.autoClose}
+                  message={toast.message}
+                  type={toast.type}
+                  onRemove={removeToastHandler.bind(null, toast.id)}
+                />
+              );
+            })}
+          </div>,
+          document.getElementById("root")
         )}
         <WrappedComponent {...props} toast={toast} />
       </>

@@ -1,4 +1,5 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, {  useMemo, memo  } from 'react';
+import useUI from '../../../hooks/useUI';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getConversationList, getUser } from '../../../store/selectors';
@@ -13,7 +14,8 @@ const Chat = () => {
   const { id: userId } = useSelector(getUser);
   const conversationList = useSelector(getConversationList);
 
-  const [isShowInfor, setIsShowInfor] = useState(false);
+  const {isShowInfor, onToggleConverInfor, sizeWindow } = useUI();
+
 
   const conversationInfor = useMemo(() => {
     const conversation = conversationList.find(
@@ -21,31 +23,27 @@ const Chat = () => {
     );
     return conversation?.isGroup
       ? {
-          ...conversation,
-          avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
-        }
+        ...conversation,
+        avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
+      }
       : conversation;
   }, [conversationId, conversationList]);
 
   const receiverId = useMemo(() =>
     !conversationInfor?.isGroup
-      && conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId
-  ,[conversationInfor]);
-
-  function toggleInfor() {
-    setIsShowInfor((prev) => !prev);
-  }
+    && conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId
+    , [conversationInfor]);
 
   return (
     <>
       <div
-        className={`w-full duration-500 ${commonStyle} bg-transparent relative mt-[-6px]`}
+        className={`w-full duration-500 ${commonStyle} bg-transparent relative mt-[-6px] w-screen sm:absolute`}
       >
         <Header
           avatar={conversationInfor?.avatar}
           name={conversationInfor?.title}
           isShowInfor={isShowInfor}
-          onShowInfor={toggleInfor}
+          onShowInfor={onToggleConverInfor}
         />
         <Messages
           conversationAvatar={conversationInfor?.avatar}
@@ -53,9 +51,9 @@ const Chat = () => {
         />
         <Send conversationId={conversationId} receiverId={receiverId} />
       </div>
-      {isShowInfor && (
+      {(isShowInfor || sizeWindow === 'sm') && (
         <div
-          className={`${commonStyle} flex flex-col w-[300px] gap-y-2 relative text-primary items-center mt-2 flex-none`}
+          className={`${commonStyle} flex flex-col w-[250px] gap-y-2 text-primary items-center mt-2 flex-none ${sizeWindow === 'sm' ? 'absolute left-[0]' : 'relative'} duration-400 top-0 bg-white`}
         >
           <Settings
             friendId={receiverId}

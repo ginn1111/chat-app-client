@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import useUI from '../../../hooks/useUI'
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getConversationList,
@@ -122,6 +123,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
   const { id: userId } = useSelector(getUser);
   const status = useSelector(getConversationsStatus);
   const [showMenu, setShowMenu] = useState(false);
+  const {sizeWindow} = useUI();
 
   useEffect(() => {
     if (status.split('/')[1] !== 'pending') {
@@ -172,16 +174,16 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
           <div className="pt-5 flex-none">
             {isGroupTab ? (
               <GroupAvatar
-                w1="w-20"
-                h1="h-20"
-                w2="w-16"
-                h2="h-16"
+                w1={sizeWindow === 'sm' ? 'w-14' : 'w-20'}
+                h1={sizeWindow === 'sm' ? 'h-14' : 'h-20'}
+                w2={sizeWindow === 'sm' ? 'w-10' : 'w-16'}
+                h2={sizeWindow === 'sm' ? 'h-10' : 'h-16'}
                 img1={twoEarlyAvatarMembers?.[0]}
                 img2={twoEarlyAvatarMembers?.[1]}
               />
             ) : (
               <img
-                className="w-20 h-20 rounded-full object-center shadow-[0_0_0_8px_#bae6fd] object-cover"
+                className="w-20 h-20 rounded-full object-center shadow-[0_0_0_8px_#bae6fd] object-cover sm:w-14 sm:h-14"
                 src={avatar}
                 alt="avatar-profile-chat"
               />

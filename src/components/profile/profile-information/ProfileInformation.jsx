@@ -5,11 +5,11 @@ import SecureInformation from './SecureInformation';
 
 const ProfileInformation = () => {
   return (
-    <section className="w-9/12 flex gap-x-2">
-      <div className="w-1/2">
+    <section className="lg:w-9/12 flex gap-2 w-[90%] mx-auto sm:flex-col">
+      <div className="w-1/2 sm:w-full">
         <BasicInformation />
       </div>
-      <div className="w-1/2 flex flex-col gap-y-1">
+      <div className="w-1/2 flex flex-col gap-y-1 sm:w-full">
         <div className="basis-5/12">
           <SecureInformation />
         </div>

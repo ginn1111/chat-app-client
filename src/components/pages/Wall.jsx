@@ -82,7 +82,7 @@ const Wall = () => {
         isResponse={isResponse}
         coverPicture={coverPicture}
       />
-      <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 w-full h-full pb-5">
+      <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 lg:w-full h-full pb-5 mx-auto w-[90%] ">
         <Biography join={join} slogan={slogan} dob={dob} />
         <Friend friendList={friendList} />
       </section>

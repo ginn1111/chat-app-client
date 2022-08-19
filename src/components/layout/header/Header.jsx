@@ -36,7 +36,7 @@ const Header = () => {
     function handlerEvent(event) {
       const avatarMenuContainer = document.getElementById('avatar-container');
       const notificationPanel = document.getElementById('notification-panel');
-      const notificationContainer = document.getElementById( 'notification-container');
+      const notificationContainer = document.getElementById('notification-container');
 
       avatarMenuContainer.contains(event.target)
         ? setIsShowMenu((prev) => !prev)
@@ -54,13 +54,13 @@ const Header = () => {
 
   return (
     <header className="bg-white  z-[10] w-[90%] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600 fixed top-0 left-0 right-0">
-      <div className="ml-auto flex  gap-x-2 relative w-5/12 ">
+      <div className="ml-auto flex  gap-x-2 relative w-5/12 sm:w-1/3">
         <Animation animationCreator={fallAnimate}>
           <div>Logo</div>
         </Animation>
-        <span className="mx-auto">Enjoy your moment</span>
+        <span className="mx-auto sm:hidden">Enjoy your moment</span>
       </div>
-      <div className="w-1/3 text-gray-200">
+      <div className="w-1/3 text-gray-200 sm:w-2/3">
         <Search
           onFocus={focusHandler}
           onSearch={searchHandler}

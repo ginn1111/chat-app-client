@@ -1,5 +1,5 @@
-@import 'normalize.css';
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+@import "normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap");
 :root {
   --primary: #fff;
 }
@@ -19,19 +19,17 @@ html {
 }
 body {
   position: relative;
-  font-family: 'IBM Plex Sans', sans-serif, Ubuntu;
+  font-family: "IBM Plex Sans", sans-serif, Ubuntu;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   overflow-x: hidden;
-  /* display: flex; */
   align-items: center;
   justify-content: center;
-  /* height: 100vh; */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -41,12 +39,6 @@ code {
   z-index: 100000;
   top: 0;
   width: 100%;
-}
-#root {
-  /* width: 100%; */
-}
-#modal {
-  /* height: 100vh; */
 }
 .ellipsis {
   overflow: hidden;

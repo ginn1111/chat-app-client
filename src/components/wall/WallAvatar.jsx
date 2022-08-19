@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AnimatePresence, motion } from 'framer-motion';
+import React, { memo, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   UilUserExclamation,
   UilUserCheck,
@@ -11,23 +11,23 @@ import {
   UilCameraPlus,
   UilCheck,
   UilTimes,
-} from '@iconscout/react-unicons';
-import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import FriendState from './FriendState';
-import { getFriendStatus, getStatus } from '../../store/selectors';
+} from "@iconscout/react-unicons";
+import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+import FriendState from "./FriendState";
+import { getFriendStatus, getStatus } from "../../store/selectors";
 import {
   updateAvatar,
   resetStatus as userResetStatus,
   updateCoverPicture,
-} from '../../store/authen-slice';
+} from "../../store/authen-slice";
 import {
   sendAddFriend,
   responseAddFriend,
   resetStatus,
   unfriend,
-} from '../../store/friend-slice';
-import withToast from '../../hoc/withToast';
-import { convertImageToBase64 } from '../../utils/helper';
+} from "../../store/friend-slice";
+import withToast from "../../hoc/withToast";
+import { convertImageToBase64 } from "../../utils/helper";
 
 const WallAvatar = withToast(
   ({
@@ -55,60 +55,56 @@ const WallAvatar = withToast(
       exit: { x: -10, opacity: 0 },
       initial: { x: -10, opacity: 0 },
       animate: { x: 0, opacity: 1 },
-      transition: { duration: 0.3 },
-      whileHover: { scale: 1.3 },
+      transition: { duration: 0.1 },
+      whileHover: { filter: "brightness(50%)" },
     };
-    const errorType = { color: 'salmon' };
-    const warningType = { color: '#ffb100cf' };
-    const safeType = { color: '#50f350' };
+    const errorType = { color: "salmon" };
+    const warningType = { color: "#ffb100cf" };
+    const safeType = { color: "#50f350" };
+
+    const sizeIcon = "text-[22px] sm:text-[1.4rem]"
 
     useEffect(() => {
-      if (status === 'send-add-friend/success') {
-        toast.addToast({ message: 'Send request successfully!' });
+      if (status === "send-add-friend/success") {
+        toast.addToast({ message: "Send request successfully!" });
         dispatch(resetStatus());
-      }
-      if (status === 'send-add-friend/failed') {
+      } else if (status === "send-add-friend/failed") {
         toast.addToast({
-          message: 'Send request failed, try again!',
-          type: 'error',
+          message: "Send request failed, try again!",
+          type: "error",
         });
         dispatch(resetStatus());
-      }
-      if (status === 'unfriend/success') {
+      } else if (status === "unfriend/success") {
         toast.addToast({
-          message: 'Unfriend successfully!',
+          message: "Unfriend successfully!",
         });
         dispatch(resetStatus());
-      }
-      if (status === 'unfriend/failed') {
+      } else if (status === "unfriend/failed") {
         toast.addToast({
-          message: 'Unfriend failed, something went wrong!',
-          type: 'error',
+          message: "Unfriend failed, something went wrong!",
+          type: "error",
         });
         dispatch(resetStatus());
       }
     }, [status, dispatch, toast]);
 
     useEffect(() => {
-      if (userStatus === 'update-avatar/success') {
-        toast.addToast({ message: 'Change avatar successfully!' });
+      if (userStatus === "update-avatar/success") {
+        toast.addToast({ message: "Change avatar successfully!" });
         dispatch(userResetStatus());
-      }
-      if (userStatus === 'update-avatar/failed') {
+      } else if (userStatus === "update-avatar/failed") {
         toast.addToast({
-          message: 'Change avatar failed, something went wrong!',
-          type: 'error',
+          message: "Change avatar failed, something went wrong!",
+          type: "error",
         });
         dispatch(userResetStatus());
-      }
-      if (userStatus === 'update-background/success') {
-        toast.addToast({ message: 'Change background successfully!' });
+      } else if (userStatus === "update-background/success") {
+        toast.addToast({ message: "Change background successfully!" });
         dispatch(userResetStatus());
-      }
-      if (userStatus === 'update-background/failed') {
+      } else if (userStatus === "update-background/failed") {
         toast.addToast({
-          message: 'Change background failed, something went wrong!',
-          type: 'error',
+          message: "Change background failed, something went wrong!",
+          type: "error",
         });
         dispatch(userResetStatus());
       }
@@ -120,7 +116,7 @@ const WallAvatar = withToast(
 
     function responseAddFriendHandler(isAccepted) {
       dispatch(
-        responseAddFriend({ receiverId: param.id, accepted: isAccepted }),
+        responseAddFriend({ receiverId: param.id, accepted: isAccepted })
       );
     }
 
@@ -130,7 +126,7 @@ const WallAvatar = withToast(
 
     function clickFileInputHandler(e) {
       // handle not change file when choose one file twice
-      e.target.value = '';
+      e.target.value = "";
     }
 
     useEffect(() => {
@@ -181,24 +177,24 @@ const WallAvatar = withToast(
         className={`w-5/6 relative rounded-b-lg pt-[25%] `}
         style={{
           backgroundImage: `url('${bgUrl ?? coverPicture}')`,
-          backgroundAttachment: 'fixed',
-          backgroundPosition: 'center top',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center ",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
         }}
       >
-        <div className="bottom-0 absolute-x-center translate-y-[50%] w-[120px] h-max">
+        <div className="bottom-0 absolute-x-center translate-y-[50%] w-[120px] sm:w-[80px] h-max">
           <div className="  relative ">
             <img
               ref={avatarRef}
               src={avatar}
               alt="avatar"
-              className="w-[120px] h-[120px] duration-300 rounded-full object-cover object-center shadow-[0_0_0_5px_#ffffff]"
+              className="w-[120px] h-[120px] sm:w-[80px] sm:h-[80px] duration-300 rounded-full object-cover object-center shadow-[0_0_0_5px_#ffffff]"
             />
             {isOwned && (
               <motion.div
                 whileInView={{
-                  translateX: isUpdateAvatar ? '60%' : '0%',
+                  translateX: isUpdateAvatar ? "60%" : "0%",
                   transition: { duration: 0.3 },
                 }}
                 className="absolute bottom-0 right-0  text-slate-600 bg-white shadow-md  flex justify-center items-center  rounded-full"
@@ -207,7 +203,7 @@ const WallAvatar = withToast(
                   htmlFor="change-avatar"
                   className="cursor-pointer p-[8px] "
                 >
-                  <UilCameraPlus size="22" />
+                  <UilCameraPlus className={sizeIcon} />
                 </label>
                 <input
                   onClick={clickFileInputHandler}
@@ -216,7 +212,7 @@ const WallAvatar = withToast(
                   type="file"
                   id="change-avatar"
                   className="hidden outline-none border-none"
-                />{' '}
+                />{" "}
                 <AnimatePresence>
                   {isUpdateAvatar && (
                     <motion.div
@@ -224,7 +220,7 @@ const WallAvatar = withToast(
                       {...updateAnimate}
                       onClick={updateAvatarHandler}
                     >
-                      <UilCheck size="22" color="lightgreen" />
+                      <UilCheck className={sizeIcon} color="lightgreen" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -235,7 +231,7 @@ const WallAvatar = withToast(
                       className="p-[8px] cursor-pointer"
                       {...updateAnimate}
                     >
-                      <UilTimes size="22" color="lightcoral" />
+                      <UilTimes className={sizeIcon} color="lightcoral" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -288,7 +284,7 @@ const WallAvatar = withToast(
           {!isOwned && !isFriend && !isPending && !isResponse && (
             <div onClick={sendAddFriendHandler}>
               <FriendState
-                icon={<UilUserPlus style={{ color: '#6fdeff' }} />}
+                icon={<UilUserPlus style={{ color: "#6fdeff" }} />}
                 title="Kết bạn"
               />
             </div>
@@ -324,12 +320,12 @@ const WallAvatar = withToast(
             </>
           )}
         </div>
-        <span className="text-[20px] w-full block text-slate-600 absolute-x-center bottom-[-100px] font-[500] text-center">
+        <span className="text-[20px] w-full block text-slate-600 absolute-x-center bottom-[-100px] sm:bottom-[-80px] font-[500] text-center">
           {fullName}
         </span>
       </section>
     );
-  },
+  }
 );
 
 export default memo(WallAvatar);

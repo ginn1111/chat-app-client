@@ -3,9 +3,9 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useCallback,
-} from 'react';
-import { createPortal } from 'react-dom';
-import Toast from './Toast';
+} from "react";
+import { createPortal } from "react-dom";
+import Toast from "./Toast";
 
 const ToastList = forwardRef((ref) => {
   const [toastList, setListToast] = useState([]);
@@ -29,14 +29,13 @@ const ToastList = forwardRef((ref) => {
           return (
             <Toast
               key={toast.id}
-              top={`${(index + 1) * 50}px`}
               message={toast.message}
               type={toast.type}
               onRemove={removeToastHandler.bind(null, toast.id)}
             />
           );
         }),
-        document.getElementById('root'),
+        document.getElementById("root")
       )}
     </>
   );
