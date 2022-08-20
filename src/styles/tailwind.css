@@ -31,7 +31,7 @@
     @apply absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%];
   }
   .format-page-size {
-    @apply overflow-hidden xl:w-[1280px] md:w-screen md:mx-auto mx-auto;
+    @apply overflow-hidden xl:w-[1300px] mx-auto w-[90%] sm:w-full;
   }
   .img-container:hover img {
     @apply rounded-[0px] mt-0 w-full h-full duration-200 transition-all;
@@ -76,7 +76,7 @@
     @apply content-[''] absolute w-full h-full bg-slate-600 top-0 left-0;
   }
   .toast {
-    @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[999999999];
+    @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[99999];
   }
   .toast + .toast {
     @apply mt-1;
@@ -87,19 +87,20 @@
   .no-read::before {
     @apply content-[''] absolute top-[15px] right-[-6px] border-t-[10px] border-r-[8px]  border-t-red-400 border-r-transparent;
   }
-  .menu-icon::after, .menu-icon::before {
+  .menu-icon::after,
+  .menu-icon::before {
     @apply content-[''] absolute w-full h-[2px] origin-right duration-300 bg-[#64748b];
   }
   .menu-icon::after {
-    @apply shadow-[0_9px_0_0_#64748b];
+    @apply shadow-[0_6.5px_0_0_#64748b];
   }
   .menu-icon::before {
     @apply bottom-0;
   }
   .menu-icon.close::after {
-    @apply rotate-[-45deg] shadow-[0_0_0_0_#64748b] translate-x-[-3px];
+    @apply rotate-[-42deg] shadow-[0_0_0_0_#64748b] translate-x-[-2.5px];
   }
   .menu-icon.close::before {
-    @apply rotate-[45deg] translate-x-[-3px];
+    @apply rotate-[42deg] translate-x-[-2.5px];
   }
 }

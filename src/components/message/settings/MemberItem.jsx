@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { UilInfoCircle } from '@iconscout/react-unicons';
+import React from "react";
+import { Link } from "react-router-dom";
+import { UilInfoCircle } from "@iconscout/react-unicons";
 
 const MemberItem = ({ avatar, name, linkProfile }) => {
   return (
@@ -11,11 +11,8 @@ const MemberItem = ({ avatar, name, linkProfile }) => {
           src={avatar}
           alt="avatar-information-member"
         />
-        <span className="sm:hidden text-[14px] font-[500]">{name}</span>
+        <span className="text-[14px] font-[500]">{name}</span>
       </Link>
-      <div className="ml-auto hidden sm:block">
-        <UilInfoCircle />
-      </div>
     </li>
   );
 };

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const FriendItem = ({ avatar,  name, id }) => {
+const FriendItem = ({ avatar, name, id }) => {
   return (
     <li className="h-full">
       <Link
@@ -11,10 +11,12 @@ const FriendItem = ({ avatar,  name, id }) => {
         <img
           src={avatar}
           alt="avatar-friend"
-          className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border-2 border-solid border-white object-center object-cover md:text-center md:mx-auto"
+          className="w-10 h-10 sm:w-5 sm:h-5 rounded-full border-2 border-solid border-white object-center object-cover md:text-center md:mx-auto"
         />
         <div className="w-full overflow-hidden md:mt-2">
-          <h3 className="w-full font-[600] text-[16px]">{name}</h3>
+          <h3 className="w-full font-[600] text-[16px] sm:text-[9px] sm:font-[500]">
+            {name}
+          </h3>
         </div>
       </Link>
     </li>

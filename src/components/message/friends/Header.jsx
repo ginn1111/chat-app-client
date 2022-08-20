@@ -1,19 +1,28 @@
-import { useMemo } from 'react';
-import { getConversationList } from '../../../store/selectors';
-import { useSelector } from 'react-redux';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import withModal from '../../../hoc/withModal';
-import Search from '../../ui/search/Search';
-import NewConversation from './NewConversation';
+import { useMemo } from "react";
+import { getConversationList } from "../../../store/selectors";
+import { useSelector } from "react-redux";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import withModal from "../../../hoc/withModal";
+import Search from "../../ui/search/Search";
+import NewConversation from "./NewConversation";
+import useUI from "../../../hooks/useUI";
 
 const Header = ({ modal, onSearch }) => {
   const conversationList = useSelector(getConversationList);
   const newInbox = useMemo(() => {
     return conversationList.reduce(
       (acc, con) => acc + +(con?.isUnSeen ?? 0),
-      0,
+      0
     );
   }, [conversationList]);
+
+  const { onHideConversationList } = useUI();
+
+  const addConversationHandler = () => {
+    modal.open();
+    onHideConversationList();
+  };
+
   return (
     <>
       <header className="flex justify-between items-center w-full py-1 text-slate-600">
@@ -28,13 +37,13 @@ const Header = ({ modal, onSearch }) => {
         <GroupAddIcon
           className="cursor-pointer"
           sx={{ fontSize: 25 }}
-          onClick={modal.open}
+          onClick={addConversationHandler}
         />
       </header>
       <div className="text-[14px] w-full">
         <Search
           onSearch={onSearch}
-          bgColor="bg-slate-200 text-[14px]"
+          bgColor="bg-slate-200 text-[14px] sm:px-2 sm:py-1"
           placeholder="search chat..."
         />
       </div>

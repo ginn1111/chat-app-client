@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import React, { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
-import AvatarSettings from './AvatarSettings';
-import NotificationList from './NotificationList';
-import Animation from '../../../animation/Animation';
-import { fallAnimate } from '../../../animation/models';
-import Search from '../../ui/search/Search';
-import { getNotifications, getUser } from '../../../store/selectors';
-import { useSelector } from 'react-redux';
-import useSearch from '../../../hooks/useSearch';
-import NotifyBubble from '../../ui/notification/NotifyBubble';
+import AvatarSettings from "./AvatarSettings";
+import NotificationList from "./NotificationList";
+import Animation from "../../../animation/Animation";
+import { fallAnimate } from "../../../animation/models";
+import Search from "../../ui/search/Search";
+import { getNotifications, getUser } from "../../../store/selectors";
+import { useSelector } from "react-redux";
+import useSearch from "../../../hooks/useSearch";
+import NotifyBubble from "../../ui/notification/NotifyBubble";
 
 const Header = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -20,23 +20,25 @@ const Header = () => {
   const navigate = useNavigate();
 
   const searchHandler = useSearch((value) =>
-    navigate('/search', { state: value }),
+    navigate("/search", { state: value })
   );
 
-  const focusHandler = () => navigate('/search');
+  const focusHandler = () => navigate("/search");
 
   const { avatar } = useSelector(getUser);
 
   const isNotify = useMemo(
     () => notifications?.some((notification) => !notification.isResponse),
-    [notifications],
+    [notifications]
   );
 
   useEffect(() => {
     function handlerEvent(event) {
-      const avatarMenuContainer = document.getElementById('avatar-container');
-      const notificationPanel = document.getElementById('notification-panel');
-      const notificationContainer = document.getElementById('notification-container');
+      const avatarMenuContainer = document.getElementById("avatar-container");
+      const notificationPanel = document.getElementById("notification-panel");
+      const notificationContainer = document.getElementById(
+        "notification-container"
+      );
 
       avatarMenuContainer.contains(event.target)
         ? setIsShowMenu((prev) => !prev)
@@ -48,12 +50,12 @@ const Header = () => {
           : setIsShowNotification((prev) => !prev)
         : setIsShowNotification(false);
     }
-    document.addEventListener('mouseup', handlerEvent);
-    return () => document.removeEventListener('mouseup', handlerEvent);
+    document.addEventListener("mouseup", handlerEvent);
+    return () => document.removeEventListener("mouseup", handlerEvent);
   }, []);
 
   return (
-    <header className="bg-white  z-[10] w-[90%] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600 fixed top-0 left-0 right-0">
+    <header className="bg-white z-[10] w-[90%] xl:w-[1300px] px-auto mx-auto h-[70px] flex gap-x-5 items-center justify-between border-b border-solid border-slate-400 text-sm text-gray-600 fixed top-0 left-0 right-0">
       <div className="ml-auto flex  gap-x-2 relative w-5/12 sm:w-1/3">
         <Animation animationCreator={fallAnimate}>
           <div>Logo</div>
@@ -80,7 +82,7 @@ const Header = () => {
           <motion.div
             className="cursor-pointer"
             initial={{
-              origin: 'center center',
+              origin: "center center",
             }}
             whileTap={{
               transition: { duration: 0.3 },
@@ -99,7 +101,7 @@ const Header = () => {
         <Animation animationCreator={fallAnimate}>
           <div
             id="avatar-container"
-            className="relative cursor-pointer w-7 h-7 rounded-full"
+            className="relative cursor-pointer w-7 h-7 rounded-full sm:w-6 sm:h-6"
           >
             <img
               className="w-full h-full object-cover object-center rounded-full shadow-[0_0_0_5px_#bae6fd]"

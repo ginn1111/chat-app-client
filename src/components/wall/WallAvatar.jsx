@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import { useMemo, memo, useEffect, useRef, useState } from "react";
+import useUI from "../../hooks/useUI";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
@@ -45,6 +46,8 @@ const WallAvatar = withToast(
     const status = useSelector(getFriendStatus);
     const userStatus = useSelector(getStatus);
 
+    const { sizeWindow } = useUI();
+
     const [isUpdateAvatar, setIsUpdateAvatar] = useState(false);
     const [bgUrl, setBgUrl] = useState(null);
     const [bgSrc, setBgSrc] = useState(null);
@@ -56,13 +59,17 @@ const WallAvatar = withToast(
       initial: { x: -10, opacity: 0 },
       animate: { x: 0, opacity: 1 },
       transition: { duration: 0.1 },
-      whileHover: { filter: "brightness(50%)" },
+      whileHover: { opacity: 0.9 },
+      whileTap: { scale: 1.2 },
     };
     const errorType = { color: "salmon" };
     const warningType = { color: "#ffb100cf" };
     const safeType = { color: "#50f350" };
 
-    const sizeIcon = "text-[22px] sm:text-[1.4rem]"
+    const sizeIcon = useMemo(
+      () => (sizeWindow === "sm" ? "15px" : "22px"),
+      [sizeWindow]
+    );
 
     useEffect(() => {
       if (status === "send-add-friend/success") {
@@ -177,8 +184,8 @@ const WallAvatar = withToast(
         className={`w-5/6 relative rounded-b-lg pt-[25%] `}
         style={{
           backgroundImage: `url('${bgUrl ?? coverPicture}')`,
-          backgroundAttachment: "fixed",
-          backgroundPosition: "center ",
+          backgroundAttachment: sizeWindow === "lg" ? "fixed" : "scroll",
+          backgroundPosition: sizeWindow === "lg" ? "center" : "center top",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
@@ -201,9 +208,9 @@ const WallAvatar = withToast(
               >
                 <label
                   htmlFor="change-avatar"
-                  className="cursor-pointer p-[8px] "
+                  className="cursor-pointer p-[8px] sm:p-[5px]"
                 >
-                  <UilCameraPlus className={sizeIcon} />
+                  <UilCameraPlus size={sizeIcon} className="flex" />
                 </label>
                 <input
                   onClick={clickFileInputHandler}
@@ -220,7 +227,7 @@ const WallAvatar = withToast(
                       {...updateAnimate}
                       onClick={updateAvatarHandler}
                     >
-                      <UilCheck className={sizeIcon} color="lightgreen" />
+                      <UilCheck size={sizeIcon} color="lightgreen" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -231,7 +238,7 @@ const WallAvatar = withToast(
                       className="p-[8px] cursor-pointer"
                       {...updateAnimate}
                     >
-                      <UilTimes className={sizeIcon} color="lightcoral" />
+                      <UilTimes size={sizeIcon} color="lightcoral" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -239,15 +246,15 @@ const WallAvatar = withToast(
             )}
           </div>
         </div>
-        <div className="absolute right-2 bottom-2 flex items-center gap-x-2">
+        <div className="absolute right-2 bottom-2 sm:right-1 sm:bottom-1 flex items-center gap-x-2 sm:flex-col sm:gap-y-1 sm:items-start">
           {isOwned && (
-            <div className=" bg-white flex cursor-pointer items-center w-max overflow-hidden px-2  rounded-md  py-1.5">
+            <div className="bg-white flex cursor-pointer items-center w-max overflow-hidden px-2 rounded-md sm:rounded-sm py-1.5 sm:px-1 sm:py-0.5">
               <label
                 htmlFor="change-bg"
                 className="text-slate-600 flex items-center cursor-pointer text-[14px] font-bold  gap-x-1.5"
               >
                 <motion.div {...updateAnimate}>
-                  <CameraAltOutlinedIcon sx={{ fontSize: 23 }} />
+                  <CameraAltOutlinedIcon sx={{ fontSize: sizeIcon }} />
                 </motion.div>
               </label>
               <AnimatePresence>
@@ -257,7 +264,7 @@ const WallAvatar = withToast(
                     className="px-1"
                     {...updateAnimate}
                   >
-                    <UilCheck color="lightgreen" size="22" />
+                    <UilCheck color="lightgreen" size={sizeIcon} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -267,7 +274,7 @@ const WallAvatar = withToast(
                     onClick={cancelUpdateBackgroundHandler}
                     {...updateAnimate}
                   >
-                    <UilTimes color="lightcoral" size="22" />
+                    <UilTimes color="lightcoral" size={sizeIcon} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -284,43 +291,42 @@ const WallAvatar = withToast(
           {!isOwned && !isFriend && !isPending && !isResponse && (
             <div onClick={sendAddFriendHandler}>
               <FriendState
-                icon={<UilUserPlus style={{ color: "#6fdeff" }} />}
+                icon={
+                  <UilUserPlus style={{ color: "#6fdeff" }} size={sizeIcon} />
+                }
                 title="Kết bạn"
               />
             </div>
           )}
           {isPending && !isFriend && (
             <FriendState
-              icon={<UilUserExclamation style={warningType} />}
+              icon={<UilUserExclamation style={warningType} size={sizeIcon} />}
               title="Đang quyết định"
             />
           )}
           {isFriend && !isResponse && (
-            <div onClick={unfriendHandler}>
-              <FriendState
-                icon={<UilUserMinus style={errorType} />}
-                title="Huỷ kết bạn"
-              />
-            </div>
+            <FriendState
+              onClick={unfriendHandler}
+              icon={<UilUserMinus style={errorType} size={sizeIcon} />}
+              title="Huỷ kết bạn"
+            />
           )}
           {isResponse && (
             <>
-              <div onClick={() => responseAddFriendHandler(true)}>
-                <FriendState
-                  icon={<UilUserCheck style={safeType} />}
-                  title="Chấp nhận"
-                />
-              </div>
-              <div onClick={() => responseAddFriendHandler(false)}>
-                <FriendState
-                  icon={<UilUserTimes style={errorType} />}
-                  title="Từ chối"
-                />
-              </div>
+              <FriendState
+                onClick={() => responseAddFriendHandler(true)}
+                icon={<UilUserCheck style={safeType} size={sizeIcon} />}
+                title="Chấp nhận"
+              />
+              <FriendState
+                onClick={() => responseAddFriendHandler(false)}
+                icon={<UilUserTimes style={errorType} size={sizeIcon} />}
+                title="Từ chối"
+              />
             </>
           )}
         </div>
-        <span className="text-[20px] w-full block text-slate-600 absolute-x-center bottom-[-100px] sm:bottom-[-80px] font-[500] text-center">
+        <span className="text-[20px] sm:text-[16px] truncate max-w-1/2 w-full block text-slate-600 absolute-x-center bottom-[-100px] sm:bottom-[-80px] font-[500] text-center">
           {fullName}
         </span>
       </section>

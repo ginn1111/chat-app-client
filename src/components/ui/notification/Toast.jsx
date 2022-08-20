@@ -19,13 +19,13 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
   const typeToast =
     type === "error"
       ? {
-        bg: "bg-red-500",
-        icon: <UilExclamationTriangle color="white" size="22" />,
-      }
+          bg: "bg-red-500",
+          icon: <UilExclamationTriangle color="white" size="22" />,
+        }
       : {
-        bg: "bg-green-500",
-        icon: <UilCheckCircle color="white" size="22" />,
-      };
+          bg: "bg-green-500",
+          icon: <UilCheckCircle color="white" size="22" />,
+        };
   return (
     <motion.div
       initial={{

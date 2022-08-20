@@ -1,7 +1,7 @@
-import React from 'react';
-import BasicInformation from './BasicInformation';
-import ContactInformation from './ContactInformation';
-import SecureInformation from './SecureInformation';
+import React from "react";
+import BasicInformation from "./BasicInformation";
+import ContactInformation from "./ContactInformation";
+import SecureInformation from "./SecureInformation";
 
 const ProfileInformation = () => {
   return (
@@ -9,7 +9,7 @@ const ProfileInformation = () => {
       <div className="w-1/2 sm:w-full">
         <BasicInformation />
       </div>
-      <div className="w-1/2 flex flex-col gap-y-1 sm:w-full">
+      <div className="w-1/2 flex flex-col gap-y-2 sm:w-full">
         <div className="basis-5/12">
           <SecureInformation />
         </div>

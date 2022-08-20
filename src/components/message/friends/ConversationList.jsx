@@ -87,6 +87,8 @@ const ConversationList = () => {
 
     divRef.current.style.left = parent?.offsetLeft + "px";
     divRef.current.style.width = parent?.offsetWidth + "px";
+
+    console.log(parent?.offsetLeft);
   }, [isGroupTab]);
 
   //[Update conversation isSeen when user visited]
@@ -179,20 +181,20 @@ const ConversationList = () => {
         <span
           onClick={() => selectGroupTabHandler(false)}
           ref={personRef}
-          className="px-2 py-1 flex items-center cursor-pointer"
+          className="px-2 py-1 flex items-center cursor-pointer z-[2]"
         >
           <PersonIcon sx={{ fontSize: 25 }} />
         </span>
         <span
           onClick={() => selectGroupTabHandler(true)}
           ref={groupRef}
-          className="px-2 py-1 flex items-center cursor-pointer"
+          className="px-2 py-1 flex items-center cursor-pointer z-[2]"
         >
           <GroupsIcon sx={{ fontSize: 25 }} />
         </span>
         <span
           ref={divRef}
-          className="absolute duration-300 h-full border-t-2 bg-slate-100 border-solid border-sky-600 z-[-1] rounded-b-sm"
+          className="absolute duration-300 h-full border-t-2 bg-slate-100 border-solid border-sky-600 rounded-b-sm z-[1]"
         ></span>
       </div>
       {conversationListRender}

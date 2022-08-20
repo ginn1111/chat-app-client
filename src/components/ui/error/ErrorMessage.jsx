@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ErrorMessage = ({ message, isShow }) => {
   return (
@@ -13,7 +13,7 @@ const ErrorMessage = ({ message, isShow }) => {
           }}
           transition={{ duration: 0.5 }}
           exit={{ y: -10, opacity: 0 }}
-          className="py-1 text-[14px] text-rose-600 font-[500] tracking-wider indent-2 block"
+          className="py-1 text-[14px] text-rose-600 font-[500] tracking-wider pl-1 block"
         >
           {message}
         </motion.span>

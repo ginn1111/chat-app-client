@@ -12,6 +12,7 @@
   border-radius: 5px;
 }
 html {
+  -webkit-tap-highlighting-color: transparent;
   scroll-behavior: smoothing;
   font-size: 62.5%;
   font-size: 1.6rem;

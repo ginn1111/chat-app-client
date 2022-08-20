@@ -24,7 +24,7 @@ const withToast = (WrappedComponent) => {
     return (
       <>
         {createPortal(
-          <div className="fixed top-0 right-0 h-max w-max mt-4">
+          <div className="fixed top-[70px] right-0 h-max w-max mt-4 z-[11]">
             {toastList.map((toast) => {
               return (
                 <Toast

@@ -1,7 +1,7 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-import NotificationItem from './NotificationItem';
+import NotificationItem from "./NotificationItem";
 
 const NotificationList = ({ isShow, notifications }) => {
   return (
@@ -9,15 +9,17 @@ const NotificationList = ({ isShow, notifications }) => {
       {isShow && (
         <motion.div
           id="notification-panel"
-          className="z-50 absolute top-[150%] right-[-180%] bg-white shadow-lg w-auto h-max px-2 py-1 rounded-md"
-          initial={{ opacity: 0, scale: 0, originX: '80%', originY: '0' }}
+          className="z-50 absolute top-[150%] right-[-180%] bg-white shadow-lg w-auto h-max p-1.5 rounded-md sm:py-0 sm:px-0.5"
+          initial={{ opacity: 0, scale: 0, originX: "80%", originY: "0" }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
           exit={{ opacity: 0, scale: 0 }}
         >
-          <ul className="max-w-[300px] w-max h-max  gap-y-1 flex flex-col pb-1">
+          <ul className="max-w-[300px] w-max h-max  gap-y-1 flex flex-col">
             {notifications?.length === 0 && (
-              <span className="inline-block">You don't have any notify</span>
+              <span className="inline-block sm:p-1 font-[500]">
+                Don't have any notify
+              </span>
             )}
             {notifications?.map((notification) => {
               return (

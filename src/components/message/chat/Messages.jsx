@@ -1,12 +1,10 @@
-import { useRef, useEffect, useMemo, memo, useState } from "react";
-import useUI from '../../../hooks/useUI';
+import { useRef, useEffect, memo, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageItem from "./MessageItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUser,
   getMessageList,
-  getStatusMessage,
   hasMore as hasMoreMsg,
   hasGetMore,
 } from "../../../store/selectors";
@@ -16,7 +14,6 @@ import getSocketIO, {
   removeGetMessage,
 } from "../../../services/socketIO";
 import {
-  resetStatus,
   addMessage,
   getMessages,
   hasMore as setHasMore,
@@ -31,29 +28,16 @@ import CircleLoading from "../../ui/loading/CircleLoading";
 import { AnimatePresence, motion } from "framer-motion";
 import { CircularProgress } from "@mui/material";
 
-const Messages = () => {
+const Messages = ({ isPending, onHasLoadingMore, isLoadingMore }) => {
   const { id: userId } = useSelector(getUser);
   const { id: visitedConversationId } = useParams();
-  const [isLoadingMore, setIsLoadingMore] = useState(true);
   const messages = useSelector(getMessageList);
   const isGetMore = useSelector(hasGetMore);
   const hasMore = useSelector(hasMoreMsg);
   const dispatch = useDispatch();
-  const status = useSelector(getStatusMessage);
-  const isPending = useMemo(() => status === "get-message/pending", [status]);
 
   const scrollRef = useRef();
   const observer = useRef();
-
-  const {onHideConversationList} = useUI();
-
-  useEffect(() => {
-    if (status === "get-message/success") {
-      setIsLoadingMore(false);
-      dispatch(resetStatus());
-      onHideConversationList();
-    }
-  }, [status]);
 
   useEffect(() => {
     if (
@@ -64,7 +48,7 @@ const Messages = () => {
     const intersectionObserver = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setIsLoadingMore(true);
+          onHasLoadingMore(true);
           dispatch(setHasGetMore(true));
           dispatch(
             getMessages(visitedConversationId, null, messages.length, 2)
@@ -133,36 +117,46 @@ const Messages = () => {
       <AnimatePresence>
         {isPending && !isLoadingMore && <CircleLoading height="h-[79.5%]" />}
       </AnimatePresence>
-
-      <ul
-        data-scroll-parent
-        ref={scrollRef}
-        className="h-[65vh] w-full flex flex-col gap-y-5 p-2 overflow-auto bg-gradient-b from-transparent to-white z-9 shadow-[0_0_10px_-5px_#0000004a]"
-      >
-        <>
-          <AnimatePresence>
-            {isLoadingMore && (
-              <motion.div
-                className="w-full text-center"
-                initial={{ opacity: 0, y: -10 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                animate={{ opacity: 1, y: 10 }}
-              >
-                <CircularProgress />
-              </motion.div>
+      {!isPending && (
+        <ul
+          data-scroll-parent
+          ref={scrollRef}
+          className="h-full w-full flex flex-col gap-y-5 p-2 overflow-auto bg-gradient-b from-transparent to-white z-9 shadow-[0_0_10px_-5px_#0000004a]"
+        >
+          <>
+            <AnimatePresence>
+              {isLoadingMore && (
+                <motion.div
+                  className="w-full text-center"
+                  initial={{ opacity: 0, y: -10 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  animate={{ opacity: 1, y: 10 }}
+                >
+                  <CircularProgress />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {messages?.length === 0 && (
+              <p className="text-center text-[16px] font-[500] text-slate-600">
+                Let's chat here!
+              </p>
             )}
-          </AnimatePresence>
-          {messages?.length === 0 && (
-            <p className="text-center text-[16px] font-[500] text-slate-600">
-              Let's chat here!
-            </p>
-          )}
-          {messages?.map((message, index) => {
-            if (index === 0) {
+            {messages?.map((message, index) => {
+              if (index === 0) {
+                return (
+                  <MessageItem
+                    ref={observer}
+                    key={message._id}
+                    isOwn={message.senderId === userId}
+                    senderId={message.senderId}
+                    message={message.text}
+                    timeAt={formatTime(message.createdAt)}
+                  />
+                );
+              }
               return (
                 <MessageItem
-                  ref={observer}
                   key={message._id}
                   isOwn={message.senderId === userId}
                   senderId={message.senderId}
@@ -170,19 +164,10 @@ const Messages = () => {
                   timeAt={formatTime(message.createdAt)}
                 />
               );
-            }
-            return (
-              <MessageItem
-                key={message._id}
-                isOwn={message.senderId === userId}
-                senderId={message.senderId}
-                message={message.text}
-                timeAt={formatTime(message.createdAt)}
-              />
-            );
-          })}
-        </>
-      </ul>
+            })}
+          </>
+        </ul>
+      )}
     </>
   );
 };

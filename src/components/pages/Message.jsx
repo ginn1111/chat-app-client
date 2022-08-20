@@ -1,5 +1,6 @@
-import { useEffect, memo, useState } from "react";
-import useUI from '../../hooks/useUI'
+import { useEffect, memo } from "react";
+import Backdrop from "../ui/modal/Backdrop";
+import useUI from "../../hooks/useUI";
 import { useNavigate } from "react-router-dom";
 import { Outlet, useParams } from "react-router-dom";
 import ConversationList from "../message/friends/ConversationList";
@@ -9,7 +10,8 @@ import { getConversationsStatus } from "../../store/selectors";
 import withToast from "../../hoc/withToast";
 import { useDispatch, useSelector } from "react-redux";
 
-export const commonStyle = "rounded-xl px-2 py-1 h-full";
+export const commonStyle =
+  "rounded-md rounded-tl-none rounded-bl-none px-2 py-1 h-full";
 
 const Message = ({ toast }) => {
   const { id: conversationId } = useParams();
@@ -18,18 +20,8 @@ const Message = ({ toast }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { showConversationList, onResize, sizeWindow } = useUI();
-
-  useEffect(() => {
-    onResize(window.innerWidth)
-  }, [onResize])
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      onResize(window.innerWidth)
-    })
-
-  }, [conversationId, onResize, sizeWindow])
+  const { showConversationList, sizeWindow, onToggleConversationList } =
+    useUI();
 
   useEffect(() => {
     if (status === "create-conversation/success") {
@@ -59,9 +51,15 @@ const Message = ({ toast }) => {
 
   return (
     <>
-      <div className="format-page-size flex h-[calc(100vh_-_90px)] relative rounded-md">
+      <Backdrop
+        isShow={showConversationList && sizeWindow === "sm"}
+        onClose={onToggleConversationList}
+      />
+      <div className="format-page-size flex h-[calc(100vh_-_90px)] relative">
         <div
-          className={`z-[10] w-[240px] lg:w-[350px] flex-none ${commonStyle} flex flex-col items-center gap-y-2 text-[14px] bg-white shadow-lg pr-2 ${sizeWindow === 'sm' ? 'absolute left-[-350px]' : 'static left-0'} duration-500 ${showConversationList ? 'left-0' : 'left-[-350px]'}`}
+          className={`sm:z-[99] w-[260px] lg:w-[350px] flex-none ${commonStyle} flex flex-col items-center gap-y-2 text-[14px] bg-white sm:shadow-lg pr-2 ${
+            sizeWindow === "sm" ? "absolute left-[-350px]" : "static left-0"
+          } duration-300 ${showConversationList ? "left-0" : "left-[-350px]"}`}
         >
           <ConversationList />
         </div>

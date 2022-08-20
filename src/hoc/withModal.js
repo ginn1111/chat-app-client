@@ -1,11 +1,11 @@
-import ReactDOM from 'react-dom';
-import Backdrop from '../components/ui/modal/Backdrop';
-import Modal from '../components/ui/modal/Modal';
-import useModal from '../hooks/useModal';
+import ReactDOM from "react-dom";
+import Backdrop from "../components/ui/modal/Backdrop";
+import Modal from "../components/ui/modal/Modal";
+import useModal from "../hooks/useModal";
 
 const withModal = (WrappedComponent, ChildComponent) => {
   return (props) => {
-    const {isShow, onClose, onOpen} = useModal()
+    const { isShow, onClose, onOpen } = useModal();
 
     return (
       <>
@@ -16,9 +16,9 @@ const withModal = (WrappedComponent, ChildComponent) => {
               <ChildComponent onClose={onClose} />
             </Modal>
           </>,
-          document.getElementById('modal'),
+          document.getElementById("modal")
         )}
-        <WrappedComponent {...props} modal={{close: onClose, open: onOpen}} />
+        <WrappedComponent {...props} modal={{ close: onClose, open: onOpen }} />
       </>
     );
   };

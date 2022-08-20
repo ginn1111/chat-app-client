@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
-import { InputInformation } from '../../ui/input/MyInput';
-import MyButton from '../../ui/button/MyButton';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { useSelector } from 'react-redux';
-import { validateEmpty } from '../../../utils/validate';
-import { getConversationsStatus, getUser } from '../../../store/selectors';
-import { useDispatch } from 'react-redux';
-import { createConversation } from '../../../store/conversation-slice';
-import useAddMembers from '../../../hooks/useAddMembers';
+import { useEffect, useRef } from "react";
+import { InputInformation } from "../../ui/input/MyInput";
+import MyButton from "../../ui/button/MyButton";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { useSelector } from "react-redux";
+import { validateEmpty } from "../../../utils/validate";
+import { getConversationsStatus, getUser } from "../../../store/selectors";
+import { useDispatch } from "react-redux";
+import { createConversation } from "../../../store/conversation-slice";
+import useAddMembers from "../../../hooks/useAddMembers";
 
 export const MemberItem = ({
   fullName,
@@ -16,7 +16,6 @@ export const MemberItem = ({
   onAddMember,
   isChoosy,
 }) => {
-
   function changeHandler(e) {
     onAddMember({ memberId: e.target.value, nickname: fullName, avatar });
   }
@@ -32,7 +31,7 @@ export const MemberItem = ({
       </div>
       <label
         className={`${
-          isChoosy ? 'text-sky-700' : ''
+          isChoosy ? "text-sky-700" : ""
         } cursor-pointer px-2 duration-300`}
         htmlFor={friendId}
       >
@@ -51,6 +50,7 @@ export const MemberItem = ({
 };
 
 export const MemberList = ({ friendList, onAddMember, choosyFriendList }) => {
+  console.log({ friendList });
   return (
     <ul className=" overflow-y-auto max-h-[30vh]">
       {friendList?.map((friend) => {
@@ -80,10 +80,10 @@ const NewConversation = ({ onClose }) => {
   const nameRef = useRef();
 
   useEffect(() => {
-    if(status.split('/')[1] !== 'pending' && status !== 'idle') {
+    if (status.split("/")[1] !== "pending" && status !== "idle") {
       onClose();
     }
-  }, [status])
+  }, [status]);
 
   function submitHandler(e) {
     e.preventDefault();
@@ -99,16 +99,20 @@ const NewConversation = ({ onClose }) => {
         }),
         isGroup: true,
         title: nameRef.current.value.trim(),
-      }),
+      })
     );
   }
+
+  console.log(user?.friendList);
 
   return (
     <form
       onSubmit={submitHandler}
       className="px-3 h-max  bg-white rounded-md w-full pt-2 pb-5 text-slate-500"
     >
-      <h3 className="text-sm font-[500] text-center pb-2">New Group</h3>
+      <h3 className="text-sm font-[500] text-center pb-2 sm:text-[18px]">
+        New Group
+      </h3>
       <InputInformation
         ref={nameRef}
         title="Name"
@@ -116,12 +120,20 @@ const NewConversation = ({ onClose }) => {
         errorText="Name is not empty!"
       />
       <div className="w-full h-max mt-2">
-        <h3 className="text-[16px] font-[500]">Members </h3>
-        <MemberList
-          friendList={user.friendList}
-          onAddMember={onAddMember}
-          choosyFriendList={choosyFriendList}
-        />
+        {user?.friendList?.length > 0 ? (
+          <>
+            <h3 className="text-[16px] font-[500]">Members </h3>
+            <MemberList
+              friendList={user.friendList}
+              onAddMember={onAddMember}
+              choosyFriendList={choosyFriendList}
+            />
+          </>
+        ) : (
+          <p className="text-center text-[18px] sm:text-[14px]">
+            You don't have any friends!
+          </p>
+        )}
       </div>
       <div className="w-full mt-5 gap-x-2 flex">
         <MyButton
