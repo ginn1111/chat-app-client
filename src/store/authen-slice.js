@@ -47,6 +47,9 @@ const authenticationSlice = createSlice({
     addFriendRequest(state, action) {
       state.userInformation.friendRequest.push(action.payload);
     },
+    addFriendResponse(state, action) {
+      state.userInformation.friendResponse.push(action.payload);
+    },
     removeFriendResponse(state, action) {
       const friendResponseList = state.userInformation.friendResponse;
       state.userInformation.friendResponse = friendResponseList.filter(
@@ -263,5 +266,6 @@ export const {
   setAvatar,
   setCoverPicture,
   setMessage,
+  addFriendResponse,
 } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

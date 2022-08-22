@@ -1,41 +1,48 @@
-import { createSlice } from '@reduxjs/toolkit';
-import * as notificationService from '../services/notification';
+import { createSlice } from "@reduxjs/toolkit";
+import * as notificationService from "../services/notification";
 
 const INIT_STATE = {
   notifications: [],
-  status: 'idle',
+  status: "idle",
 };
 
 const notificationSlice = createSlice({
-  name: 'notification',
+  name: "notification",
   initialState: INIT_STATE,
   reducers: {
     resetStatus(state) {
-      state.status = 'idle';
+      state.status = "idle";
     },
     setNotifications(state, action) {
       state.notifications = action.payload;
     },
     setUpdateNotification(state, action) {
       const index = state.notifications.findIndex(
-        (notification) => notification._id === action.payload,
+        (notification) => notification._id === action.payload
       );
       index >= 0 && (state.notifications[index].isResponse = true);
     },
     setRemoveNotification(state, action) {
       const index = state.notifications.findIndex(
-        (notification) => notification._id === action.payload,
+        (notification) => notification._id === action.payload
       );
       index >= 0 && state.notifications.splice(index, 1);
+    },
+    addNotification(state, action) {
+      state.notifications.push(action.payload);
+    },
+    createNotificationId(state, action) {
+      state.createdNotificationId = action.payload;
     },
   },
 });
 
-export const notify = (notification) => async (_, getState) => {
+export const notify = (notification) => async (dispatch, getState) => {
   const {
     userInformation: { id: userId },
   } = getState().authentication;
-  await notificationService.sendNotify(userId, notification);
+  const { data } = await notificationService.sendNotify(userId, notification);
+  dispatch(createNotificationId(data));
 };
 
 export const getNotifications = (userId) => async (dispatch) => {
@@ -55,7 +62,7 @@ export const updateNotification =
       } = getState().authentication;
 
       !getState().notifications.notifications.find(
-        (notification) => notification._id === notificationId,
+        (notification) => notification._id === notificationId
       ).isResponse &&
         (await notificationService.updateNotification(userId, notificationId));
       dispatch(setUpdateNotification(notificationId));
@@ -84,5 +91,7 @@ export const {
   setNotifications,
   setUpdateNotification,
   setRemoveNotification,
+  addNotification,
+  createNotificationId,
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

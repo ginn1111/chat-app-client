@@ -60,7 +60,7 @@ const Login = withToast(({ toast }) => {
       <section className="lg:pr-[100px] lg:pt-[100px] pt-[30%] sm:text-[1.4rem] ">
         <div className="md:mx-auto md:w-[80%] md:block sm:mx-[1rem] sm:items-center sm:w-auto h-full w-full flex flex-col justify-center items-end">
           <Animation animationCreator={itemAnimate.bind(null, 0)}>
-            <h1 className="text-white text-3xl sm:text-[1.6rem] w-max font-[600] relative after:absolute after:w-[10px] after:h-[10px] after:rounded-[50%] after:bg-blue-500 after:bottom-[5px] after:right-[-11px] before:w-[8px] before:h-[60%] before:bg-white before:absolute before:bottom-[20px] before:right-[-10px] before:rounded-[8px]">
+            <h1 className="text-white text-3xl sm:text-[1.6rem] w-max font-[600] relative after:absolute after:w-[10px] after:h-[10px] after:rounded-[50%] after:bg-cyan-300 after:bottom-[5px] after:right-[9px] before:w-[6px] before:h-[60%] before:bg-white before:absolute before:bottom-[20px] before:right-[11px] before:rounded-[8px] pr-4">
               Welcome Back
             </h1>
           </Animation>
@@ -90,11 +90,11 @@ const Login = withToast(({ toast }) => {
             </Animation>
             <Animation animationCreator={itemAnimate.bind(null, 0.3)}>
               <div className="ml-2 flex  justify-between">
-                <span className="text-[16px] text-white opacity-50">
+                <span className="text-[16px] text-white">
                   <span>Don't have account?</span>
                   <Link
                     to="/auth/register"
-                    className="text-blue-500 cursor-pointer"
+                    className="text-cyan-400 cursor-pointer"
                   >
                     {" "}
                     Register

@@ -1,4 +1,7 @@
 import { useMemo, memo, useEffect, useRef, useState } from "react";
+import getSocketIO, {
+  sendAddFriend as sendAddFriendToSocket,
+} from "../../services/socketIO";
 import useUI from "../../hooks/useUI";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +18,12 @@ import {
 } from "@iconscout/react-unicons";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import FriendState from "./FriendState";
-import { getFriendStatus, getStatus } from "../../store/selectors";
+import {
+  getCreatedNotifiId,
+  getFriendStatus,
+  getStatus,
+  getUser,
+} from "../../store/selectors";
 import {
   updateAvatar,
   resetStatus as userResetStatus,
@@ -45,12 +53,15 @@ const WallAvatar = withToast(
     const param = useParams();
     const status = useSelector(getFriendStatus);
     const userStatus = useSelector(getStatus);
+    const userInfor = useSelector(getUser);
 
     const { sizeWindow } = useUI();
 
     const [isUpdateAvatar, setIsUpdateAvatar] = useState(false);
     const [bgUrl, setBgUrl] = useState(null);
     const [bgSrc, setBgSrc] = useState(null);
+
+    const createdNotifiId = useSelector(getCreatedNotifiId);
 
     const avatarRef = useRef();
 
@@ -75,6 +86,20 @@ const WallAvatar = withToast(
       if (status === "send-add-friend/success") {
         toast.addToast({ message: "Send request successfully!" });
         dispatch(resetStatus());
+        const socket = getSocketIO();
+        socket?.connected &&
+          sendAddFriendToSocket(
+            {
+              _id: createdNotifiId,
+              senderId: userInfor.id,
+              senderName: `${userInfor.firstName} ${userInfor.lastName}`,
+              senderAvatar: userInfor.avatar,
+              receiverId: param.id,
+              notify: "Make friend, happy together!",
+              isResponse: false,
+            },
+            socket
+          );
       } else if (status === "send-add-friend/failed") {
         toast.addToast({
           message: "Send request failed, try again!",
@@ -294,21 +319,21 @@ const WallAvatar = withToast(
                 icon={
                   <UilUserPlus style={{ color: "#6fdeff" }} size={sizeIcon} />
                 }
-                title="Kết bạn"
+                title="Add friend"
               />
             </div>
           )}
           {isPending && !isFriend && (
             <FriendState
               icon={<UilUserExclamation style={warningType} size={sizeIcon} />}
-              title="Đang quyết định"
+              title="Waitting"
             />
           )}
           {isFriend && !isResponse && (
             <FriendState
               onClick={unfriendHandler}
               icon={<UilUserMinus style={errorType} size={sizeIcon} />}
-              title="Huỷ kết bạn"
+              title="Unfriend"
             />
           )}
           {isResponse && (
@@ -316,12 +341,12 @@ const WallAvatar = withToast(
               <FriendState
                 onClick={() => responseAddFriendHandler(true)}
                 icon={<UilUserCheck style={safeType} size={sizeIcon} />}
-                title="Chấp nhận"
+                title="Accept"
               />
               <FriendState
                 onClick={() => responseAddFriendHandler(false)}
                 icon={<UilUserTimes style={errorType} size={sizeIcon} />}
-                title="Từ chối"
+                title="Deny"
               />
             </>
           )}

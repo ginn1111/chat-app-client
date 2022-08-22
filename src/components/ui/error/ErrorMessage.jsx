@@ -13,7 +13,7 @@ const ErrorMessage = ({ message, isShow }) => {
           }}
           transition={{ duration: 0.5 }}
           exit={{ y: -10, opacity: 0 }}
-          className="py-1 text-[14px] text-rose-600 font-[500] tracking-wider pl-1 block"
+          className="py-1 text-[14px] text-rose-600 font-[500] tracking-wider pl-1 block sm:text-[12px]"
         >
           {message}
         </motion.span>

@@ -1,56 +1,58 @@
-import { useImperativeHandle, useId, useState, forwardRef } from 'react';
-import { motion } from 'framer-motion';
-import { UilEyeSlash } from '@iconscout/react-unicons';
-import useInput from '../../../hooks/useInput';
-import ErrorMessage from '../../ui/error/ErrorMessage';
+import { useImperativeHandle, useId, useState, forwardRef } from "react";
+import { motion } from "framer-motion";
+import { UilEyeSlash } from "@iconscout/react-unicons";
+import useInput from "../../../hooks/useInput";
+import ErrorMessage from "../../ui/error/ErrorMessage";
 
-export const InputInformation = forwardRef(({ icon, type, title, width, placeholder, validateFn, errorText }, ref) => {
+export const InputInformation = forwardRef(
+  ({ icon, type, title, width, placeholder, validateFn, errorText }, ref) => {
+    const {
+      state: { value, isValid, isInValid },
+      actions: { onChange, onBlur, reset, setValue },
+    } = useInput(validateFn);
 
-  const {
-    state: { value, isValid, isInValid },
-    actions: { onChange, onBlur, reset, setValue },
-  } = useInput(validateFn);
+    useImperativeHandle(ref, () => ({
+      value,
+      isValid,
+      isInValid,
+      reset,
+      blur: onBlur,
+      setValue,
+    }));
 
-  useImperativeHandle(ref, () => ({
-    value,
-    isValid,
-    isInValid,
-    reset,
-    blur: onBlur,
-    setValue,
-  }));
-
-  const id = useId();
-  return (
-    <>
-      <div
-        className={`w-${width ?? 'full'
+    const id = useId();
+    return (
+      <>
+        <div
+          className={`w-${
+            width ?? "full"
           } rounded-md bg-transparent px-2 py-1 border border-slate-300`}
-      >
-        <div className="flex flex-col w-full">
-          <label className="text-[12px]  opacity-50" htmlFor={id}>
-            {title}
-          </label>
-          <input
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value}
-            required
-            placeholder={placeholder}
-            className="text-[16px] text-slate-600 outline-none border-none bg-transparent w-full font-[500] placeholder:font-normal placeholder:text-[14px] placeholder:pl-2"
-            id={id}
-            type={type ?? 'text'}
-          />
+        >
+          <div className="flex flex-col w-full">
+            <label className="text-[12px] opacity-50" htmlFor={id}>
+              {title}
+            </label>
+            <input
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              required
+              placeholder={placeholder}
+              className="text-[16px] text-slate-600 outline-none border-none bg-transparent w-full font-[500] placeholder:font-normal placeholder:text-[14px] placeholder:pl-2"
+              id={id}
+              type={type ?? "text"}
+            />
+          </div>
+          <div className="opacity-50">{icon}</div>
         </div>
-        <div className="opacity-50">{icon}</div>
-      </div>
-      <ErrorMessage
-        message={errorText ?? 'Input is invalid!'}
-        isShow={isInValid}
-      />
-    </>
-  );
-});
+        <ErrorMessage
+          message={errorText ?? "Input is invalid!"}
+          isShow={isInValid}
+        />
+      </>
+    );
+  }
+);
 
 const MyInput = forwardRef((props, ref) => {
   const {
@@ -68,8 +70,8 @@ const MyInput = forwardRef((props, ref) => {
   }));
 
   const id = useId();
-  const [isPassword, togglePassword] = useState(props.type === 'password');
-  const fieldIsPassword = isPassword && props.type === 'password';
+  const [isPassword, togglePassword] = useState(props.type === "password");
+  const fieldIsPassword = isPassword && props.type === "password";
 
   const passwordAnimate = {
     initial: { opacity: 0, scale: 0.5 },
@@ -78,7 +80,7 @@ const MyInput = forwardRef((props, ref) => {
   };
 
   function togglePasswordHandler() {
-    if (props.type === 'password') togglePassword((prevState) => !prevState);
+    if (props.type === "password") togglePassword((prevState) => !prevState);
   }
 
   return (
@@ -98,13 +100,14 @@ const MyInput = forwardRef((props, ref) => {
             placeholder={props.placeholder}
             className="block outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
             id={id}
-            type={fieldIsPassword ? 'password' : 'text'}
+            type={fieldIsPassword ? "password" : "text"}
           />
         </div>
         <div
           onClick={togglePasswordHandler}
-          className={`opacity-50 ${props.type === 'password' ? 'cursor-pointer' : ''
-            }`}
+          className={`opacity-50 ${
+            props.type === "password" ? "cursor-pointer" : ""
+          }`}
         >
           {!isPassword && (
             <motion.div {...passwordAnimate}>{props.icon}</motion.div>
@@ -117,7 +120,7 @@ const MyInput = forwardRef((props, ref) => {
         </div>
       </motion.div>
       <ErrorMessage
-        message={props.errorText ?? 'Input is invalid!'}
+        message={props.errorText ?? "Input is invalid!"}
         isShow={isInValid}
       />
     </>
@@ -127,16 +130,17 @@ const MyInput = forwardRef((props, ref) => {
 export const InputRadio = ({ list, width, title }) => {
   return (
     <div
-      className={`w-${width ?? 'full'
-        } rounded-md bg-transparent px-2 py-1 border border-slate-300 gap-y-2 flex flex-col`}
+      className={`w-${
+        width ?? "full"
+      } rounded-md bg-transparent px-2 py-1 border border-slate-300 gap-y-2 flex flex-col`}
     >
       <span className="text-[14px] text-slate-400">{title}</span>
       {list.map((item) => (
         <div className="cursor-pointer flex w-full flex-col border border-slate-400 rounded-md px-2 py-0.5">
           <motion.label
             whileInView={{
-              color: 'blue',
-              fontWeight: 'bold',
+              color: "blue",
+              fontWeight: "bold",
             }}
             className=" select-none cursor-pointer text-[12px]  opacity-50 basis-1/3"
             htmlFor={item.title}
@@ -159,8 +163,9 @@ export const InputArea = ({ width, rows, title, placeholder }) => {
   const id = useId();
   return (
     <div
-      className={`w-${width ?? 'full'
-        } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
+      className={`w-${
+        width ?? "full"
+      } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
     >
       <label className="text-[12px]  opacity-50 basis-1/3" htmlFor={id}>
         {title}

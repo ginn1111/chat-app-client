@@ -10,6 +10,7 @@ const INIT_CONVERSATION = "INIT_CONVERSATIONS";
 const GET_STATE_CONVERSATIONS = "GET_STATE_CONVERSATIONS";
 const UPDATE_STATE_CONVERSATION = "UPDATE_STATE_CONVERSATION";
 const JOIN_ROOM = "JOIN_ROOM";
+const ADD_FRIEND = "ADD_FRIEND";
 
 const getSocketIO = (() => {
   let socket = null;
@@ -83,6 +84,9 @@ export const socketDisconnect = (payload, socket) => {
   socket?.disconnect();
 };
 
+export const sendAddFriend = (payload, socket) =>
+  socket?.emit(ADD_FRIEND, payload);
+
 export const removeGetStateConversations = (callback, socket) =>
   socket?.off(GET_STATE_CONVERSATIONS, callback);
 
@@ -93,5 +97,10 @@ export const getStateConversation = (callback, socket) =>
 
 export const removeGetStateConversation = (callback, socket) =>
   socket?.off(UPDATE_STATE_CONVERSATION, callback);
+
+export const getAddFriend = (callback, socket) =>
+  socket?.on(ADD_FRIEND, callback);
+export const removeGetAddFriend = (callback, socket) =>
+  socket?.off(ADD_FRIEND, callback);
 
 export default getSocketIO;

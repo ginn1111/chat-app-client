@@ -76,7 +76,7 @@
     @apply content-[''] absolute w-full h-full bg-slate-600 top-0 left-0;
   }
   .toast {
-    @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[99999];
+    @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[99999] sm:py-1 max-w-[70vw];
   }
   .toast + .toast {
     @apply mt-1;

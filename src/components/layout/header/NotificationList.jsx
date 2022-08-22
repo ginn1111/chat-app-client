@@ -9,7 +9,7 @@ const NotificationList = ({ isShow, notifications }) => {
       {isShow && (
         <motion.div
           id="notification-panel"
-          className="z-50 absolute top-[150%] right-[-180%] bg-white shadow-lg w-auto h-max p-1.5 rounded-md sm:py-0 sm:px-0.5"
+          className="z-50 absolute top-[150%] right-[-180%] bg-white shadow-lg w-auto h-max p-1.5 rounded-md sm:p-1"
           initial={{ opacity: 0, scale: 0, originX: "80%", originY: "0" }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}

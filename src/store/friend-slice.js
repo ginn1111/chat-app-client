@@ -167,7 +167,6 @@ export const responseAddFriend =
         dispatch(addFriendList(receiver));
 
         // add to current friend
-
         dispatch(
           addFriendListOfFriend({
             _id: userState.id,
@@ -192,8 +191,8 @@ export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
   const userState = getState().authentication.userInformation;
   dispatch(showLoading());
   try {
-    const addFriend = friendService.sendAddFriend(userState.id, receiverId);
-    const sendNotify = dispatch(
+    await friendService.sendAddFriend(userState.id, receiverId);
+    await dispatch(
       notify({
         senderId: userState.id,
         senderName: `${userState.firstName} ${userState.lastName}`,
@@ -203,9 +202,6 @@ export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
         isResponse: false,
       })
     );
-
-    await addFriend;
-    await sendNotify;
 
     // add to user
     dispatch(addFriendRequest(receiverId));

@@ -12,6 +12,8 @@ export const getFriendInformation = (state) => state.friend.friendInformation;
 
 export const getNotifications = (state) => state.notifications.notifications;
 export const getStatusNotification = (state) => state.notifications.status;
+export const getCreatedNotifiId = (state) =>
+  state.notifications.createdNotificationId;
 
 export const hasLoading = (state) => state.ui.isLoading;
 

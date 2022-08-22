@@ -20,11 +20,19 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
     type === "error"
       ? {
           bg: "bg-red-500",
-          icon: <UilExclamationTriangle color="white" size="22" />,
+          icon: (
+            <UilExclamationTriangle
+              color="white"
+              size="22px"
+              className="flex-none"
+            />
+          ),
         }
       : {
           bg: "bg-green-500",
-          icon: <UilCheckCircle color="white" size="22" />,
+          icon: (
+            <UilCheckCircle color="white" size="22px" className="flex-none" />
+          ),
         };
   return (
     <motion.div
@@ -37,9 +45,9 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
       className={`toast ${typeToast.bg}`}
     >
       {typeToast.icon}
-      <span className="text-[15px] text-white">{message}</span>
-      <div className="cursor-pointer px-1 " onClick={onRemove}>
-        <UilTimesSquare color="white" />
+      <span className="text-[15px] text-white sm:text-[10px]">{message}</span>
+      <div className="cursor-pointer" onClick={onRemove}>
+        <UilTimesSquare color="white" size="22px" />
       </div>
       <motion.div
         initial={{
