@@ -37,11 +37,6 @@ const Login = withToast(({ toast }) => {
     }
   }, [status, toast, dispatch, navigate, location?.state?.from]);
 
-  useEffect(() => {
-    emailRef.current.setValue("vanthuanjw@gmail.com");
-    passwordRef.current.setValue("Thu@n12312");
-  }, []);
-
   function submitLogInHandler(event) {
     event.preventDefault();
 
