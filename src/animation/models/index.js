@@ -48,5 +48,5 @@ export const scaleAnimate = {
   initial: { scale: 0, opacity: 0 },
   exit: { scale: 0, opacity: 0 },
   animate: { scale: 1, opacity: 1 },
-  transition: { dusation: 0.3 }
-}
+  transition: { dusation: 0.3 },
+};

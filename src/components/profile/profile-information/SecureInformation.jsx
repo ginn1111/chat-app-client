@@ -1,10 +1,10 @@
-import React, { useRef, forwardRef, useImperativeHandle } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { InputInformation } from "../profile-input/ProfileInput";
-import { UilKeySkeleton } from "@iconscout/react-unicons";
-import withToast from "../../../hoc/withToast";
-import withUpdateUser from "../../../hoc/withUpdateUser";
-import { checkInputIsValid } from "../../../utils/helper";
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { InputInformation } from '../profile-input/ProfileInput';
+import { UilKeySkeleton } from '@iconscout/react-unicons';
+import withToast from '../../../hoc/withToast';
+import withUpdateUser from '../../../hoc/withUpdateUser';
+import { checkInputIsValid } from '../../../utils/helper';
 
 const SecureInformation = ({ toast, isUpdate }, ref) => {
   const passwordRef = useRef();
@@ -24,11 +24,11 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
       const isDuplicate =
         passwordRef.current?.value === currentPasswordRef.current.value;
       isDuplicate &&
-        passwordRef.current?.value !== "" &&
-        currentPasswordRef.current?.value !== "" &&
+        passwordRef.current?.value !== '' &&
+        currentPasswordRef.current?.value !== '' &&
         toast.addToast({
-          type: "error",
-          message: "New password must not duplicate!",
+          type: 'error',
+          message: 'New password must not duplicate!',
         });
       return checkInputIsValid(passwordRef, currentPasswordRef) && !isDuplicate;
     },
@@ -45,7 +45,12 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
         ref={currentPasswordRef}
         title="Password"
         placeholder=""
-        icon={<UilKeySkeleton className=" text-slate-400" size="20" />}
+        icon={
+          <UilKeySkeleton
+            className=" text-slate-400"
+            size="20"
+          />
+        }
         type="password"
       />
       <AnimatePresence>
@@ -62,7 +67,7 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
             }}
             transition={{
               stiffness: 100,
-              type: "spring",
+              type: 'spring',
               damping: 8,
             }}
             exit={{
@@ -74,7 +79,12 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
               ref={passwordRef}
               title="New Password"
               placeholder=""
-              icon={<UilKeySkeleton className=" text-slate-400" size="20" />}
+              icon={
+                <UilKeySkeleton
+                  className=" text-slate-400"
+                  size="20"
+                />
+              }
               type="password"
               validateFunction={(value) => value.trim().length >= 8}
               errorText="Password least 8 characters!"
@@ -87,5 +97,5 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
 };
 
 export default withToast(
-  withUpdateUser(forwardRef(SecureInformation), "Secure Information")
+  withUpdateUser(forwardRef(SecureInformation), 'Secure Information')
 );

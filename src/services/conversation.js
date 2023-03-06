@@ -4,7 +4,7 @@ export const createConversation = async (userId, members, isGroup, title) =>
   await privateRequest.post(
     `conversations/${userId}/create`,
     { theme: 'default', members, title },
-    { params: { group: isGroup } },
+    { params: { group: isGroup } }
   );
 
 export const getConversation = async (userId, isGroup) =>

@@ -9,17 +9,26 @@ const NavBar = () => {
   return (
     <ul className="flex gap-x-5 justify-center items-center w-1/3 text-[18px]">
       <li>
-        <NavLink className={stylesNavBar} to="/">
+        <NavLink
+          className={stylesNavBar}
+          to="/"
+        >
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink className={stylesNavBar} to="/message">
+        <NavLink
+          className={stylesNavBar}
+          to="/message"
+        >
           Message
         </NavLink>
       </li>
       <li>
-        <NavLink className={stylesNavBar} to="/wall/me">
+        <NavLink
+          className={stylesNavBar}
+          to="/wall/me"
+        >
           About me
         </NavLink>
       </li>

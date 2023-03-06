@@ -36,5 +36,5 @@ export const setUpInterceptor = ({ dispatch, getState }) =>
       }
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
   );

@@ -1,5 +1,5 @@
-import React from "react";
-import FriendItem from "./FriendItem";
+import React from 'react';
+import FriendItem from './FriendItem';
 
 const FriendList = ({ list }) => {
   const isEmpty = !list || list.length === 0;

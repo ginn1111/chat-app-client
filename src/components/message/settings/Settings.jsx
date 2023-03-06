@@ -1,32 +1,32 @@
-import { useEffect, useMemo, useState } from "react";
-import useUI from "../../../hooks/useUI";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from 'react';
+import useUI from '../../../hooks/useUI';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getConversationList,
   getConversationsStatus,
   getUser,
   isGroup,
-} from "../../../store/selectors";
+} from '../../../store/selectors';
 import {
   UilInfoCircle,
   UilEllipsisV,
   UilUserPlus,
   UilTrashAlt,
-} from "@iconscout/react-unicons";
-import { Link, useParams } from "react-router-dom";
-import MemberList from "./MemberList";
-import GroupAvatar from "../GroupAvatar";
-import { motion, AnimatePresence } from "framer-motion";
-import { scaleAnimate } from "../../../animation/models";
-import useAddMembers from "../../../hooks/useAddMembers";
-import { MemberList as MemberListAdd } from "../friends/NewConversation";
-import MyButton from "../../ui/button/MyButton";
-import { CircularProgress } from "@mui/material";
-import withToggleModal from "../../../hoc/withToggleModal";
+} from '@iconscout/react-unicons';
+import { Link, useParams } from 'react-router-dom';
+import MemberList from './MemberList';
+import GroupAvatar from '../GroupAvatar';
+import { motion, AnimatePresence } from 'framer-motion';
+import { scaleAnimate } from '../../../animation/models';
+import useAddMembers from '../../../hooks/useAddMembers';
+import { MemberList as MemberListAdd } from '../friends/NewConversation';
+import MyButton from '../../ui/button/MyButton';
+import { CircularProgress } from '@mui/material';
+import withToggleModal from '../../../hoc/withToggleModal';
 import {
   addMember,
   deleteConversation,
-} from "../../../store/conversation-slice";
+} from '../../../store/conversation-slice';
 
 const MenuItem = ({ icon, title, onClick }) => {
   return (
@@ -96,10 +96,10 @@ const AddMemberDialog = ({ onClose }) => {
           width="w-[50%]"
           disabled={choosyFriendList?.length === 0}
         >
-          {status === "add-member/pending" ? (
+          {status === 'add-member/pending' ? (
             <CircularProgress size="1rem" />
           ) : (
-            "OK"
+            'OK'
           )}
         </MyButton>
 
@@ -126,22 +126,22 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
   const { sizeWindow } = useUI();
 
   useEffect(() => {
-    if (status.split("/")[1] !== "pending") {
+    if (status.split('/')[1] !== 'pending') {
       modal.close();
     }
   }, [status]);
 
   useEffect(() => {
     const triggerConversationMenu = document.getElementById(
-      "trigger-conversation-menu"
+      'trigger-conversation-menu'
     );
     const toggleHandler = (e) => {
       !triggerConversationMenu.contains(e.target) && setShowMenu(false);
     };
-    document.addEventListener("mouseup", toggleHandler);
+    document.addEventListener('mouseup', toggleHandler);
 
     return () => {
-      document.removeEventListener("mouseup", toggleHandler);
+      document.removeEventListener('mouseup', toggleHandler);
     };
   }, []);
 
@@ -167,17 +167,17 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
 
   return (
     <>
-      {status === "conversation-get/pending" ? (
+      {status === 'conversation-get/pending' ? (
         <CircularProgress />
       ) : (
         <>
           <div className="pt-5 flex-none">
             {isGroupTab ? (
               <GroupAvatar
-                w1={sizeWindow === "sm" ? "w-14" : "w-20"}
-                h1={sizeWindow === "sm" ? "h-14" : "h-20"}
-                w2={sizeWindow === "sm" ? "w-10" : "w-16"}
-                h2={sizeWindow === "sm" ? "h-10" : "h-16"}
+                w1={sizeWindow === 'sm' ? 'w-14' : 'w-20'}
+                h1={sizeWindow === 'sm' ? 'h-14' : 'h-20'}
+                w2={sizeWindow === 'sm' ? 'w-10' : 'w-16'}
+                h2={sizeWindow === 'sm' ? 'h-10' : 'h-16'}
                 img1={twoEarlyAvatarMembers?.[0]}
                 img2={twoEarlyAvatarMembers?.[1]}
               />
@@ -205,7 +205,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
                         <ul className="w-max text-[14px] py-1 px-2">
                           <MenuItem
                             onClick={() => {
-                              toggleChild("addMember");
+                              toggleChild('addMember');
                               modal.open();
                             }}
                             icon={<UilUserPlus className="text-[#21f121]" />}
@@ -213,7 +213,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
                           />
                           <MenuItem
                             onClick={() => {
-                              toggleChild("delete");
+                              toggleChild('delete');
                               modal.open();
                             }}
                             icon={<UilTrashAlt className="text-[#ff7f50]" />}
@@ -240,7 +240,7 @@ const Settings = ({ friendId, avatar, name, modal, toggleChild }) => {
                 <p>Information</p>
                 <UilInfoCircle />
               </Link>
-              <hr className="w-full" />{" "}
+              <hr className="w-full" />{' '}
             </>
           ) : (
             <MemberList memberList={members} />

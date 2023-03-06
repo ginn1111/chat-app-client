@@ -1,8 +1,8 @@
-import { useImperativeHandle, useId, useState, forwardRef } from "react";
-import { motion } from "framer-motion";
-import { UilEyeSlash } from "@iconscout/react-unicons";
-import useInput from "../../../hooks/useInput";
-import ErrorMessage from "../../ui/error/ErrorMessage";
+import { useImperativeHandle, useId, useState, forwardRef } from 'react';
+import { motion } from 'framer-motion';
+import { UilEyeSlash } from '@iconscout/react-unicons';
+import useInput from '../../../hooks/useInput';
+import ErrorMessage from '../../ui/error/ErrorMessage';
 
 export const InputInformation = forwardRef(
   ({ icon, type, title, width, placeholder, validateFn, errorText }, ref) => {
@@ -25,11 +25,14 @@ export const InputInformation = forwardRef(
       <>
         <div
           className={`w-${
-            width ?? "full"
+            width ?? 'full'
           } rounded-md bg-transparent px-2 py-1 border border-slate-300`}
         >
           <div className="flex flex-col w-full">
-            <label className="text-[12px] opacity-50" htmlFor={id}>
+            <label
+              className="text-[12px] opacity-50"
+              htmlFor={id}
+            >
               {title}
             </label>
             <input
@@ -40,13 +43,13 @@ export const InputInformation = forwardRef(
               placeholder={placeholder}
               className="text-[16px] text-slate-600 outline-none border-none bg-transparent w-full font-[500] placeholder:font-normal placeholder:text-[14px] placeholder:pl-2"
               id={id}
-              type={type ?? "text"}
+              type={type ?? 'text'}
             />
           </div>
           <div className="opacity-50">{icon}</div>
         </div>
         <ErrorMessage
-          message={errorText ?? "Input is invalid!"}
+          message={errorText ?? 'Input is invalid!'}
           isShow={isInValid}
         />
       </>
@@ -70,8 +73,8 @@ const MyInput = forwardRef((props, ref) => {
   }));
 
   const id = useId();
-  const [isPassword, togglePassword] = useState(props.type === "password");
-  const fieldIsPassword = isPassword && props.type === "password";
+  const [isPassword, togglePassword] = useState(props.type === 'password');
+  const fieldIsPassword = isPassword && props.type === 'password';
 
   const passwordAnimate = {
     initial: { opacity: 0, scale: 0.5 },
@@ -80,7 +83,7 @@ const MyInput = forwardRef((props, ref) => {
   };
 
   function togglePasswordHandler() {
-    if (props.type === "password") togglePassword((prevState) => !prevState);
+    if (props.type === 'password') togglePassword((prevState) => !prevState);
   }
 
   return (
@@ -89,7 +92,10 @@ const MyInput = forwardRef((props, ref) => {
         className={`flex items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
       >
         <div className="flex flex-col w-full">
-          <label className="text-[12px]  opacity-50" htmlFor={id}>
+          <label
+            className="text-[12px]  opacity-50"
+            htmlFor={id}
+          >
             {props.title}
           </label>
           <input
@@ -100,13 +106,13 @@ const MyInput = forwardRef((props, ref) => {
             placeholder={props.placeholder}
             className="block outline-none border-none bg-transparent w-full font-[500] opacity-100 text-white"
             id={id}
-            type={fieldIsPassword ? "password" : "text"}
+            type={fieldIsPassword ? 'password' : 'text'}
           />
         </div>
         <div
           onClick={togglePasswordHandler}
           className={`opacity-50 ${
-            props.type === "password" ? "cursor-pointer" : ""
+            props.type === 'password' ? 'cursor-pointer' : ''
           }`}
         >
           {!isPassword && (
@@ -120,7 +126,7 @@ const MyInput = forwardRef((props, ref) => {
         </div>
       </motion.div>
       <ErrorMessage
-        message={props.errorText ?? "Input is invalid!"}
+        message={props.errorText ?? 'Input is invalid!'}
         isShow={isInValid}
       />
     </>
@@ -131,7 +137,7 @@ export const InputRadio = ({ list, width, title }) => {
   return (
     <div
       className={`w-${
-        width ?? "full"
+        width ?? 'full'
       } rounded-md bg-transparent px-2 py-1 border border-slate-300 gap-y-2 flex flex-col`}
     >
       <span className="text-[14px] text-slate-400">{title}</span>
@@ -139,8 +145,8 @@ export const InputRadio = ({ list, width, title }) => {
         <div className="cursor-pointer flex w-full flex-col border border-slate-400 rounded-md px-2 py-0.5">
           <motion.label
             whileInView={{
-              color: "blue",
-              fontWeight: "bold",
+              color: 'blue',
+              fontWeight: 'bold',
             }}
             className=" select-none cursor-pointer text-[12px]  opacity-50 basis-1/3"
             htmlFor={item.title}
@@ -164,10 +170,13 @@ export const InputArea = ({ width, rows, title, placeholder }) => {
   return (
     <div
       className={`w-${
-        width ?? "full"
+        width ?? 'full'
       } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
     >
-      <label className="text-[12px]  opacity-50 basis-1/3" htmlFor={id}>
+      <label
+        className="text-[12px]  opacity-50 basis-1/3"
+        htmlFor={id}
+      >
         {title}
       </label>
       <textarea

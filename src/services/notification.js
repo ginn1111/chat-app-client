@@ -12,4 +12,6 @@ export const updateNotification = async (userId, notificationId) =>
   });
 
 export const removeNotification = async (userId, notificationId) =>
-  await privateRequest.delete(`/notifications/${userId}/delete/${notificationId}`);
+  await privateRequest.delete(
+    `/notifications/${userId}/delete/${notificationId}`
+  );

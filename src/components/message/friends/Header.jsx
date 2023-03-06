@@ -1,11 +1,11 @@
-import { useMemo } from "react";
-import { getConversationList } from "../../../store/selectors";
-import { useSelector } from "react-redux";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import withModal from "../../../hoc/withModal";
-import Search from "../../ui/search/Search";
-import NewConversation from "./NewConversation";
-import useUI from "../../../hooks/useUI";
+import { useMemo } from 'react';
+import { getConversationList } from '../../../store/selectors';
+import { useSelector } from 'react-redux';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import withModal from '../../../hoc/withModal';
+import Search from '../../ui/search/Search';
+import NewConversation from './NewConversation';
+import useUI from '../../../hooks/useUI';
 
 const Header = ({ modal, onSearch }) => {
   const conversationList = useSelector(getConversationList);

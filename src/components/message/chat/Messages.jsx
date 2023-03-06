@@ -1,32 +1,32 @@
-import { useRef, useEffect, memo, useState } from "react";
-import { useParams } from "react-router-dom";
-import MessageItem from "./MessageItem";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef, useEffect, memo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import MessageItem from './MessageItem';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getUser,
   getMessageList,
   hasMore as hasMoreMsg,
   hasGetMore,
-} from "../../../store/selectors";
-import { formatTime } from "../../../utils/helper";
+} from '../../../store/selectors';
+import { formatTime } from '../../../utils/helper';
 import getSocketIO, {
   getMessage,
   removeGetMessage,
-} from "../../../services/socketIO";
+} from '../../../services/socketIO';
 import {
   addMessage,
   getMessages,
   hasMore as setHasMore,
   hasGetMore as setHasGetMore,
-} from "../../../store/message-slice";
+} from '../../../store/message-slice';
 
 import {
   setLastMsg,
   updateStateConversation,
-} from "../../../store/conversation-slice";
-import CircleLoading from "../../ui/loading/CircleLoading";
-import { AnimatePresence, motion } from "framer-motion";
-import { CircularProgress } from "@mui/material";
+} from '../../../store/conversation-slice';
+import CircleLoading from '../../ui/loading/CircleLoading';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CircularProgress } from '@mui/material';
 
 const Messages = ({ isPending, onHasLoadingMore, isLoadingMore }) => {
   const { id: userId } = useSelector(getUser);
@@ -56,7 +56,7 @@ const Messages = ({ isPending, onHasLoadingMore, isLoadingMore }) => {
         }
       },
       {
-        root: document.querySelector("[data-scroll-parent]"),
+        root: document.querySelector('[data-scroll-parent]'),
       }
     );
     if (observer.current && hasMore)

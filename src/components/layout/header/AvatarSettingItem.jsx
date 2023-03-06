@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Item = ({ icon, title, onClick }) => {
   return (
@@ -19,7 +19,10 @@ const AvatarSettingItem = ({ icon, title, url }) => {
   return (
     <li>
       <Link to={url}>
-        <Item title={title} icon={icon} />
+        <Item
+          title={title}
+          icon={icon}
+        />
       </Link>
     </li>
   );

@@ -9,7 +9,6 @@ const useSearch = (callback) => {
     };
   })();
 
-
   return searchHandler;
 };
 

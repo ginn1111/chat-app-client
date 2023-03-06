@@ -1,17 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as notificationService from "../services/notification";
+import { createSlice } from '@reduxjs/toolkit';
+import * as notificationService from '../services/notification';
 
 const INIT_STATE = {
   notifications: [],
-  status: "idle",
+  status: 'idle',
 };
 
 const notificationSlice = createSlice({
-  name: "notification",
+  name: 'notification',
   initialState: INIT_STATE,
   reducers: {
     resetStatus(state) {
-      state.status = "idle";
+      state.status = 'idle';
     },
     setNotifications(state, action) {
       state.notifications = action.payload;

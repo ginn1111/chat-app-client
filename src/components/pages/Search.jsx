@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import { search } from "../../store/search-slice";
-import { getSearchUsers, hasLoading } from "../../store/selectors";
-import { Skeleton } from "@mui/material";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { search } from '../../store/search-slice';
+import { getSearchUsers, hasLoading } from '../../store/selectors';
+import { Skeleton } from '@mui/material';
 
 const SkeletonSearch = () => {
   return (
@@ -13,12 +13,28 @@ const SkeletonSearch = () => {
           <div key={index}>
             <div className=" flex h-full py-2 px-2 bg-white shadow-md rounded-md flex-col gap-y-2">
               <div className="flex gap-x-2 items-center w-full">
-                <Skeleton variant="circular" width="50px" height="50px" />
-                <Skeleton variant="text" height="15px" width="50%" />
+                <Skeleton
+                  variant="circular"
+                  width="50px"
+                  height="50px"
+                />
+                <Skeleton
+                  variant="text"
+                  height="15px"
+                  width="50%"
+                />
               </div>
               <div>
-                <Skeleton variant="text" height="15px" width="100%" />
-                <Skeleton variant="text" height="15px" width="100%" />
+                <Skeleton
+                  variant="text"
+                  height="15px"
+                  width="100%"
+                />
+                <Skeleton
+                  variant="text"
+                  height="15px"
+                  width="100%"
+                />
               </div>
             </div>
           </div>
@@ -35,7 +51,7 @@ const Search = () => {
   const isLoading = useSelector(hasLoading);
 
   useEffect(() => {
-    name && name?.trim() !== "" && dispatch(search(name));
+    name && name?.trim() !== '' && dispatch(search(name));
   }, [name, dispatch]);
 
   return (
@@ -50,7 +66,10 @@ const Search = () => {
           )}
           {users?.map((user) => {
             return (
-              <li key={user._id} className=" flex h-full">
+              <li
+                key={user._id}
+                className=" flex h-full"
+              >
                 <Link
                   to={`/wall/${user._id}`}
                   className="text-primary w-full item-hovered py-2 px-2 bg-white shadow-lg rounded-md item-hovered sm:text-[12px]"

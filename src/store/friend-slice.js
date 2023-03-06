@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { notify } from "./notification-slice";
-import * as friendService from "../services/friend";
-import { showLoading, hideLoading } from "./ui-slice";
+import { createSlice } from '@reduxjs/toolkit';
+import { notify } from './notification-slice';
+import * as friendService from '../services/friend';
+import { showLoading, hideLoading } from './ui-slice';
 import {
   addFriendRequest,
   removeFriendResponse,
   addFriendList,
   removeFriendList,
-} from "./authen-slice";
-import { deleteConversation, addConversation } from "./conversation-slice";
-import * as conversationService from "../services/conversation";
+} from './authen-slice';
+import { deleteConversation, addConversation } from './conversation-slice';
+import * as conversationService from '../services/conversation';
 
 const convertData = (data) => ({
   slogan: data.biography,
@@ -28,29 +28,29 @@ const convertData = (data) => ({
 });
 const INIT_STATE = {
   friendInformation: {
-    avatar: "",
-    coverPicture: "",
-    id: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    gender: "",
-    email: "",
-    dob: "",
-    slogan: "",
-    address: "",
-    join: "",
+    avatar: '',
+    coverPicture: '',
+    id: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    gender: '',
+    email: '',
+    dob: '',
+    slogan: '',
+    address: '',
+    join: '',
     friendList: [],
   },
-  status: "idle",
+  status: 'idle',
 };
 
 const friendSlice = createSlice({
-  name: "friend",
+  name: 'friend',
   initialState: INIT_STATE,
   reducers: {
     resetStatus(state) {
-      state.status = "idle";
+      state.status = 'idle';
     },
     setState(state, action) {
       state.status = action.payload;
@@ -99,10 +99,10 @@ export const unfriend = (receiverId) => async (dispatch, getState) => {
     dispatch(deleteConversation(conversationId, true));
     dispatch(removeFriendList(receiverId));
     dispatch(removeFriendListOfFriend(userId));
-    dispatch(setStatus("unfriend/success"));
+    dispatch(setStatus('unfriend/success'));
   } catch (error) {
     console.log(`unfriend error ${error}`);
-    dispatch(setStatus("unfriend/failed"));
+    dispatch(setStatus('unfriend/failed'));
   } finally {
     dispatch(hideLoading());
   }
@@ -121,10 +121,10 @@ export const getFriend = (friendId) => async (dispatch) => {
     friendInfor.friendList = friendListData;
 
     dispatch(setFriend(friendInfor));
-    dispatch(setStatus("get-friend/success"));
+    dispatch(setStatus('get-friend/success'));
   } catch (error) {
     console.log(`geFriend error ${error}`);
-    dispatch(setStatus("get-friend/failed"));
+    dispatch(setStatus('get-friend/failed'));
   } finally {
     dispatch(hideLoading());
   }
@@ -181,7 +181,7 @@ export const responseAddFriend =
 
       dispatch(removeFriendResponse(receiverId));
     } catch (error) {
-      console.log("response add friend error", error);
+      console.log('response add friend error', error);
     } finally {
       dispatch(hideLoading());
     }
@@ -198,17 +198,17 @@ export const sendAddFriend = (receiverId) => async (dispatch, getState) => {
         senderName: `${userState.firstName} ${userState.lastName}`,
         senderAvatar: userState.avatar,
         receiverId,
-        notify: "Make friend, happy together!",
+        notify: 'Make friend, happy together!',
         isResponse: false,
       })
     );
 
     // add to user
     dispatch(addFriendRequest(receiverId));
-    dispatch(setStatus("send-add-friend/success"));
+    dispatch(setStatus('send-add-friend/success'));
   } catch (error) {
     console.log(`send add friend error ${error}`);
-    dispatch(setStatus("send-add-friend/failed"));
+    dispatch(setStatus('send-add-friend/failed'));
   } finally {
     dispatch(hideLoading());
   }

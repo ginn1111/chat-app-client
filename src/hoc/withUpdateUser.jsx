@@ -32,7 +32,7 @@ const withUpdateUser = (WrappedComponent, title) => {
           ...acc,
           [key.replace(/(Ref)/, '')]: userData[key].current.value,
         }),
-        {},
+        {}
       );
 
       if (!childRef.current?.checkValid()) {
@@ -42,7 +42,7 @@ const withUpdateUser = (WrappedComponent, title) => {
       dispatch(
         updateUser({
           ...userDataUpdate,
-        }),
+        })
       );
     }
 

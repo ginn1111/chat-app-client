@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -11,15 +11,17 @@ import { setUpInterceptor } from './axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <UIProvider>
-      <Router>
-        <Global>
-          <App />
-        </Global>
-      </Router>
-    </UIProvider>
-  </Provider>,
+  <StrictMode>
+    <Provider store={store}>
+      <UIProvider>
+        <Router>
+          <Global>
+            <App />
+          </Global>
+        </Router>
+      </UIProvider>
+    </Provider>
+  </StrictMode>
 );
 setUpInterceptor(store);
 reportWebVitals();

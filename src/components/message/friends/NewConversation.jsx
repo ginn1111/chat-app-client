@@ -1,13 +1,13 @@
-import { useEffect, useRef } from "react";
-import { InputInformation } from "../../ui/input/MyInput";
-import MyButton from "../../ui/button/MyButton";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useSelector } from "react-redux";
-import { validateEmpty } from "../../../utils/validate";
-import { getConversationsStatus, getUser } from "../../../store/selectors";
-import { useDispatch } from "react-redux";
-import { createConversation } from "../../../store/conversation-slice";
-import useAddMembers from "../../../hooks/useAddMembers";
+import { useEffect, useRef } from 'react';
+import { InputInformation } from '../../ui/input/MyInput';
+import MyButton from '../../ui/button/MyButton';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useSelector } from 'react-redux';
+import { validateEmpty } from '../../../utils/validate';
+import { getConversationsStatus, getUser } from '../../../store/selectors';
+import { useDispatch } from 'react-redux';
+import { createConversation } from '../../../store/conversation-slice';
+import useAddMembers from '../../../hooks/useAddMembers';
 
 export const MemberItem = ({
   fullName,
@@ -31,7 +31,7 @@ export const MemberItem = ({
       </div>
       <label
         className={`${
-          isChoosy ? "text-sky-700" : ""
+          isChoosy ? 'text-sky-700' : ''
         } cursor-pointer px-2 duration-300`}
         htmlFor={friendId}
       >
@@ -80,7 +80,7 @@ const NewConversation = ({ onClose }) => {
   const nameRef = useRef();
 
   useEffect(() => {
-    if (status.split("/")[1] !== "pending" && status !== "idle") {
+    if (status.split('/')[1] !== 'pending' && status !== 'idle') {
       onClose();
     }
   }, [status]);

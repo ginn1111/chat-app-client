@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const MyButton = ({
   title,
@@ -25,7 +25,7 @@ const MyButton = ({
         }
       }
       onClick={onClick}
-      type={type ?? "submit"}
+      type={type ?? 'submit'}
     >
       {title}
       {children}

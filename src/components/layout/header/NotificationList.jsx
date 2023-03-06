@@ -1,7 +1,7 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import NotificationItem from "./NotificationItem";
+import NotificationItem from './NotificationItem';
 
 const NotificationList = ({ isShow, notifications }) => {
   return (
@@ -10,7 +10,7 @@ const NotificationList = ({ isShow, notifications }) => {
         <motion.div
           id="notification-panel"
           className="z-50 absolute top-[150%] right-[-180%] bg-white shadow-lg w-auto h-max p-1.5 rounded-md sm:p-1"
-          initial={{ opacity: 0, scale: 0, originX: "80%", originY: "0" }}
+          initial={{ opacity: 0, scale: 0, originX: '80%', originY: '0' }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
           exit={{ opacity: 0, scale: 0 }}

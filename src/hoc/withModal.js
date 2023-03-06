@@ -1,7 +1,7 @@
-import ReactDOM from "react-dom";
-import Backdrop from "../components/ui/modal/Backdrop";
-import Modal from "../components/ui/modal/Modal";
-import useModal from "../hooks/useModal";
+import ReactDOM from 'react-dom';
+import Backdrop from '../components/ui/modal/Backdrop';
+import Modal from '../components/ui/modal/Modal';
+import useModal from '../hooks/useModal';
 
 const withModal = (WrappedComponent, ChildComponent) => {
   return (props) => {
@@ -11,14 +11,20 @@ const withModal = (WrappedComponent, ChildComponent) => {
       <>
         {ReactDOM.createPortal(
           <>
-            <Backdrop isShow={isShow} onClose={onClose} />
+            <Backdrop
+              isShow={isShow}
+              onClose={onClose}
+            />
             <Modal isShow={isShow}>
               <ChildComponent onClose={onClose} />
             </Modal>
           </>,
-          document.getElementById("modal")
+          document.getElementById('modal')
         )}
-        <WrappedComponent {...props} modal={{ close: onClose, open: onOpen }} />
+        <WrappedComponent
+          {...props}
+          modal={{ close: onClose, open: onOpen }}
+        />
       </>
     );
   };

@@ -29,7 +29,7 @@ const Send = ({ conversationId, receiverId }) => {
           senderId: userId,
           createdAt: new Date().toISOString(),
         },
-      }),
+      })
     );
     sendMessageToSocketIO(
       {
@@ -38,7 +38,7 @@ const Send = ({ conversationId, receiverId }) => {
         receiverId,
         conversationId,
       },
-      getSocketIO(),
+      getSocketIO()
     );
     reset();
   }
@@ -72,7 +72,11 @@ const Send = ({ conversationId, receiverId }) => {
           className="w-max h-max p-1 rounded-[8px] bg-blue-300 cursor-pointer"
           onClick={sendMessageHandler}
         >
-          <UilMessage size="20" color="white" className="" />
+          <UilMessage
+            size="20"
+            color="white"
+            className=""
+          />
         </div>
       </div>
     </div>

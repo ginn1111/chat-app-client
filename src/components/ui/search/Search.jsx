@@ -1,4 +1,4 @@
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
   function changeHandler(e) {
@@ -12,7 +12,7 @@ const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
     <div
       className={`flex items-center w-full min-w-36 h-max py-1 px-2 rounded-full ${bgColor} text-black text-[16px] sm:text-[12px] sm:px-1 sm:py-0 sm:rounded-xl`}
     >
-      <SearchOutlinedIcon sx={{ fontSize: 20, color: "gray" }} />
+      <SearchOutlinedIcon sx={{ fontSize: 20, color: 'gray' }} />
       <input
         onFocus={focusHandler}
         onChange={changeHandler}

@@ -59,7 +59,7 @@ const BasicInformation = ({ isUpdate }, ref) => {
         birthdayRef,
         biographyRef,
         addressRef,
-        genderRef,
+        genderRef
       );
     },
     focus() {
@@ -120,5 +120,5 @@ const BasicInformation = ({ isUpdate }, ref) => {
 
 export default withUpdateUser(
   forwardRef(BasicInformation),
-  'Basic Information',
+  'Basic Information'
 );

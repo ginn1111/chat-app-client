@@ -1,16 +1,16 @@
-import io from "socket.io-client";
+import io from 'socket.io-client';
 
-const GET_MESSAGE = "GET_MESSAGE";
-const SEND_MESSAGE = "SEND_MESSAGE";
-const ADD_USER = "ADD_USER";
-const GET_USER_ONLINE = "GET_USER_ONLINE";
-const CALL_USER_ONLINE = "CALL_USER_ONLINE";
-const UPDATE_CONVERSATION = "UPDATE_CONVERSATION";
-const INIT_CONVERSATION = "INIT_CONVERSATIONS";
-const GET_STATE_CONVERSATIONS = "GET_STATE_CONVERSATIONS";
-const UPDATE_STATE_CONVERSATION = "UPDATE_STATE_CONVERSATION";
-const JOIN_ROOM = "JOIN_ROOM";
-const ADD_FRIEND = "ADD_FRIEND";
+const GET_MESSAGE = 'GET_MESSAGE';
+const SEND_MESSAGE = 'SEND_MESSAGE';
+const ADD_USER = 'ADD_USER';
+const GET_USER_ONLINE = 'GET_USER_ONLINE';
+const CALL_USER_ONLINE = 'CALL_USER_ONLINE';
+const UPDATE_CONVERSATION = 'UPDATE_CONVERSATION';
+const INIT_CONVERSATION = 'INIT_CONVERSATIONS';
+const GET_STATE_CONVERSATIONS = 'GET_STATE_CONVERSATIONS';
+const UPDATE_STATE_CONVERSATION = 'UPDATE_STATE_CONVERSATION';
+const JOIN_ROOM = 'JOIN_ROOM';
+const ADD_FRIEND = 'ADD_FRIEND';
 
 const getSocketIO = (() => {
   let socket = null;
@@ -20,11 +20,11 @@ const getSocketIO = (() => {
         query: { token },
       });
     }
-    socket?.on("connect", () => {
-      console.log("connect successfully");
+    socket?.on('connect', () => {
+      console.log('connect successfully');
     });
 
-    socket?.on("connect_error", (error) => {
+    socket?.on('connect_error', (error) => {
       console.log(`connect error: ${error}`);
     });
 
@@ -33,10 +33,10 @@ const getSocketIO = (() => {
 })();
 
 export const connectHandler = (callback, socket) =>
-  socket?.on("connect", callback);
+  socket?.on('connect', callback);
 
 export const connectErrorHandler = (callback, socket) =>
-  socket?.on("connect_error", callback);
+  socket?.on('connect_error', callback);
 
 export const getMessage = (callback, socket) =>
   socket?.on(GET_MESSAGE, callback);
@@ -79,7 +79,7 @@ export const updateStateConversation = (payload, socket) =>
   socket?.emit(UPDATE_STATE_CONVERSATION, payload);
 
 export const socketDisconnect = (payload, socket) => {
-  console.log("disconnect handler", payload);
+  console.log('disconnect handler', payload);
   socket?.emit(UPDATE_CONVERSATION, payload);
   socket?.disconnect();
 };

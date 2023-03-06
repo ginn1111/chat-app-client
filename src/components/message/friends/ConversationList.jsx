@@ -1,19 +1,19 @@
-import React, { useRef, useEffect, useMemo, useState, memo } from "react";
-import ConversationItem from "./ConversationItem";
-import { useParams } from "react-router-dom";
-import Header from "./Header";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef, useEffect, useMemo, useState, memo } from 'react';
+import ConversationItem from './ConversationItem';
+import { useParams } from 'react-router-dom';
+import Header from './Header';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getConversationList,
   getConversationsStatus,
   getUser,
   isGroup,
-} from "../../../store/selectors";
+} from '../../../store/selectors';
 import {
   updateStateConversation,
   setIsGroup,
   getConversation,
-} from "../../../store/conversation-slice";
+} from '../../../store/conversation-slice';
 import getSocketIO, {
   initConversations,
   removeGetUserOnline,
@@ -23,12 +23,12 @@ import getSocketIO, {
   updateStateConversation as updateStateConversationToSocket,
   joinRoom,
   emitGetStateConversations,
-} from "../../../services/socketIO";
-import useSearch from "../../../hooks/useSearch";
-import GroupsIcon from "@mui/icons-material/Groups";
-import PersonIcon from "@mui/icons-material/Person";
-import { useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+} from '../../../services/socketIO';
+import useSearch from '../../../hooks/useSearch';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const ConversationList = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const ConversationList = () => {
 
   const [usersOnline, setUsersOnline] = useState({});
   const [stateConversations, setStateConversations] = useState({});
-  const [filterConversation, setFilterConversation] = useState("");
+  const [filterConversation, setFilterConversation] = useState('');
   const searchHandler = useSearch(setFilterConversation);
 
   const divRef = useRef();
@@ -49,13 +49,13 @@ const ConversationList = () => {
   const personRef = useRef();
 
   useEffect(() => {
-    setFilterConversation("");
+    setFilterConversation('');
   }, [isGroupTab]);
 
   useEffect(() => {
     const id = conversationList?.[0]?._id;
-    status === "conversation-get/success" &&
-      navigate(`/message/${id ?? ""}`, { replace: true });
+    status === 'conversation-get/success' &&
+      navigate(`/message/${id ?? ''}`, { replace: true });
   }, [status]);
 
   useEffect(() => {
@@ -85,8 +85,8 @@ const ConversationList = () => {
     let parent = null;
     isGroupTab ? (parent = groupRef.current) : (parent = personRef.current);
 
-    divRef.current.style.left = parent?.offsetLeft + "px";
-    divRef.current.style.width = parent?.offsetWidth + "px";
+    divRef.current.style.left = parent?.offsetLeft + 'px';
+    divRef.current.style.width = parent?.offsetWidth + 'px';
 
     console.log(parent?.offsetLeft);
   }, [isGroupTab]);
@@ -132,7 +132,7 @@ const ConversationList = () => {
   }, [usersOnline, conversationList, stateConversations]);
 
   const filterList = useMemo(() => {
-    if (filterConversation === "") return conversationListWithOnline;
+    if (filterConversation === '') return conversationListWithOnline;
     return conversationListWithOnline.filter((con) =>
       con.title.toLowerCase().includes(filterConversation.trim().toLowerCase())
     );
@@ -169,9 +169,9 @@ const ConversationList = () => {
     </ul>
   );
 
-  if (status === "conversation-get/pending")
+  if (status === 'conversation-get/pending')
     conversationListRender = <CircularProgress />;
-  if (status === "conversation-get/error")
+  if (status === 'conversation-get/error')
     conversationListRender = <p>Something went wrong :(</p>;
 
   return (

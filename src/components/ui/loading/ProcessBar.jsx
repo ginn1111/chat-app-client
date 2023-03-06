@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ProcessBar = ({ isShow }) => {
   const [process, setProcess] = useState(0);
@@ -29,14 +29,14 @@ const ProcessBar = ({ isShow }) => {
               transition={{ duration: 0.3 }}
               whileInView={{
                 width: `${process}%`,
-                height: "3px",
-                backgroundColor: "#0ea5e9",
+                height: '3px',
+                backgroundColor: '#0ea5e9',
               }}
-              exit={{ width: "100%", height: 0 }}
+              exit={{ width: '100%', height: 0 }}
             ></motion.div>
           )}
         </AnimatePresence>,
-        document.getElementById("process-bar")
+        document.getElementById('process-bar')
       )}
     </>
   );

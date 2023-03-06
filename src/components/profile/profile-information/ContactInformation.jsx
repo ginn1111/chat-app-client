@@ -1,11 +1,11 @@
-import React, { forwardRef, useRef, useImperativeHandle } from "react";
-import { InputInformation } from "../profile-input/ProfileInput";
-import { UilEnvelopeAlt, UilPhone } from "@iconscout/react-unicons";
-import { useSelector } from "react-redux";
-import { getUser } from "../../../store/selectors";
-import { validateEmail, validatePhone } from "../../../utils/validate";
-import withUpdateUser from "../../../hoc/withUpdateUser";
-import { checkInputIsValid } from "../../../utils/helper";
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
+import { InputInformation } from '../profile-input/ProfileInput';
+import { UilEnvelopeAlt, UilPhone } from '@iconscout/react-unicons';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../store/selectors';
+import { validateEmail, validatePhone } from '../../../utils/validate';
+import withUpdateUser from '../../../hoc/withUpdateUser';
+import { checkInputIsValid } from '../../../utils/helper';
 
 const ContactInformation = ({ isUpdate }, ref) => {
   const user = useSelector(getUser);
@@ -45,7 +45,12 @@ const ContactInformation = ({ isUpdate }, ref) => {
         readOnly={!isUpdate}
         ref={phoneRef}
         title="Phone"
-        icon={<UilPhone size="20" className="text-slate-400" />}
+        icon={
+          <UilPhone
+            size="20"
+            className="text-slate-400"
+          />
+        }
         validateFunction={validatePhone}
         errorText="Phone is invalid!"
       />
@@ -55,5 +60,5 @@ const ContactInformation = ({ isUpdate }, ref) => {
 
 export default withUpdateUser(
   forwardRef(ContactInformation),
-  "Contact Information"
+  'Contact Information'
 );

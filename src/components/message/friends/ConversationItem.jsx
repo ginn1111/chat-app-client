@@ -1,10 +1,10 @@
-import { useState, useMemo, memo, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getUser } from "../../../store/selectors";
-import { getOfflineTime } from "../../../utils/helper";
-import { useSelector } from "react-redux";
-import NotifyBubble from "../../ui/notification/NotifyBubble";
-import GroupAvatar from "../GroupAvatar";
+import { useState, useMemo, memo, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { getUser } from '../../../store/selectors';
+import { getOfflineTime } from '../../../utils/helper';
+import { useSelector } from 'react-redux';
+import NotifyBubble from '../../ui/notification/NotifyBubble';
+import GroupAvatar from '../GroupAvatar';
 
 const ConversationItem = ({
   avatar,
@@ -40,14 +40,17 @@ const ConversationItem = ({
   return (
     <li
       className={`h-max w-full bg-white px-3 py-2 rounded-md item-hovered text-slate-600 ${
-        isChoosing ? "bg-slate-200" : ""
-      } ${isUnSeen ? "bg-slate-100 font-bold" : ""} relative sm:px-2 sm:py-1`}
+        isChoosing ? 'bg-slate-200' : ''
+      } ${isUnSeen ? 'bg-slate-100 font-bold' : ''} relative sm:px-2 sm:py-1`}
     >
       <Link to={`/message/${conversationId}`}>
-        <NotifyBubble color="bg-blue-500" isNotify={isUnSeen} />
+        <NotifyBubble
+          color="bg-blue-500"
+          isNotify={isUnSeen}
+        />
         <div className="flex gap-x-2 w-full relative">
           <div
-            className={`relative  online ${!fromOnline ? "" : "off"} flex-none`}
+            className={`relative  online ${!fromOnline ? '' : 'off'} flex-none`}
           >
             {isGroup ? (
               <GroupAvatar
@@ -75,10 +78,10 @@ const ConversationItem = ({
           >
             <span
               className={`${
-                !fromOnline ? "text-green-500 font-[500]" : ""
+                !fromOnline ? 'text-green-500 font-[500]' : ''
               } whitespace-nowrap`}
             >
-              {getOfflineTime(fromOnline) ?? "online"}
+              {getOfflineTime(fromOnline) ?? 'online'}
             </span>
             <span className="whitespace-nowrap relative w-full mt-auto">
               {getOfflineTime(new Date(lastMsg?.createdAt).getTime())}

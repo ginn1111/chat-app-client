@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   UilTimesSquare,
   UilCheckCircle,
   UilExclamationTriangle,
-} from "@iconscout/react-unicons";
+} from '@iconscout/react-unicons';
 
 const Toast = ({ type, message, onRemove, autoClose = true }) => {
   useEffect(() => {
@@ -17,9 +17,9 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
   }, []);
 
   const typeToast =
-    type === "error"
+    type === 'error'
       ? {
-          bg: "bg-red-500",
+          bg: 'bg-red-500',
           icon: (
             <UilExclamationTriangle
               color="white"
@@ -29,9 +29,13 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
           ),
         }
       : {
-          bg: "bg-green-500",
+          bg: 'bg-green-500',
           icon: (
-            <UilCheckCircle color="white" size="22px" className="flex-none" />
+            <UilCheckCircle
+              color="white"
+              size="22px"
+              className="flex-none"
+            />
           ),
         };
   return (
@@ -40,24 +44,30 @@ const Toast = ({ type, message, onRemove, autoClose = true }) => {
         x: 800,
         top: 50,
       }}
-      transition={{ stiffness: 50, type: "spring" }}
+      transition={{ stiffness: 50, type: 'spring' }}
       animate={{ x: -10 }}
       className={`toast ${typeToast.bg}`}
     >
       {typeToast.icon}
       <span className="text-[15px] text-white sm:text-[10px]">{message}</span>
-      <div className="cursor-pointer" onClick={onRemove}>
-        <UilTimesSquare color="white" size="22px" />
+      <div
+        className="cursor-pointer"
+        onClick={onRemove}
+      >
+        <UilTimesSquare
+          color="white"
+          size="22px"
+        />
       </div>
       <motion.div
         initial={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 0,
           left: 0,
-          width: "100%",
-          height: "3px",
+          width: '100%',
+          height: '3px',
         }}
-        animate={{ width: "0%" }}
+        animate={{ width: '0%' }}
         transition={{ duration: 3, delay: 0.5 }}
         className="bg-sky-500"
       ></motion.div>

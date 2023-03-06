@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
-import Toast from "../components/ui/notification/Toast";
+import React, { useMemo, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import Toast from '../components/ui/notification/Toast';
 
 const withToast = (WrappedComponent) => {
   return (props) => {
@@ -37,9 +37,12 @@ const withToast = (WrappedComponent) => {
               );
             })}
           </div>,
-          document.getElementById("root")
+          document.getElementById('root')
         )}
-        <WrappedComponent {...props} toast={toast} />
+        <WrappedComponent
+          {...props}
+          toast={toast}
+        />
       </>
     );
   };

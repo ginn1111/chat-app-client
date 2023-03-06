@@ -1,4 +1,4 @@
-import { privateRequest } from "../axios";
+import { privateRequest } from '../axios';
 
 export const sendMessage = async (userId, conversationId, msg) =>
   await privateRequest.post(`messages/${userId}/create`, {

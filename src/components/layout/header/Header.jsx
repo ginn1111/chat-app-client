@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
-import AvatarSettings from "./AvatarSettings";
-import NotificationList from "./NotificationList";
-import Animation from "../../../animation/Animation";
-import { fallAnimate } from "../../../animation/models";
-import Search from "../../ui/search/Search";
-import { getNotifications, getUser } from "../../../store/selectors";
-import { useSelector } from "react-redux";
-import useSearch from "../../../hooks/useSearch";
-import NotifyBubble from "../../ui/notification/NotifyBubble";
+import AvatarSettings from './AvatarSettings';
+import NotificationList from './NotificationList';
+import Animation from '../../../animation/Animation';
+import { fallAnimate } from '../../../animation/models';
+import Search from '../../ui/search/Search';
+import { getNotifications, getUser } from '../../../store/selectors';
+import { useSelector } from 'react-redux';
+import useSearch from '../../../hooks/useSearch';
+import NotifyBubble from '../../ui/notification/NotifyBubble';
 
 const Header = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -20,10 +20,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const searchHandler = useSearch((value) =>
-    navigate("/search", { state: value })
+    navigate('/search', { state: value })
   );
 
-  const focusHandler = () => navigate("/search");
+  const focusHandler = () => navigate('/search');
 
   const { avatar } = useSelector(getUser);
 
@@ -34,10 +34,10 @@ const Header = () => {
 
   useEffect(() => {
     function handlerEvent(event) {
-      const avatarMenuContainer = document.getElementById("avatar-container");
-      const notificationPanel = document.getElementById("notification-panel");
+      const avatarMenuContainer = document.getElementById('avatar-container');
+      const notificationPanel = document.getElementById('notification-panel');
       const notificationContainer = document.getElementById(
-        "notification-container"
+        'notification-container'
       );
 
       avatarMenuContainer.contains(event.target)
@@ -50,8 +50,8 @@ const Header = () => {
           : setIsShowNotification((prev) => !prev)
         : setIsShowNotification(false);
     }
-    document.addEventListener("mouseup", handlerEvent);
-    return () => document.removeEventListener("mouseup", handlerEvent);
+    document.addEventListener('mouseup', handlerEvent);
+    return () => document.removeEventListener('mouseup', handlerEvent);
   }, []);
 
   return (
@@ -72,7 +72,10 @@ const Header = () => {
       </div>
       <div className="w-1/4 mr-auto flex text-[14px] items-center gap-x-5 relative justify-end">
         {/* Notify section */}
-        <div className="relative cursor-pointer" id="notification-container">
+        <div
+          className="relative cursor-pointer"
+          id="notification-container"
+        >
           <NotifyBubble
             top="top-[10px]"
             right="right-[0px]"
@@ -82,7 +85,7 @@ const Header = () => {
           <motion.div
             className="cursor-pointer"
             initial={{
-              origin: "center center",
+              origin: 'center center',
             }}
             whileTap={{
               transition: { duration: 0.3 },

@@ -1,5 +1,5 @@
-import React from "react";
-import { commonStyle } from "../../pages/Message";
+import React from 'react';
+import { commonStyle } from '../../pages/Message';
 
 const PseudoChat = () => {
   return (

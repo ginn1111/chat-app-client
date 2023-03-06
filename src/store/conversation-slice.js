@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as conversationService from "../services/conversation";
-import { showLoading, hideLoading } from "./ui-slice";
+import { createSlice } from '@reduxjs/toolkit';
+import * as conversationService from '../services/conversation';
+import { showLoading, hideLoading } from './ui-slice';
 
 const INIT_STATE = {
   conversations: [
@@ -10,17 +10,17 @@ const INIT_STATE = {
     //   members: [{ memberId: '', avatar: '', nickName: '' }],
     // },
   ],
-  status: "idle",
+  status: 'idle',
   message: null,
   isGroup: false,
 };
 
 const conversationSlice = createSlice({
-  name: "conversation",
+  name: 'conversation',
   initialState: INIT_STATE,
   reducers: {
     resetStatus(state) {
-      state.status = "idle";
+      state.status = 'idle';
     },
     setError(state, action) {
       state.message = action.payload;
@@ -91,10 +91,10 @@ export const createConversation =
       );
       getState().conversation.isGroup === isGroup &&
         dispatch(addConversation(data));
-      dispatch(setStatus("create-conversation/success"));
+      dispatch(setStatus('create-conversation/success'));
     } catch (error) {
-      console.dir("createConversation error", error);
-      dispatch(setStatus("create-conversation/failed"));
+      console.dir('createConversation error', error);
+      dispatch(setStatus('create-conversation/failed'));
     } finally {
       dispatch(hideLoading());
     }
@@ -105,17 +105,17 @@ export const getConversation =
   async (dispatch, getState) => {
     const { userInformation: userState } = getState().authentication;
     dispatch(showLoading());
-    dispatch(setStatus("conversation-get/pending"));
+    dispatch(setStatus('conversation-get/pending'));
     try {
       const { data } = await conversationService.getConversation(
         userState.id ?? userId,
         isGroup
       );
       dispatch(setConversation(data));
-      dispatch(setStatus("conversation-get/success"));
+      dispatch(setStatus('conversation-get/success'));
     } catch (error) {
-      dispatch(setStatus("conversation-get/failed"));
-      console.log("getConversation error", error);
+      dispatch(setStatus('conversation-get/failed'));
+      console.log('getConversation error', error);
     } finally {
       dispatch(hideLoading());
     }
@@ -125,17 +125,17 @@ export const addMember =
   ({ members, conversationId }) =>
   async (dispatch) => {
     dispatch(showLoading());
-    dispatch(setStatus("add-member/pending"));
+    dispatch(setStatus('add-member/pending'));
     try {
       const { data } = await conversationService.addNewMember(
         conversationId,
         members
       );
-      dispatch(setStatus("add-member/success"));
+      dispatch(setStatus('add-member/success'));
       dispatch(setAddMember(data));
     } catch (error) {
-      console.log("addMember error", error);
-      dispatch(setStatus("add-member/failed"));
+      console.log('addMember error', error);
+      dispatch(setStatus('add-member/failed'));
     } finally {
       dispatch(hideLoading());
     }
@@ -148,10 +148,10 @@ export const deleteConversation =
       const { data: deletedConversationId } =
         await conversationService.deleteConversation(conversationId);
       dispatch(setDeleteConversation(deletedConversationId));
-      !fromUnfriend && dispatch(setStatus("delete-conversation/success"));
+      !fromUnfriend && dispatch(setStatus('delete-conversation/success'));
     } catch (error) {
-      console.log("deleteConversation error", error);
-      !fromUnfriend && dispatch(setStatus("delete-conversation/failed"));
+      console.log('deleteConversation error', error);
+      !fromUnfriend && dispatch(setStatus('delete-conversation/failed'));
     } finally {
       dispatch(hideLoading());
     }

@@ -1,24 +1,24 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
-import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
-import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 
-import MyInput from "../ui/input/MyInput";
-import MyButton from "../ui/button/MyButton";
-import Animation from "../../animation/Animation";
-import withToast from "../../hoc/withToast";
-import { register, resetStatus } from "../../store/authen-slice";
-import { getStatus } from "../../store/selectors";
-import { itemAnimate, slideInFromLeft } from "../../animation/models/index";
+import MyInput from '../ui/input/MyInput';
+import MyButton from '../ui/button/MyButton';
+import Animation from '../../animation/Animation';
+import withToast from '../../hoc/withToast';
+import { register, resetStatus } from '../../store/authen-slice';
+import { getStatus } from '../../store/selectors';
+import { itemAnimate, slideInFromLeft } from '../../animation/models/index';
 import {
   validatePassword,
   validateEmail,
   validateEmpty,
-} from "../../utils/validate";
-import { Link } from "react-router-dom";
-import ComingSoon from "../ui/error/ComingSoon";
-import withModal from "../../hoc/withModal";
+} from '../../utils/validate';
+import { Link } from 'react-router-dom';
+import ComingSoon from '../ui/error/ComingSoon';
+import withModal from '../../hoc/withModal';
 
 const Register = withToast(({ toast, modal }) => {
   const status = useSelector(getStatus);
@@ -30,17 +30,17 @@ const Register = withToast(({ toast, modal }) => {
   const passwordRef = useRef();
 
   useEffect(() => {
-    if (status === "register/success") {
+    if (status === 'register/success') {
       toast.addToast({
-        type: "success",
-        message: "Create new account successfully!",
+        type: 'success',
+        message: 'Create new account successfully!',
       });
       dispatch(resetStatus());
     }
-    if (status === "register/failed") {
+    if (status === 'register/failed') {
       toast.addToast({
-        type: "error",
-        message: "Your email is exist account!",
+        type: 'error',
+        message: 'Your email is exist account!',
       });
       dispatch(resetStatus());
     }
@@ -95,7 +95,7 @@ const Register = withToast(({ toast, modal }) => {
                 to="/auth/login"
                 className="cursor-pointer no-underline text-cyan-300"
               >
-                {" "}
+                {' '}
                 Login
               </Link>
             </span>
@@ -163,14 +163,14 @@ const Register = withToast(({ toast, modal }) => {
                   width="w-1/2"
                   onClick={changeMethodHandler}
                   type="button"
-                  disabled={status === "register/pending"}
+                  disabled={status === 'register/pending'}
                 />
                 <MyButton
                   title="Create account"
                   bgColor="bg-blue-500"
                   textColor="text-white"
                   width="w-1/2"
-                  disabled={status === "register/pending"}
+                  disabled={status === 'register/pending'}
                 />
               </div>
             </Animation>

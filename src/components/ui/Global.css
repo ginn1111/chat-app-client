@@ -1,10 +1,21 @@
-@import "normalize.css";
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap");
-:root {
-  --primary: #fff;
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+* {
+  box-sizing: border-box;
 }
 ::-webkit-scrollbar {
   width: 5px;
+}
+button,
+input,
+select,
+textarea {
+  all: unset;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+button {
+  cursor: pointer;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #ccc;
@@ -19,8 +30,9 @@ html {
   line-height: 1.5;
 }
 body {
+  font-family: Oswald, 'Helvetica Neue', sans, sans-serif;
   position: relative;
-  font-family: "IBM Plex Sans", sans-serif, Ubuntu;
+  height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
@@ -30,10 +42,12 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+#root {
+  height: 100%;
+}
 #process-bar {
   position: fixed;
   height: 3px;

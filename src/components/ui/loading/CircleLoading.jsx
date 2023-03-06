@@ -3,8 +3,9 @@ import React from 'react';
 const CircleLoading = ({ height }) => {
   return (
     <div
-      className={`w-full ${height ?? 'h-screen'
-        } flex items-center justify-center`}
+      className={`w-full ${
+        height ?? 'h-screen'
+      } flex items-center justify-center`}
     >
       <div
         className={`w-[300px] h-[300px] relative rounded-full after:content-['Loading...'] after:content-center  after:absolute-x-center after:top-[50%] after:translate-y-[-50%] after:animate-pulse`}

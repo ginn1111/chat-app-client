@@ -1,7 +1,7 @@
-import React from "react";
-import BasicInformation from "./BasicInformation";
-import ContactInformation from "./ContactInformation";
-import SecureInformation from "./SecureInformation";
+import React from 'react';
+import BasicInformation from './BasicInformation';
+import ContactInformation from './ContactInformation';
+import SecureInformation from './SecureInformation';
 
 const ProfileInformation = () => {
   return (

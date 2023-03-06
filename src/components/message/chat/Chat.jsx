@@ -1,20 +1,20 @@
-import { useEffect, useMemo, memo, useState } from "react";
-import Backdrop from "../../ui/modal/Backdrop";
-import useUI from "../../../hooks/useUI";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { resetStatus } from "../../../store/message-slice";
+import { useEffect, useMemo, memo, useState } from 'react';
+import Backdrop from '../../ui/modal/Backdrop';
+import useUI from '../../../hooks/useUI';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetStatus } from '../../../store/message-slice';
 import {
   getStatusMessage,
   getConversationList,
   getUser,
-} from "../../../store/selectors";
-import { commonStyle } from "../../pages/Message";
-import Send from "./Send";
-import Header from "./Header";
-import Settings from "../settings/Settings";
-import Messages from "./Messages";
-import { motion, AnimatePresence } from "framer-motion";
+} from '../../../store/selectors';
+import { commonStyle } from '../../pages/Message';
+import Send from './Send';
+import Header from './Header';
+import Settings from '../settings/Settings';
+import Messages from './Messages';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Chat = () => {
   const { id: conversationId } = useParams();
@@ -23,13 +23,13 @@ const Chat = () => {
   const { onHideConversationList, onHideConverInfor } = useUI();
   const dispatch = useDispatch();
   const status = useSelector(getStatusMessage);
-  const isPending = useMemo(() => status === "get-message/pending", [status]);
+  const isPending = useMemo(() => status === 'get-message/pending', [status]);
   const [isLoadingMore, setIsLoadingMore] = useState(true);
 
   const { isShowInfor, sizeWindow } = useUI();
 
   useEffect(() => {
-    if (status === "get-message/success") {
+    if (status === 'get-message/success') {
       setIsLoadingMore(false);
       dispatch(resetStatus());
       onHideConversationList();
@@ -78,21 +78,24 @@ const Chat = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Send conversationId={conversationId} receiverId={receiverId} />
+              <Send
+                conversationId={conversationId}
+                receiverId={receiverId}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
       <Backdrop
-        isShow={isShowInfor && sizeWindow === "sm"}
+        isShow={isShowInfor && sizeWindow === 'sm'}
         onClose={onHideConverInfor}
       />
       <AnimatePresence>
         {isShowInfor && (
           <motion.div
-            initial={{ x: sizeWindow === "sm" ? "-250px" : "250px" }}
-            exit={{ x: sizeWindow === "sm" ? "-250px" : "250px" }}
-            animate={{ x: "0" }}
+            initial={{ x: sizeWindow === 'sm' ? '-250px' : '250px' }}
+            exit={{ x: sizeWindow === 'sm' ? '-250px' : '250px' }}
+            animate={{ x: '0' }}
             transition={{ duration: 0.3 }}
             className={`${commonStyle} sm:z-[99] flex flex-col w-[250px] gap-y-2 text-primary items-center mt-2 flex-none bg-white sm:shadow-lg sm:h-auto`}
           >

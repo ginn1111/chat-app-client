@@ -1,9 +1,8 @@
-import React from 'react';
-import './Global.css';
-import '../../styles/index.css';
+import '@/styles/index.css';
+import '@/components/ui/Global.css';
 
 const Global = ({ children }) => {
-  return <div>{children}</div>;
+  return <>{children}</>;
 };
 
 export default Global;

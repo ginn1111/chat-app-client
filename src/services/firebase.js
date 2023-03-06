@@ -1,11 +1,11 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import {
   getStorage,
   ref,
   getDownloadURL,
   uploadString,
-} from "firebase/storage";
-import { fmtFromFileReader } from "../utils/helper";
+} from 'firebase/storage';
+import { fmtFromFileReader } from '../utils/helper';
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -38,8 +38,8 @@ export const getCoverPicture = async (id) => {
 
 const uploadImg = async (src, path) => {
   const refImg = ref(storage, `${path}`);
-  return await uploadString(refImg, fmtFromFileReader(src), "base64", {
-    contentType: "image/png",
+  return await uploadString(refImg, fmtFromFileReader(src), 'base64', {
+    contentType: 'image/png',
   });
 };
 

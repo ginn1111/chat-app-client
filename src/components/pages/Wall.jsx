@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import WallAvatar from "../../components/wall/WallAvatar";
-import Biography from "../wall/Biography";
-import Friend from "../wall/Friend";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import WallAvatar from '../../components/wall/WallAvatar';
+import Biography from '../wall/Biography';
+import Friend from '../wall/Friend';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getUser,
   getFriendInformation,
   getFriendStatus,
   getStatus,
-} from "../../store/selectors";
-import { getFriend, resetStatus } from "../../store/friend-slice";
+} from '../../store/selectors';
+import { getFriend, resetStatus } from '../../store/friend-slice';
 
 const Wall = () => {
   const user = useSelector(getUser);
@@ -36,7 +36,7 @@ const Wall = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const isOwn = useMemo(() => id === user.id || id === "me", [id, user.id]);
+  const isOwn = useMemo(() => id === user.id || id === 'me', [id, user.id]);
 
   const isFriend = useMemo(() => {
     return user.friendList?.some((friend) => friend._id === id);
@@ -51,11 +51,11 @@ const Wall = () => {
   }, [user.friendResponse, id]);
 
   useEffect(() => {
-    if (status === "get-friend/success") {
+    if (status === 'get-friend/success') {
       setInformationOfWall(friend);
       dispatch(resetStatus());
     }
-    if (status === "get-friend/failed") {
+    if (status === 'get-friend/failed') {
       navigate(`/wall/me`);
       dispatch(resetStatus());
     }
@@ -83,7 +83,11 @@ const Wall = () => {
         coverPicture={coverPicture}
       />
       <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 xl:w-[1300px] h-full pb-5 mx-auto w-[90%] sm:mt-[100px]">
-        <Biography join={join} slogan={slogan} dob={dob} />
+        <Biography
+          join={join}
+          slogan={slogan}
+          dob={dob}
+        />
         <Friend friendList={friendList} />
       </section>
     </div>
