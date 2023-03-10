@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { search } from '../../store/search-slice';
-import { getSearchUsers, hasLoading } from '../../store/selectors';
+import { search } from '../store/search-slice';
+import { getSearchUsers, hasLoading } from '../store/selectors';
 import { Skeleton } from '@mui/material';
 
 const SkeletonSearch = () => {

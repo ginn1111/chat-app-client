@@ -103,4 +103,37 @@
   .menu-icon.close::before {
     @apply rotate-[42deg] translate-x-[-2.5px];
   }
+  /*NAVBAR*/
+  .navbar {
+    @apply fixed w-[300px] z-[999] bg-white shadow-[24px_6px_50px_0px_#00000005];
+  }
+  .navbar li:nth-of-type(1),
+  .navbar li:last-child {
+    @apply mt-auto;
+  }
+  .navbar li:last-child {
+    @apply mb-12;
+  }
+  .nav-item {
+    @apply flex gap-[18px] items-center py-8 px-16 text-gray-700;
+  }
+  .nav-item.active {
+    @apply text-primary;
+  }
+  .nav-item-text {
+    @apply font-semiBold text-16 uppercase;
+  }
+  .indicator {
+    @apply w-4 h-24 bg-primary shadow-[0_0_10px_2px_#2A8BF2] absolute left-0 top-0 transition-all;
+  }
+  /*Header conversation list*/
+  .create-new-chat-btn {
+    @apply flex items-center text-white rounded-[6px] gap-8 bg-gradient-to-r from-blue-300 to-primary px-24 py-16 shadow-[10px_6px_25px_#2A8BF226] hover:brightness-105 transition-all;
+  }
+}
+@layer utilities {
+  /*Conversation*/
+  .conversation-active {
+    @apply bg-gradient-to-r from-blue-300 to-primary text-white cursor-pointer transition-all;
+  }
 }

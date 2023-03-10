@@ -19,7 +19,7 @@ import GroupAvatar from '../GroupAvatar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scaleAnimate } from '../../../animation/models';
 import useAddMembers from '../../../hooks/useAddMembers';
-import { MemberList as MemberListAdd } from '../friends/NewConversation';
+import { MemberList as MemberListAdd } from '../ConversationList/NewConversation';
 import MyButton from '../../ui/button/MyButton';
 import { CircularProgress } from '@mui/material';
 import withToggleModal from '../../../hoc/withToggleModal';

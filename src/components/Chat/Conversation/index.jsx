@@ -1,63 +1,63 @@
 import { useEffect, useMemo, memo, useState } from 'react';
-import Backdrop from '../../ui/modal/Backdrop';
-import useUI from '../../../hooks/useUI';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetStatus } from '../../../store/message-slice';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import Backdrop from '@components/ui/modal/Backdrop';
+import useUI from '@hooks/useUI';
+import { resetStatus } from '@store/message-slice';
 import {
   getStatusMessage,
   getConversationList,
   getUser,
-} from '../../../store/selectors';
-import { commonStyle } from '../../pages/Message';
+} from '@store/selectors';
 import Send from './Send';
 import Header from './Header';
 import Settings from '../settings/Settings';
-import Messages from './Messages';
-import { motion, AnimatePresence } from 'framer-motion';
 
-const Chat = () => {
-  const { id: conversationId } = useParams();
-  const { id: userId } = useSelector(getUser);
-  const conversationList = useSelector(getConversationList);
-  const { onHideConversationList, onHideConverInfor } = useUI();
-  const dispatch = useDispatch();
-  const status = useSelector(getStatusMessage);
-  const isPending = useMemo(() => status === 'get-message/pending', [status]);
-  const [isLoadingMore, setIsLoadingMore] = useState(true);
+const Conversation = () => {
+  // const { id: conversationId } = useParams();
+  // const { id: userId } = useSelector(getUser);
+  // const conversationList = useSelector(getConversationList);
+  // const { onHideConversationList, onHideConverInfor } = useUI();
+  // const dispatch = useDispatch();
+  // const status = useSelector(getStatusMessage);
+  // const isPending = useMemo(() => status === 'get-message/pending', [status]);
+  // const [isLoadingMore, setIsLoadingMore] = useState(true);
 
-  const { isShowInfor, sizeWindow } = useUI();
+  // const { isShowInfor, sizeWindow } = useUI();
 
-  useEffect(() => {
-    if (status === 'get-message/success') {
-      setIsLoadingMore(false);
-      dispatch(resetStatus());
-      onHideConversationList();
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === 'get-message/success') {
+  //     setIsLoadingMore(false);
+  //     dispatch(resetStatus());
+  //     onHideConversationList();
+  //   }
+  // }, [status]);
 
-  const conversationInfor = useMemo(() => {
-    const conversation = conversationList.find(
-      (con) => con._id === conversationId
-    );
-    return conversation?.isGroup
-      ? {
-          ...conversation,
-          avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
-        }
-      : conversation;
-  }, [conversationId, conversationList]);
+  // const conversationInfor = useMemo(() => {
+  //   const conversation = conversationList.find(
+  //     (con) => con._id === conversationId
+  //   );
+  //   return conversation?.isGroup
+  //     ? {
+  //         ...conversation,
+  //         avatar: conversation?.members?.slice(0, 2).map((m) => m.avatar),
+  //       }
+  //     : conversation;
+  // }, [conversationId, conversationList]);
 
-  const receiverId = useMemo(
-    () =>
-      !conversationInfor?.isGroup &&
-      conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId,
-    [conversationInfor]
-  );
+  // const receiverId = useMemo(
+  //   () =>
+  //     !conversationInfor?.isGroup &&
+  //     conversationInfor?.members.find((m) => m.memberId !== userId)?.memberId,
+  //   [conversationInfor]
+  // );
 
   return (
     <>
-      <div
+      <p>Conversation</p>
+      {/* <div
         className={`w-full duration-500 ${commonStyle} bg-transparent relative mt-[-6px] sm:absolute flex flex-col`}
       >
         <Header
@@ -106,9 +106,9 @@ const Chat = () => {
             />
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   );
 };
 
-export default memo(Chat);
+export default memo(Conversation);

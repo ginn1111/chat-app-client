@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import WallAvatar from '../../components/wall/WallAvatar';
-import Biography from '../wall/Biography';
-import Friend from '../wall/Friend';
+import WallAvatar from '../components/wall/WallAvatar';
+import Biography from '../components/wall/Biography';
+import Friend from '../components/wall/Friend';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getUser,
   getFriendInformation,
   getFriendStatus,
   getStatus,
-} from '../../store/selectors';
-import { getFriend, resetStatus } from '../../store/friend-slice';
+} from '../store/selectors';
+import { getFriend, resetStatus } from '../store/friend-slice';
 
 const Wall = () => {
   const user = useSelector(getUser);

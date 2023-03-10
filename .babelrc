@@ -1,9 +1,38 @@
 {
   "plugins": [
-    ["module-resolver", {
-      "alias": {
-        "@": ["./src"]
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@": [
+            "./src"
+          ],
+          "@hoc": [
+            "./src/hoc"
+          ],
+          "@hooks": [
+            "./src/hooks"
+          ],
+          "@components": [
+            "./src/components"
+          ],
+          "@services": [
+            "./src/services"
+          ],
+          "@store": [
+            "./src/store"
+          ],
+          "@features": [
+            "./src/features"
+          ],
+          "@constants": [
+            "./src/constants"
+          ],
+          "@pages": [
+            "./src/pages"
+          ]
+        }
       }
-    }]
+    ]
   ]
 }

@@ -1,4 +1,4 @@
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { ChevronDownIcon, SearchIcon } from '@components/common/icons';
 
 const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
   function changeHandler(e) {
@@ -9,18 +9,22 @@ const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
   }
 
   return (
-    <div
-      className={`flex items-center w-full min-w-36 h-max py-1 px-2 rounded-full ${bgColor} text-black text-[16px] sm:text-[12px] sm:px-1 sm:py-0 sm:rounded-xl`}
-    >
-      <SearchOutlinedIcon sx={{ fontSize: 20, color: 'gray' }} />
+    <div className="py-20 px-20 bg-white flex items-center text-gray-500 rounded-[6px]">
+      <SearchIcon
+        size={20}
+        className="mr-8 "
+      />
       <input
+        className="flex-1"
         onFocus={focusHandler}
         onChange={changeHandler}
         placeholder={placeholder}
-        onClick={(e) => e.stopPropagation()}
-        type="search"
-        className="bg-transparent w-full border-none outline-none px-1 placeholder:text-[14px] sm:placeholder:text-[12px]"
+        type="text"
       />
+      <div className="flex items-center gap-8 ml-8">
+        <p>Messages</p>
+        <ChevronDownIcon size={20} />
+      </div>
     </div>
   );
 };
