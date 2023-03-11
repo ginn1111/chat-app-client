@@ -5,6 +5,15 @@ import GroupAvatar from '../GroupAvatar';
 import InfoIcon from '@mui/icons-material/Info';
 import { CircularProgress } from '@mui/material';
 import MenuIcon from '../../ui/MenuIcon';
+import { SettingIcon, AttachIcon } from '@components/common/icons';
+
+const HeaderControl = ({ icon }) => {
+  return (
+    <button className="hover:bg-primary hover:text-white transition-colors text-gray-400 p-12 w-48 h-48 bg-white rounded-cir shadow-[0_5px_25px_0_#2A8BF212] flex items-center justify-center">
+      {icon}
+    </button>
+  );
+};
 
 const Header = ({ avatar, name }) => {
   const isGroupTab = useSelector(isGroup);
@@ -22,48 +31,24 @@ const Header = ({ avatar, name }) => {
   };
 
   return (
-    <header className="w-full flex items-center shadow-[0_10px_20px_-5px_#0000003f] py-2 px-5 rounded-[20px_20px_0_0] gap-x-4">
-      {status === 'conversation-get/pending' || !avatar ? (
-        <CircularProgress />
-      ) : (
-        <>
-          <div className="flex-none">
-            {isGroupTab ? (
-              <GroupAvatar
-                img1={avatar?.[0]}
-                img2={avatar?.[1]}
-              />
-            ) : (
-              <img
-                src={avatar}
-                alt="avatar-chat"
-                className="w-7 h-7 object-cover object-center rounded-full"
-              />
-            )}
-          </div>
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-[18px] font-[500] tracking-wider text-slate-600 truncate">
-              {name}
-            </span>
-          </div>
-        </>
-      )}
-      <div className="ml-auto flex gap-x-2 items-center">
-        {sizeWindow === 'sm' && (
-          <MenuIcon
-            onClick={menuIconClickHandler}
-            isClose={showConversationList}
+    <header className="flex items-center justify-between px-28 py-16 bg-white rounded-[6px_6px_0_0] border-b border-solid border-gray-200">
+      <section className="flex items-center gap-20">
+        <article className="w-56 h-56">
+          <img
+            src="https://www.figma.com/file/cXZUlJRHi5JhnrgLdZZfvK/image/25daf6b6c9cfce0b73cb0788f056ca80336c3df5?fuid=1056603901594338444"
+            alt="Avatar chat"
+            className="block h-full w-full object-cover object-center rounded-cir"
           />
-        )}
-        <div
-          className={`ml-auto ${
-            isShowInfor ? 'shadow-[0_0_0_4px_#00000012]' : ''
-          } duration-300 cursor-pointer rounded-full w-auto h-auto  flex items-center`}
-          onClick={onToggleConverInfor}
-        >
-          <InfoIcon sx={{ fontSize: 25, color: '#bfdbce' }} />
-        </div>
-      </div>
+        </article>
+        <article>
+          <h4 className="text-[18px] font-bold">Name for test</h4>
+          <p className="text-16 text-primary">1 day ago</p>
+        </article>
+      </section>
+      <section className="flex gap-20 items-center">
+        <HeaderControl icon={<AttachIcon />} />
+        <HeaderControl icon={<SettingIcon />} />
+      </section>
     </header>
   );
 };

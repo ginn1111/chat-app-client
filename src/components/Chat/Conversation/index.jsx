@@ -11,9 +11,9 @@ import {
   getConversationList,
   getUser,
 } from '@store/selectors';
-import Send from './Send';
+import EditorMessage from './EditorMessage';
 import Header from './Header';
-import Settings from '../settings/Settings';
+import Messages from './Messages';
 
 const Conversation = () => {
   // const { id: conversationId } = useParams();
@@ -55,59 +55,17 @@ const Conversation = () => {
   // );
 
   return (
-    <>
-      <p>Conversation</p>
-      {/* <div
-        className={`w-full duration-500 ${commonStyle} bg-transparent relative mt-[-6px] sm:absolute flex flex-col`}
-      >
-        <Header
-          avatar={conversationInfor?.avatar}
-          name={conversationInfor?.title}
-        />
-        <Messages
-          isLoadingMore={isLoadingMore}
-          isPending={isPending}
-          conversationAvatar={conversationInfor?.avatar}
-          visitedConversationId={conversationId}
-        />
-        <AnimatePresence>
-          {!isPending && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              exit={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Send
-                conversationId={conversationId}
-                receiverId={receiverId}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <section className="flex flex-col h-full">
+      <div>
+        <Header />
       </div>
-      <Backdrop
-        isShow={isShowInfor && sizeWindow === 'sm'}
-        onClose={onHideConverInfor}
-      />
-      <AnimatePresence>
-        {isShowInfor && (
-          <motion.div
-            initial={{ x: sizeWindow === 'sm' ? '-250px' : '250px' }}
-            exit={{ x: sizeWindow === 'sm' ? '-250px' : '250px' }}
-            animate={{ x: '0' }}
-            transition={{ duration: 0.3 }}
-            className={`${commonStyle} sm:z-[99] flex flex-col w-[250px] gap-y-2 text-primary items-center mt-2 flex-none bg-white sm:shadow-lg sm:h-auto`}
-          >
-            <Settings
-              friendId={receiverId}
-              avatar={conversationInfor?.avatar}
-              name={conversationInfor?.title}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence> */}
-    </>
+      <div className="flex-1 overflow-hidden">
+        <Messages />
+      </div>
+      <div>
+        <EditorMessage />
+      </div>
+    </section>
   );
 };
 

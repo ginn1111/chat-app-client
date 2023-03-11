@@ -19,17 +19,14 @@ const MessageItem = ({ isOwn, senderId, message, timeAt }, ref) => {
       data-scroll
       className={`chat-item ${isOwn ? 'own' : 'not-own'}`}
     >
-      <img
-        className="w-6 h-6 rounded-full object-center object-cover"
-        src={avatar}
-        alt="own-avatar"
-      />
-      <div className="w-full">
-        <span className="inline-block mb-1 h-max break-all px-2 py-1 ">
-          {message}
-        </span>
-        <p className="text-[14px] text-slate-600">{timeAt}</p>
+      <div className="w-36 h-36">
+        <img
+          className="w-full h-full rounded-cir object-center object-cover"
+          src="https://www.figma.com/file/cXZUlJRHi5JhnrgLdZZfvK/image/25daf6b6c9cfce0b73cb0788f056ca80336c3df5?fuid=1056603901594338444"
+          alt="Own user avatar"
+        />
       </div>
+      <p className="break-all py-8 px-8">{message}</p>
     </li>
   );
 };

@@ -12,3 +12,7 @@ export { default as ChatNavItemIcon } from './ChatNavItemIcon';
 export { default as ChevronDownIcon } from './ChevronDownIcon';
 export { default as AddIcon } from './AddIcon';
 export { default as SearchIcon } from './SearchIcon';
+export { default as AttachIcon } from './AttachIcon';
+export { default as SettingIcon } from './SettingIcon';
+export { default as SendIcon } from './SendIcon';
+export { default as SmileIcon } from './SmileIcon';

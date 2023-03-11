@@ -11,7 +11,6 @@ module.exports = {
       sm: { max: '767px' },
       md: { min: '1199px' },
       xl: { min: '1399px' },
-      xxl: { min: '1400px' },
     },
     extend: {
       colors: {
@@ -47,7 +46,7 @@ module.exports = {
         'loading-3': 'rotate 1500ms ease-in-out infinite',
       },
       fontFamily: {
-        oswald: ['Oswald', 'sans', 'sans-serif'],
+        'tt-norms-pro': ['tt-norms-pro', 'sans', 'sans-serif'],
       },
     },
   },

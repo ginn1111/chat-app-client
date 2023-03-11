@@ -1,10 +1,11 @@
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Global from './components/ui/Global';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import store from './store';
 import UIProvider from './context/UIContext';
 import { setUpInterceptor } from './axios';
@@ -15,9 +16,7 @@ root.render(
     <Provider store={store}>
       <UIProvider>
         <Router>
-          <Global>
-            <App />
-          </Global>
+          <App />
         </Router>
       </UIProvider>
     </Provider>

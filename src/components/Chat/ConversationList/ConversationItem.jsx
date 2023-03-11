@@ -48,15 +48,15 @@ const ConversationItem = ({
           />
         </article>
         <article className="flex flex-col justify-evenly ml-20 flex-1">
-          <p className="font-medium text-[18px]">{name}</p>
-          <p className="text-16 text-primary group-[.conversation-active]:text-white group-hover:text-white">
+          <p className="font-medium text-16">{name}</p>
+          <p className="text-[14px] text-primary group-[.conversation-active]:text-white group-hover:text-white">
             Status
           </p>
         </article>
-        <p className="text-16">1 day ago</p>
+        <p className="text-[14px]">1 day ago</p>
       </div>
       <div className="flex mt-20 gap-20 relative">
-        <p className="text-16 line-clamp-3">
+        <p className="text line-clamp-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
           quisquam, repudiandae quibusdam, consequatur qui dolor delectus odit
           soluta quia unde incidunt id dicta officia esse temporibus neque hic

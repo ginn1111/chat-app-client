@@ -12,7 +12,7 @@ const Search = ({ placeholder, bgColor, onSearch, onFocus }) => {
     <div className="py-20 px-20 bg-white flex items-center text-gray-500 rounded-[6px]">
       <SearchIcon
         size={20}
-        className="mr-8 "
+        className="mr-8"
       />
       <input
         className="flex-1"

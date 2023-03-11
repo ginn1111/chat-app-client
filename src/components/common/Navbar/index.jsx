@@ -19,14 +19,16 @@ const Avatar = ({ className }) => {
 
 const Information = () => {
   return (
-    <div className="px-20 flex items-center gap-40 justify-center">
-      <h3 className="max-w-50% text-20 font-medium text-gray-800 line-clamp-1">
-        Gin
-      </h3>
-      <ChevronDownIcon
-        className="text-black"
-        size={20}
-      />
+    <div className="px-20 flex items-center justify-center">
+      <div className="flex items-center gap-8 overflow-hidden">
+        <h3 className="flex-1 text-20 font-medium text-gray-800 truncate">
+          Ginn1111
+        </h3>
+        <ChevronDownIcon
+          className="text-black"
+          size={20}
+        />
+      </div>
     </div>
   );
 };
