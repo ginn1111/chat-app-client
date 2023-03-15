@@ -110,10 +110,10 @@
   }
   /*TOAST*/
   .toast {
-    @apply w-max p-2  gap-x-2 flex items-center rounded-sm shadow-lg z-[99999] sm:py-1 max-w-[70vw];
+    @apply gap-2 px-24 py-16 flex items-center rounded-sm shadow-md z-[99999] max-w-[50vw];
   }
   .toast + .toast {
-    @apply mt-1;
+    @apply mt-12;
   }
   .no-read::after {
     @apply content-[''] absolute top-[5px] right-[-6px] w-[20px] h-[10px] bg-red-500 shadow-md;
@@ -315,5 +315,9 @@
   /*CONVERSATION*/
   .conversation-active {
     @apply bg-gradient-to-r from-blue-300 to-primary text-white cursor-pointer transition-all;
+  }
+  /*DISABLE*/
+  *:disabled {
+    @apply disabled:cursor-not-allowed bg-gray-100;
   }
 }

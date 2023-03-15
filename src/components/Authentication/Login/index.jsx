@@ -1,13 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { memo } from 'react';
+import { Link } from 'react-router-dom';
 
+import useLogin from './useLogin';
 import withToast from '@hoc/withToast';
-import { login, resetStatus } from '@store/authen-slice';
-import { getStatus } from '@store/selectors';
-import Input from '@/components/common/Input';
-import Checkbox from '@/components/common/Checkbox';
-import Button from '@/components/common/Button';
+import Input from '@components/common/Input';
+import Checkbox from '@components/common/Checkbox';
+import Button from '@components/common/Button';
 import {
   TwitterIcon,
   GoogleIcon,
@@ -15,42 +13,38 @@ import {
 } from '@components/common/icons';
 import Oauth from '../components/Oauth';
 import { PATHS } from '@constants/routers';
+import ErrorMessage from '@components/common/ErrorMessage';
+import { ToastType } from '@components/ui/notification/Toast';
+import { ErrorCode, ResponseMessage } from '@constants';
+import commonErrorHandler from '@axios/errorHandler';
 
 const Login = withToast(({ toast }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const status = useSelector(getStatus);
-
-  const emailRef = useRef();
-  const passwordRef = useRef();
-
-  useEffect(() => {
-    if (status === 'login/failed') {
-      toast.addToast({
-        message: 'Login failed, invalid email or password!',
-        type: 'error',
-      });
-    } else if (status === 'login/success') {
-      navigate(location?.state?.from ?? '/');
-    }
-    if (status !== 'login/pending' && status !== 'idle') {
-      dispatch(resetStatus());
-    }
-  }, [status, toast, dispatch, navigate, location?.state?.from]);
-
-  function submitLogInHandler(event) {
-    event.preventDefault();
-
-    const email = emailRef.current;
-    const password = passwordRef.current;
-
-    if (email.isInValid || password.isInValid) {
-      return;
-    }
-
-    dispatch(login({ email: email.value, password: password.value }));
-  }
+  const { state, formik } = useLogin({
+    onSuccess(response) {
+      console.log(response);
+    },
+    onError(error) {
+      console.error(error);
+      const message = commonErrorHandler(error);
+      if (message) {
+        toast({ message, type: ToastType.ERROR });
+        return;
+      }
+      switch (error.response.status) {
+        case ErrorCode.WRONG_CREDENTIALS:
+          toast({
+            message: ResponseMessage.WRONG_CREDENTIALS,
+            type: ToastType.ERROR,
+          });
+          break;
+        default:
+          toast({
+            message: ResponseMessage.SOME_THING_WENT_WRONG,
+            type: ToastType.ERROR,
+          });
+      }
+    },
+  });
 
   return (
     <>
@@ -59,13 +53,16 @@ const Login = withToast(({ toast }) => {
         Sign in to continue to Echat
       </p>
       <form
-        onSubmit={submitLogInHandler}
+        onSubmit={formik.handleSubmit}
         className="flex flex-col gap-y-16 w-5/12"
       >
         <Input
-          label="Username"
-          placeholder="Enter username"
+          disabled={state.isLoading}
+          label="Email"
+          placeholder="Enter email"
+          {...formik.getFieldProps('email')}
         />
+        {state.isEmailError && <ErrorMessage errorMsg={formik.errors.email} />}
         <div className="flex flex-col gap-12">
           <p className="flex justify-between text-16 text-gray-600 font-medium">
             <label
@@ -75,6 +72,7 @@ const Login = withToast(({ toast }) => {
               Password
             </label>
             <button
+              type="button"
               tabIndex="-1"
               className="text-gray-400 font"
             >
@@ -82,16 +80,31 @@ const Login = withToast(({ toast }) => {
             </button>
           </p>
           <Input
-            id="password"
+            disabled={state.isLoading}
             placeholder="Enter password"
             type="password"
+            {...formik.getFieldProps('password')}
           />
+          {state.isPasswordError && (
+            <ErrorMessage errorMsg={formik.errors.password} />
+          )}
         </div>
-        <label className="flex items-center gap-12 cursor-pointer">
-          <Checkbox />
+        <label
+          className="flex items-center gap-12 cursor-pointer"
+          htmlFor="rememberMe"
+        >
+          <Checkbox
+            disabled={state.isLoading}
+            id="rememberMe"
+            {...formik.getFieldProps('rememberMe')}
+          />
           <p className="text-[14px] text-gray-600 font-medium">Remember me</p>
         </label>
-        <Button text="Log In" />
+        <Button
+          type="submit"
+          text="Log In"
+          isLoading={state.isLoading}
+        />
         <div>
           <p className="text-center text-16 text-gray-600 mb-24">Log In With</p>
           <div className="flex gap-12">
@@ -123,4 +136,4 @@ const Login = withToast(({ toast }) => {
   );
 });
 
-export default Login;
+export default memo(Login);

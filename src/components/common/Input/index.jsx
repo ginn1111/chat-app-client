@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import usePassword from './usePassword';
-import { EyeIcon, HiddenEyeIcon } from '@/components/common/icons';
+import { EyeIcon, HiddenEyeIcon } from '@components/common/icons';
 
 const Input = ({ label, type, ...props }) => {
   const [isShowPassword, setIsShowPassword] = usePassword(type === 'password');
@@ -27,7 +27,8 @@ const Input = ({ label, type, ...props }) => {
         />
         {isShowPassword !== null && (
           <button
-            tabIndex={0}
+            disabled={props.disabled}
+            type="button"
             className="absolute right-8 bottom-0 top-0 my-auto cursor-pointer"
             onClick={() => setIsShowPassword((isShow) => !isShow)}
           >

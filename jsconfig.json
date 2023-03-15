@@ -2,17 +2,42 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "*": ["*"],
-      "@hoc/*": ["./src/hoc/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@components/*": ["./src/components/*"],
-      "@services/*": ["./src/services/*"],
-      "@store/*": ["./src/app/*"],
-      "@features/*": ["./src/features/*"],
-      "@constants/*": ["./src/constants/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@utils/*": ["./src/utils"]
+      "*": [
+        "*"
+      ],
+      "@hoc/*": [
+        "./src/hoc/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@store/*": [
+        "./src/app/*"
+      ],
+      "@features/*": [
+        "./src/features/*"
+      ],
+      "@constants/*": [
+        "./src/constants/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@utils/*": [
+        "./src/utils"
+      ],
+      "@axios/*": [
+        "./src/axios"
+      ],
+      "@assets/*": [
+        "./src/assets"
+      ]
     }
   }
 }

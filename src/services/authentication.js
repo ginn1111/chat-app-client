@@ -1,23 +1,29 @@
 import { publicRequest } from '../axios';
 
-export const login = async (email, password) =>
-  await publicRequest.post('/auth/login', { email, password });
+export const login = ({ email, password }, config) =>
+  publicRequest.post('/auth/login', { email, password }, config);
 
-export const register = async ({ firstName, lastName, email, password }) =>
-  await publicRequest.post('/auth/register', {
-    firstName,
-    lastName,
-    email,
-    password,
-    gender: 'female',
-    birthday: new Date().toISOString(),
-    phone: new Date().getTime(),
-  });
+export const register = ({ firstName, lastName, email, password }, config) =>
+  publicRequest.post(
+    '/auth/register',
+    {
+      firstName,
+      lastName,
+      email,
+      password,
+      gender: 'female',
+    },
+    config
+  );
 
-export const refreshToken = async (userId) =>
-  await publicRequest.post(`/auth/refresh-token`, {
-    userId,
-  });
+export const refreshToken = (userId, config) =>
+  publicRequest.post(
+    `/auth/refresh-token`,
+    {
+      userId,
+    },
+    config
+  );
 
-export const logout = async (userId) =>
-  await publicRequest.post(`/auth/${userId}/logout`);
+export const logout = (userId, config) =>
+  publicRequest.post(`/auth/${encodeURIComponent(userId)}/logout`, config);

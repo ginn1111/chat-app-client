@@ -1,7 +1,7 @@
-import withModal from '../../../hoc/withModal';
-import Search from '../../ui/search/Search';
+import withModal from '@hoc/withModal';
+import Search from '@components/ui/search/Search';
 import NewConversation from './NewConversation';
-import { AddIcon, ChevronDownIcon } from '@/components/common/icons';
+import { AddIcon, ChevronDownIcon } from '@components/common/icons';
 
 const Header = ({ onSearch }) => {
   return (

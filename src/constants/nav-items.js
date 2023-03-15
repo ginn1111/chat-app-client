@@ -4,7 +4,7 @@ import {
   ChatNavItemIcon as ChatIcon,
   LogoutIcon,
 } from '@components/common/icons';
-import { PATHS } from '@/constants/routers';
+import { PATHS } from '@constants/routers';
 
 const NAV_ITEMS = [
   { id: 0, title: 'Home', icon: <HomeIcon />, to: PATHS.LOGIN },

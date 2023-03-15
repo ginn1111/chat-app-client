@@ -27,23 +27,17 @@ module.exports = {
       },
       fontSize: { ...spacing },
       keyframes: {
-        'slide-from-left': {
-          '0%': { transform: 'translateX(-10%)', opacity: 0 },
-          '100%': { transform: 'translateX(0)', opacity: 1 },
-        },
-        'slide-from-right': {
-          '0%': { transform: 'translateX(10%)', opacity: 0 },
-          '100%': { transform: 'translateX(0)', opacity: 1 },
-        },
-        rotate: {
-          '0%': { transform: 'rotate(0)' },
-          '100%': { transform: 'rotate(360deg)' },
+        'toast-auto-close': {
+          from: {
+            transform: 'translateX(0)',
+          },
+          to: {
+            transform: 'translateX(-100%)',
+          },
         },
       },
       animation: {
-        'loading-1': 'rotate 1000ms ease infinite',
-        'loading-2': 'rotate 1300ms ease-in-out infinite',
-        'loading-3': 'rotate 1500ms ease-in-out infinite',
+        'toast-auto-close': 'toast-auto-close 3s ease-in-out forwards',
       },
       fontFamily: {
         'tt-norms-pro': ['tt-norms-pro', 'sans', 'sans-serif'],

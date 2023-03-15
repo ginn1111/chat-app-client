@@ -4,9 +4,6 @@
       "module-resolver",
       {
         "alias": {
-          "@": [
-            "./src"
-          ],
           "@hoc": [
             "./src/hoc"
           ],
@@ -33,6 +30,12 @@
           ],
           "@utils": [
             "./src/utils"
+          ],
+          "@axios": [
+            "./src/axios"
+          ],
+          "@assets": [
+            "./src/assets"
           ]
         }
       }

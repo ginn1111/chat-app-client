@@ -16,3 +16,6 @@ export { default as AttachIcon } from './AttachIcon';
 export { default as SettingIcon } from './SettingIcon';
 export { default as SendIcon } from './SendIcon';
 export { default as SmileIcon } from './SmileIcon';
+export { default as TickIcon } from './TickIcon';
+export { default as WarnIcon } from './WarnIcon';
+export { default as CloseIcon } from './CloseIcon';
