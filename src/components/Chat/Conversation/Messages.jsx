@@ -150,7 +150,7 @@ const Messages = ({ isPending, onHasLoadingMore, isLoadingMore }) => {
 
   return (
     <ul className="h-full flex flex-col overflow-auto bg-white px-28 py-16 gap-16">
-      {messages?.map((message, idx) => (
+      {messages?.map((message) => (
         <MessageItem
           key={message.id}
           isOwn={message.isOwn}

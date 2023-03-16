@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import useLogin from './useLogin';
@@ -15,36 +15,22 @@ import Oauth from '../components/Oauth';
 import { PATHS } from '@constants/routers';
 import ErrorMessage from '@components/common/ErrorMessage';
 import { ToastType } from '@components/ui/notification/Toast';
-import { ErrorCode, ResponseMessage } from '@constants';
-import commonErrorHandler from '@axios/errorHandler';
 
 const Login = withToast(({ toast }) => {
   const { state, formik } = useLogin({
-    onSuccess(response) {
-      console.log(response);
-    },
-    onError(error) {
-      console.error(error);
-      const message = commonErrorHandler(error);
-      if (message) {
-        toast({ message, type: ToastType.ERROR });
-        return;
-      }
-      switch (error.response.status) {
-        case ErrorCode.WRONG_CREDENTIALS:
-          toast({
-            message: ResponseMessage.WRONG_CREDENTIALS,
-            type: ToastType.ERROR,
-          });
-          break;
-        default:
-          toast({
-            message: ResponseMessage.SOME_THING_WENT_WRONG,
-            type: ToastType.ERROR,
-          });
-      }
-    },
+    email: 'vanthuanjw@gmail.com',
+    password: 'Thu@n1231213011',
   });
+
+  useEffect(() => {
+    if (state.isReqError) {
+      toast({
+        type: ToastType.ERROR,
+        message: state.errorMsg,
+        autoClose: false,
+      });
+    }
+  }, [state.isReqError]);
 
   return (
     <>

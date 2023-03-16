@@ -23,15 +23,19 @@ const Register = withToast(({ toast }) => {
     onSuccess() {
       toast({ message: ResponseMessage.REGISTER_SUCCESSFULLY });
     },
-    onError(error) {
-      const message = commonErrorHandler(error);
+    onError(errorCode) {
+      const message = commonErrorHandler(errorCode);
       if (message) {
         toast({ message, type: ToastType.ERROR });
         return;
       }
-      switch (error.response.status) {
+      switch (errorCode) {
+        //[409]
         case ErrorCode.CONFLICT:
-          toast({ message: ResponseMessage.EMAIL_IN_USED, type: ToastType.ERROR });
+          toast({
+            message: ResponseMessage.EMAIL_IN_USED,
+            type: ToastType.ERROR,
+          });
           break;
         default:
           toast({

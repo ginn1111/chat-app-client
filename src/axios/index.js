@@ -2,6 +2,13 @@ import axios from 'axios';
 import { logout, refreshToken } from '../store/authen-slice';
 import jwt_decode from 'jwt-decode';
 
+export const URL = {
+  LOGIN: '/auth/login',
+  REGISTER: '/auth/register',
+  REFRESHTOKEN: '/auth/refresh-token',
+  LOGOUT: (userId) => `/auth/${encodeURIComponent(userId)}/logout`,
+};
+
 export const publicRequest = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   withCredentials: true,
@@ -10,6 +17,16 @@ export const publicRequest = axios.create({
 export const privateRequest = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   withCredentials: true,
+});
+
+publicRequest.interceptors.response.use((response) => {
+  switch (response.config.url) {
+    case URL.LOGIN:
+      const { _id, __v, createAt, updateAt, ...rest } = response.data;
+      return { ...response, data: { ...rest, id: _id } };
+    default:
+      return response;
+  }
 });
 
 export const setUpInterceptor = ({ dispatch, getState }) =>

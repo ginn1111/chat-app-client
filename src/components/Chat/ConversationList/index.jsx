@@ -1,8 +1,6 @@
 import React, { useRef, useEffect, useMemo, useState, memo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import GroupsIcon from '@mui/icons-material/Groups';
-import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
@@ -32,27 +30,6 @@ import getSocketIO, {
 import useSearch from '@hooks/useSearch';
 
 const ConversationList = () => {
-  const dispatch = useDispatch();
-  const isGroupTab = useSelector(isGroup);
-  const status = useSelector(getConversationsStatus);
-  const navigate = useNavigate();
-  const conversationList = useSelector(getConversationList);
-  const { id: userId } = useSelector(getUser);
-  const { id: conversationId } = useParams();
-
-  const [usersOnline, setUsersOnline] = useState({});
-  const [stateConversations, setStateConversations] = useState({});
-  const [filterConversation, setFilterConversation] = useState('');
-  const searchHandler = useSearch(setFilterConversation);
-
-  const divRef = useRef();
-  const groupRef = useRef();
-  const personRef = useRef();
-
-  useEffect(() => {
-    setFilterConversation('');
-  }, [isGroupTab]);
-
   // useEffect(() => {
   //   const id = conversationList?.[0]?._id;
   //   status === 'conversation-get/success' &&
@@ -107,7 +84,6 @@ const ConversationList = () => {
   //   if (socket?.connected) {
   //     initConversations(userId, socket);
   //     getUserOnline(setUsersOnline, socket);
-
   //     return () => removeGetUserOnline(setUsersOnline, socket);
   //   }
   // }, [getSocketIO()?.connected, userId]);
@@ -177,14 +153,9 @@ const ConversationList = () => {
     </ul>
   );
 
-  if (status === 'conversation-get/pending')
-    conversationListRender = <CircularProgress />;
-  if (status === 'conversation-get/error')
-    conversationListRender = <p>Something went wrong :(</p>;
-
   return (
     <>
-      <Header onSearch={searchHandler} />
+      <Header />
       {conversationListRender}
     </>
   );

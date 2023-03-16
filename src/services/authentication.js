@@ -1,11 +1,12 @@
 import { publicRequest } from '../axios';
+import { URL } from '@axios';
 
 export const login = ({ email, password }, config) =>
-  publicRequest.post('/auth/login', { email, password }, config);
+  publicRequest.post(URL.LOGIN, { email, password }, config);
 
 export const register = ({ firstName, lastName, email, password }, config) =>
   publicRequest.post(
-    '/auth/register',
+    URL.REGISTER,
     {
       firstName,
       lastName,
@@ -18,7 +19,7 @@ export const register = ({ firstName, lastName, email, password }, config) =>
 
 export const refreshToken = (userId, config) =>
   publicRequest.post(
-    `/auth/refresh-token`,
+    URL.REFRESHTOKEN,
     {
       userId,
     },
@@ -26,4 +27,4 @@ export const refreshToken = (userId, config) =>
   );
 
 export const logout = (userId, config) =>
-  publicRequest.post(`/auth/${encodeURIComponent(userId)}/logout`, config);
+  publicRequest.post(URL.LOGOUT(userId), config);

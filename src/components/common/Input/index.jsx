@@ -22,7 +22,8 @@ const Input = ({ label, type, ...props }) => {
           id={id}
           spellCheck={false}
           type={isPassword && !isShowPassword ? 'password' : 'text'}
-          className="placeholder:text-[14px] px-16 py-8 rounded-sm border border-solid border-gray-200 text-gray-700 w-full font-light"
+          className="placeholder:text-[14px] px-16 py-8 rounded-sm border border-solid border-gray-200 w-full focus:shadow-[0_0_0_5px] focus:shadow-primary/20 outline-[1px] 
+         outline outline-transparent focus:outline-primary/50 transition-all"
           {...props}
         />
         {isShowPassword !== null && (

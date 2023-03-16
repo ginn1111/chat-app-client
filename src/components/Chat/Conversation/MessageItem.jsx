@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom';
 import { getConversationList } from '../../../store/selectors';
 
 const MessageItem = ({ isOwn, senderId, message, timeAt }, ref) => {
-  const { id: conversationId } = useParams();
-  const conversationList = useSelector(getConversationList);
+  // const { id: conversationId } = useParams();
+  // const conversationList = useSelector(getConversationList);
 
-  const avatar = useMemo(() => {
-    return conversationList
-      .find((con) => con._id === conversationId)
-      ?.members?.find((m) => m.memberId === senderId)?.avatar;
-  }, [conversationList, senderId, conversationId]);
+  // const avatar = useMemo(() => {
+  //   return conversationList
+  //     .find((con) => con._id === conversationId)
+  //     ?.members?.find((m) => m.memberId === senderId)?.avatar;
+  // }, [conversationList, senderId, conversationId]);
 
   return (
     <li

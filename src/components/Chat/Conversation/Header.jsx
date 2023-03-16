@@ -16,20 +16,6 @@ const HeaderControl = ({ icon }) => {
 };
 
 const Header = ({ avatar, name }) => {
-  const isGroupTab = useSelector(isGroup);
-  const status = useSelector(getConversationsStatus);
-  const {
-    onToggleConversationList,
-    sizeWindow,
-    showConversationList,
-    isShowInfor,
-    onToggleConverInfor,
-  } = useUI();
-
-  const menuIconClickHandler = () => {
-    onToggleConversationList();
-  };
-
   return (
     <header className="flex items-center justify-between px-28 py-16 bg-white rounded-[6px_6px_0_0] border-b border-solid border-gray-200">
       <section className="flex items-center gap-20">

@@ -16,30 +16,9 @@ const ConversationItem = ({
   isGroup,
   members,
 }) => {
-  const { id: userId } = useSelector(getUser);
-  const { id: visitedConversationId } = useParams();
-  const isChoosing = useMemo(
-    () => visitedConversationId === conversationId,
-    [conversationId, visitedConversationId]
-  );
-  const [timer, setTimer] = useState(0);
-
-  useEffect(() => {
-    const idTimer = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 60_000);
-
-    return () => clearInterval(idTimer);
-  }, []);
-
-  const twoEarlyAvatarMember = useMemo(
-    () => isGroup && members.slice(0, 2).map((m) => m.avatar),
-    [members, isGroup]
-  );
-
   return (
-    <li className="px-20 py-16 bg-white text-gray-500 group hover:conversation-active rounded-[6px]">
-      <div className="flex relative">
+    <li className="px-20 py-16 bg-white text-gray-500 group hover:conversation-active rounded-[6px] relative">
+      <div className="flex">
         <article className="relative online w-56 h-56">
           <img
             className="block w-full h-full rounded-cir"
@@ -55,17 +34,14 @@ const ConversationItem = ({
         </article>
         <p className="text-[14px]">1 day ago</p>
       </div>
-      <div className="flex mt-20 gap-20 relative">
+      <div className="flex mt-20 gap-20">
         <p className="text line-clamp-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
           quisquam, repudiandae quibusdam, consequatur qui dolor delectus odit
           soluta quia unde incidunt id dicta officia esse temporibus neque hic
           autem impedit.
         </p>
-        <NotifyBubble
-          color="#2A8BF2"
-          isNotify
-        />
+        <NotifyBubble isNotify />
       </div>
     </li>
   );

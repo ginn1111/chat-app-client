@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect } from 'react';
 
 const useAbort = () => {
   const abortControllerRef = useRef({
@@ -18,6 +18,6 @@ const useAbort = () => {
   }, []);
 
   return abortControllerRef.current.controller.signal;
-}
+};
 
 export default useAbort;

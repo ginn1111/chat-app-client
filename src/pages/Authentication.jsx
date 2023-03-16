@@ -1,15 +1,10 @@
-import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { hasLoading } from '../store/selectors';
-import ProcessBar from '../components/ui/loading/ProcessBar';
 import { ChatIcon } from '@components/common/icons';
 import { bgLogin } from '@constants';
 
 const Authentication = () => {
-  const isLoading = useSelector(hasLoading);
   return (
     <>
-      <ProcessBar isShow={isLoading} />
       <section className="grid grid-cols-12 bg-primary min-h-screen">
         <div className="col-span-4 p-48 flex flex-col justify-between h-screen">
           <div className="flex items-center gap-12 text-white">

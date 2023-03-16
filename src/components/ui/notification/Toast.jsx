@@ -29,43 +29,42 @@ const Toast = ({ type, message, autoClose = true }) => {
   const typeToast =
     type === ToastType.ERROR
       ? {
-          bg: 'bg-red-500',
-          borderColor: 'border-red-500',
-          icon: (
-            <ToastIcon
-              bg="bg-gradient-to-r from-red-500 to-orange-300"
-              icon={<WarnIcon />}
-            />
-          ),
-        }
+        bg: 'bg-red-500',
+        borderColor: 'border-red-500',
+        icon: (
+          <ToastIcon
+            bg="bg-gradient-to-r from-red-500 to-orange-300"
+            icon={<WarnIcon />}
+          />
+        ),
+      }
       : {
-          bg: 'bg-green-500',
-          borderColor: 'border-green-500',
-          icon: (
-            <ToastIcon
-              bg="bg-gradient-to-r from-green-500 to-blue-300"
-              icon={<TickIcon />}
-            />
-          ),
-        };
+        bg: 'bg-green-500',
+        borderColor: 'border-green-500',
+        icon: (
+          <ToastIcon
+            bg="bg-gradient-to-r from-green-500 to-blue-300"
+            icon={<TickIcon />}
+          />
+        ),
+      };
   return (
     <Transition
       enter="transition-transform duration-300"
-      leave="transition-transform duration-300"
       enterFrom="translate-x-[120%]"
       enterTo="translate-x-0"
-      leaveTo="translate-x-[120%]"
-      leaveFrom="translate-x-0"
+      leave="transition-all duration-600"
+      leaveTo="m-0 p-0 m-0 h-0 opacity-0"
       show={showToast}
       className={`toast overflow-hidden relative border-l-4 flex bg-white ${typeToast.borderColor}`}
       appear
     >
       {typeToast.icon}
-      <p className="flex-1 mr-16">{message}</p>
+      <p className="flex-1 mx-16">{message}</p>
       <button
         tabIndex={0}
         onClick={setShowToast.bind(null, false)}
-        className="absolute top-8 right-16"
+        className="absolute top-8 right-12"
       >
         <CloseIcon size={16} />
       </button>

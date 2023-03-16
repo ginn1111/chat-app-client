@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './store';
+import store from './app/store';
 import UIProvider from './context/UIContext';
 import { setUpInterceptor } from './axios';
 

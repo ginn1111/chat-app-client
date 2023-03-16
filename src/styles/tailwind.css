@@ -110,10 +110,7 @@
   }
   /*TOAST*/
   .toast {
-    @apply gap-2 px-24 py-16 flex items-center rounded-sm shadow-md z-[99999] max-w-[50vw];
-  }
-  .toast + .toast {
-    @apply mt-12;
+    @apply gap-2 px-24 py-16 flex items-center rounded-sm shadow-md z-[99999] max-w-[50vw] mb-12;
   }
   .no-read::after {
     @apply content-[''] absolute top-[5px] right-[-6px] w-[20px] h-[10px] bg-red-500 shadow-md;

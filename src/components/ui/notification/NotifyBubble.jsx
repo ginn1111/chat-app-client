@@ -1,30 +1,23 @@
-import { AnimatePresence, motion } from 'framer-motion';
-const NotifyBubble = ({ color, top, right, isNotify }) => {
+import { Transition } from '@headlessui/react';
+import cx from 'clsx';
+
+const NotifyBubble = ({ bg = 'bg-blue-300', isNotify, className }) => {
   return (
-    <AnimatePresence>
-      {isNotify && (
-        <motion.span
-          initial={{ scale: 1 }}
-          animate={{ scale: [1.5, 1] }}
-          transition={{ duration: 0.3 }}
-          exit={{ scale: 0 }}
-          className={`w-1.5 h-1.5 absolute flex ${top ?? 'top-[5px]'} ${
-            right ?? 'right-[7px]'
-          } z-[100]`}
-        >
-          <span
-            className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
-              color ?? 'bg-red-500'
-            } opacity-75`}
-          ></span>
-          <span
-            className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
-              color ?? 'bg-red-500'
-            }`}
-          ></span>
-        </motion.span>
-      )}
-    </AnimatePresence>
+    <Transition
+      show={isNotify}
+      enter="transition-all duration-300"
+      leave="transition-all duration-300"
+      enterFrom="opacity-0 scale-0"
+      enterTo="opacity-1 scale-1"
+      leaveFrom="opacity-1 scale-1"
+      leaveTo="opacity-0 scale-0"
+      className={cx('w-12 h-12 absolute top-8 right-8 flex z-[100]', className)}
+    >
+      <span
+        className={`animate-ping absolute inline-flex h-full w-full rounded-full ${bg}`}
+      />
+      <span className={`relative inline-flex rounded-full h-12 w-12 ${bg}`} />
+    </Transition>
   );
 };
 

@@ -1,12 +1,4 @@
-import { useEffect, memo } from 'react';
-import Backdrop from '../components/ui/modal/Backdrop';
-import useUI from '../hooks/useUI';
-import { useNavigate } from 'react-router-dom';
-import { Outlet, useParams } from 'react-router-dom';
-import { resetStatus } from '../store/conversation-slice';
-import { getConversationsStatus } from '../store/selectors';
 import withToast from '../hoc/withToast';
-import { useDispatch, useSelector } from 'react-redux';
 import Conversation from '@components/Chat/Conversation';
 import ConversationList from '@components/Chat/ConversationList';
 
