@@ -24,9 +24,6 @@ import {
   setLastMsg,
   updateStateConversation,
 } from '../../../store/conversation-slice';
-import CircleLoading from '../../ui/loading/CircleLoading';
-import { AnimatePresence, motion } from 'framer-motion';
-import { CircularProgress } from '@mui/material';
 
 const Messages = ({ isPending, onHasLoadingMore, isLoadingMore }) => {
   // const { id: userId } = useSelector(getUser);

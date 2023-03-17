@@ -7,7 +7,7 @@ import {
 import { PATHS } from '@constants/routers';
 
 const NAV_ITEMS = [
-  { id: 0, title: 'Home', icon: <HomeIcon />, to: PATHS.LOGIN },
+  { id: 0, title: 'Home', icon: <HomeIcon />, to: PATHS.HOME },
   { id: 1, title: 'Profile', icon: <ProfileIcon />, to: PATHS.PROFILE },
   { id: 2, title: 'Chat', icon: <ChatIcon />, to: PATHS.CHAT },
   { id: 3, title: 'Log out', icon: <LogoutIcon />, to: PATHS.LOGIN },

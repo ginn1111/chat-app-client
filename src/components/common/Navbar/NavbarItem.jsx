@@ -11,8 +11,8 @@ function NavbarItem({ to, title, icon, onClick }, ref) {
         to={to}
         className="nav-item hover:text-primary"
       >
-        {icon}
-        <p className="nav-item-text">{title}</p>
+        <span className="flex-shrink-0">{icon}</span>
+        <p className="nav-item-text truncate">{title}</p>
       </NavLink>
     </li>
   );

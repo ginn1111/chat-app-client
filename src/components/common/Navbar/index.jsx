@@ -7,7 +7,7 @@ import useIndicator from './useIndicator';
 
 const Avatar = ({ className }) => {
   return (
-    <div className={clsx('w-96 h-96 p-12 mx-auto mt-40', className)}>
+    <div className={clsx('w-96 h-96 max-w-full p-12 mx-auto mt-40', className)}>
       <img
         className="w-full h-full block object-cover object-center rounded-cir"
         src="https://www.figma.com/file/cXZUlJRHi5JhnrgLdZZfvK/image/25daf6b6c9cfce0b73cb0788f056ca80336c3df5?fuid=1056603901594338444"
@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex flex-col navbar h-full">
+      <nav className="flex flex-col navbar">
         <div className="text-center">
           <Avatar />
           <Information />

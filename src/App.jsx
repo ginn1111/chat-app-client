@@ -1,13 +1,15 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import CircleLoading from '@components/ui/loading/CircleLoading';
-import Login from '@components/Authentication/Login';
-import Register from '@components/Authentication/Register';
-import { PATHS } from '@constants/routers';
+import BoxesLoading from '@components/ui/loading/BoxesLoading';
 import Layout from '@components/layout/Layout';
+import Authentication from '@pages/Authentication';
+import { PATHS } from '@constants/routers';
+import RequireAuthentication from '@components/Authentication/RequireAuthentication';
+import Persistent from '@components/Authentication/Persistent';
 
-const Authentication = lazy(() => import('./pages/Authentication'));
+const Login = lazy(() => import('@components/Authentication/Login'));
+const Register = lazy(() => import('@components/Authentication/Register'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Chat = lazy(() => import('./pages/Chat'));
 
@@ -16,41 +18,25 @@ function App() {
     <Suspense
       fallback={
         <div className="flex justify-center items-center h-screen">
-          <CircleLoading />
+          <BoxesLoading />
         </div>
       }
     >
       <Routes>
-        <Route
-          path="/auth/"
-          element={<Authentication />}
-        >
-          <Route
-            path="login"
-            element={<Login />}
-          />
-          <Route
-            path="register"
-            element={<Register />}
-          />
-        </Route>
-        <Route
-          path="/"
-          element={<Layout />}
-        >
-          <Route
-            path={PATHS.PROFILE}
-            element={<Profile />}
-          />
-          <Route
-            path={PATHS.CHAT}
-            element={<Chat />}
-          >
+        <Route element={<Persistent />}>
+          <Route index element={<Navigate to={PATHS.CHAT} replace />} />
+          <Route path={PATHS.AUTHENTICATION} element={<Authentication />}>
+            <Route index element={<Navigate to={PATHS.LOGIN} replace />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
           </Route>
-          <Route
-            path="*"
-            element={<Navigate to="/auth" />}
-          />
+          <Route element={<RequireAuthentication />}>
+            <Route path={PATHS.ROOT} element={<Layout />}>
+              <Route path={PATHS.PROFILE} element={<Profile />} />
+              <Route path={PATHS.CHAT} element={<Chat />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to={PATHS.AUTHENTICATION} />} />
         </Route>
       </Routes>
     </Suspense>

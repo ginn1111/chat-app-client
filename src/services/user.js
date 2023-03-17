@@ -1,18 +1,23 @@
-import { privateRequest } from '../axios';
+import { privateRequest } from '@axios';
+import { URL } from '@services/constants';
 
-export const getFriendListOfUser = async (userId) =>
-  await privateRequest.get(`users/${userId}/friends`);
+export const getFriendListOfUser = (userId, config) =>
+  privateRequest.get(URL.GET_FRIEND_LIST_OF_USER(userId), config);
 
-export const getUser = async (userId) =>
-  await privateRequest.get(`/users/find/${userId}`);
+export const getUser = (userId, config) =>
+  privateRequest.get(URL.GET_USER(userId), config);
 
-export const updateUser = async (userId, userInfor) =>
-  await privateRequest.put(`/users/${userId}/edit`, {
-    ...userInfor,
-  });
+export const updateUser = ({ userId, userInfor }, config) =>
+  privateRequest.put(
+    URL.UPDATE_USER(userId),
+    {
+      ...userInfor,
+    },
+    config
+  );
 
-export const updateAvatar = async (userId) =>
-  await privateRequest.put(`/users/${userId}/avatar`);
+export const updateAvatar = (userId, config) =>
+  privateRequest.put(URL.UPDATE_AVATER(userId), config);
 
-export const updateCoverPicture = async (userId) =>
-  await privateRequest.put(`/users/${userId}/cover-picture`);
+export const updateCoverPicture = (userId, config) =>
+  privateRequest.put(URL.UPDATE_COVER_PICTURE(userId), config);

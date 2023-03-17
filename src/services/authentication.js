@@ -1,5 +1,5 @@
 import { publicRequest } from '../axios';
-import { URL } from '@axios';
+import { URL } from '@services/constants';
 
 export const login = ({ email, password }, config) =>
   publicRequest.post(URL.LOGIN, { email, password }, config);
@@ -19,7 +19,7 @@ export const register = ({ firstName, lastName, email, password }, config) =>
 
 export const refreshToken = (userId, config) =>
   publicRequest.post(
-    URL.REFRESHTOKEN,
+    URL.REFRESH_TOKEN,
     {
       userId,
     },

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
@@ -11,6 +11,7 @@ import { LoadingStatus } from '@features/constants';
 import { PATHS } from '@constants/routers';
 
 const useLogin = ({ email = '', password = '', rememberMe = false } = {}) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loadingStatus = useSelector(
@@ -49,7 +50,7 @@ const useLogin = ({ email = '', password = '', rememberMe = false } = {}) => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(PATHS.CHAT);
+      navigate(PATHS.CHAT, { replace: true });
     }
   }, [isSuccess]);
 

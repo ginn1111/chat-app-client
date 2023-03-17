@@ -4,6 +4,7 @@ import { NAV_ITEMS } from '@constants';
 
 const useIndicator = (indicatorRef, liItemRef) => {
   const location = useLocation();
+  console.log(location.pathname);
   let idxPath = NAV_ITEMS.findIndex(
     (navItem) => navItem.to === location.pathname
   );

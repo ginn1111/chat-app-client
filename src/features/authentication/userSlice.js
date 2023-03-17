@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import jwtDecode from 'jwt-decode';
+
 import { login } from '@services/authentication';
 import {
   PREFIX,
@@ -10,6 +12,8 @@ import {
 import commonErrorHandler from 'src/axios/errorHandler';
 import { ErrorCode, ResponseMessage } from 'src/constants';
 import { LoadingStatus } from '../constants';
+import { getLocal, removeLocal } from '@services/localServices';
+import { getUser } from '@services/user';
 
 export const INITIAL_STATE = {
   accessToken: null,
@@ -43,17 +47,48 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
+export const persistentThunk = createAsyncThunk(
+  actionNameCreator('persistent'),
+  async (_, thunkAPI) => {
+    try {
+      const jwt = JSON.parse(getLocal('jwt'));
+      if (!jwt) {
+        throw new Error({ code: 'NOT_PERSISTENT' });
+      }
+      const decodeJWT = jwtDecode(jwt);
+      if (decodeJWT) {
+        const userId = decodeJWT.id;
+        thunkAPI.dispatch(setAccessToken(jwt));
+        const { data } = await getUser(userId, { signal: thunkAPI.signal });
+        return data;
+      }
+    } catch (error) {
+      // The error is not abort request or do not persistent
+      if (
+        error?.code !== ErrorCode.CANCEL_REQUEST &&
+        error?.code !== 'NOT_PERSISTENT'
+      ) {
+        thunkAPI.dispatch(setAccessToken(null));
+        removeLocal('jwt');
+      }
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
 // REDUCER
 const userSlice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
     resetAction(state) {
-      console.log(state.loadingStatus);
       Object.assign(state.loadingStatus, {
         status: LoadingStatus.IDLE,
         responseMessage: '',
       });
+    },
+    setAccessToken(state, action) {
+      state.accessToken = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -63,6 +98,15 @@ const userSlice = createSlice({
         loadingStatus: { status: LoadingStatus.FULFILLED, responseMessage: '' },
         accessToken,
         information: rest,
+      });
+    });
+    builder.addCase(persistentThunk.fulfilled, (state, action) => {
+      Object.assign(state, {
+        loadingStatus: {
+          status: LoadingStatus.FULFILLED,
+          responseMEssage: '',
+        },
+        information: action.payload,
       });
     });
     builder.addMatcher(pendingStatusAction(PREFIX.AUTHENTICATION), (state) => {
@@ -89,5 +133,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetAction } = userSlice.actions;
+export const { resetAction, setAccessToken } = userSlice.actions;
 export default userSlice.reducer;

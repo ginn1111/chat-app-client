@@ -14,7 +14,7 @@ export const SliceName = Object.keys(rootReducer).reduce(
 );
 
 // GLOBAL STATE FROM ROOT REDUCER
-const userSelector = (state) => state.data.user;
+const userSelector = (state) => state.user;
 
 export const loadingStatusGeneratorSelector = (sliceName) =>
   myCreateSelector(
@@ -30,5 +30,5 @@ export const userInformationSelector = myCreateSelector(
 
 export const accessTokenSelector = myCreateSelector(
   userSelector,
-  (user) => user.accsessToken
+  (user) => user.accessToken
 );

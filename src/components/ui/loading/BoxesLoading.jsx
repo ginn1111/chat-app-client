@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CircleLoading = ({ height }) => {
+const BoxesLoading = () => {
   return (
     <div className="boxes">
       <div className="box">
@@ -31,4 +31,4 @@ const CircleLoading = ({ height }) => {
   );
 };
 
-export default CircleLoading;
+export default BoxesLoading;
