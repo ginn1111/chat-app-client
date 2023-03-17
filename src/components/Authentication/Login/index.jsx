@@ -12,7 +12,7 @@ import {
   FacebookIcon,
 } from '@components/common/icons';
 import Oauth from '../components/Oauth';
-import { PATHS } from '@constants/routers';
+import PATHS from '@constants/paths';
 import ErrorMessage from '@components/common/ErrorMessage';
 import { ToastType } from '@components/ui/notification/Toast';
 
@@ -51,17 +51,10 @@ const Login = withToast(({ toast }) => {
         {state.isEmailError && <ErrorMessage errorMsg={formik.errors.email} />}
         <div className="flex flex-col gap-12">
           <p className="flex justify-between text-16 text-gray-600 font-medium">
-            <label
-              htmlFor="password"
-              className="text-16"
-            >
+            <label htmlFor="password" className="text-16">
               Password
             </label>
-            <button
-              type="button"
-              tabIndex="-1"
-              className="text-gray-400 font"
-            >
+            <button type="button" tabIndex="-1" className="text-gray-400 font">
               Forgot password?
             </button>
           </p>
@@ -86,34 +79,18 @@ const Login = withToast(({ toast }) => {
           />
           <p className="text-[14px] text-gray-600 font-medium">Remember me</p>
         </label>
-        <Button
-          type="submit"
-          text="Log In"
-          isLoading={state.isLoading}
-        />
+        <Button type="submit" text="Log In" isLoading={state.isLoading} />
         <div>
           <p className="text-center text-16 text-gray-600 mb-24">Log In With</p>
           <div className="flex gap-12">
-            <Oauth
-              icon={<GoogleIcon />}
-              className="text-red-500"
-            />
-            <Oauth
-              icon={<FacebookIcon />}
-              className="text-fbColor"
-            />
-            <Oauth
-              icon={<TwitterIcon />}
-              className="text-twitterColor"
-            />
+            <Oauth icon={<GoogleIcon />} className="text-red-500" />
+            <Oauth icon={<FacebookIcon />} className="text-fbColor" />
+            <Oauth icon={<TwitterIcon />} className="text-twitterColor" />
           </div>
         </div>
         <p className="text-16 text-gray-400 mx-auto mt-48">
           Don't have account?{' '}
-          <Link
-            to={PATHS.REGISTER}
-            className="underline text-primary"
-          >
+          <Link to={PATHS.REGISTER} className="underline text-primary">
             Register
           </Link>
         </p>

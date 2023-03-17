@@ -29,11 +29,7 @@ const RequireAuthentication = () => {
   return accessToken ? (
     <Outlet />
   ) : (
-    <Navigate
-      to="/auth/login"
-      state={{ from: pathname }}
-      replace
-    />
+    <Navigate to="/auth/login" state={{ from: pathname }} replace />
   );
 };
 

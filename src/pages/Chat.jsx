@@ -42,14 +42,14 @@ const Chat = ({ toast }) => {
   // }, [status]);
 
   return (
-    <section className="grid grid-cols-12 py-20 h-screen px-56 bg-gradient-to-r from-[#F3F3FB] to-[#FDFBFD] gap-20">
+    <>
       <div className="col-span-4 h-full flex flex-col overflow-hidden">
         <ConversationList />
       </div>
       <div className="col-span-8 h-full flex flex-col overflow-hidden">
         <Conversation />
       </div>
-    </section>
+    </>
   );
 };
 

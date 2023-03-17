@@ -4,14 +4,13 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import BoxesLoading from '@components/ui/loading/BoxesLoading';
 import Layout from '@components/layout/Layout';
 import Authentication from '@pages/Authentication';
-import { PATHS } from '@constants/routers';
+import PATHS from '@constants/paths';
 import RequireAuthentication from '@components/Authentication/RequireAuthentication';
 import Persistent from '@components/Authentication/Persistent';
+import { PRIVATE_ROUTES } from '@constants/routers';
 
 const Login = lazy(() => import('@components/Authentication/Login'));
 const Register = lazy(() => import('@components/Authentication/Register'));
-const Profile = lazy(() => import('./pages/Profile'));
-const Chat = lazy(() => import('./pages/Chat'));
 
 function App() {
   return (
@@ -32,8 +31,18 @@ function App() {
           </Route>
           <Route element={<RequireAuthentication />}>
             <Route path={PATHS.ROOT} element={<Layout />}>
-              <Route path={PATHS.PROFILE} element={<Profile />} />
-              <Route path={PATHS.CHAT} element={<Chat />} />
+              {PRIVATE_ROUTES.map((privateRoute) => {
+                const LayoutComponent = privateRoute.layout;
+                return (
+                  <Route
+                    key={privateRoute.path}
+                    path={privateRoute.path}
+                    element={
+                      <LayoutComponent>{privateRoute.element}</LayoutComponent>
+                    }
+                  />
+                );
+              })}
             </Route>
           </Route>
           <Route path="*" element={<Navigate to={PATHS.AUTHENTICATION} />} />

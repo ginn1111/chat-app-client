@@ -20,10 +20,7 @@ const Header = ({ onSearch }) => {
         </button>
       </header>
       <div className="text-[14px] mt-28 rounded-[6px]">
-        <Search
-          onSearch={onSearch}
-          placeholder="Search"
-        />
+        <Search onSearch={onSearch} placeholder="Search" />
       </div>
     </>
   );

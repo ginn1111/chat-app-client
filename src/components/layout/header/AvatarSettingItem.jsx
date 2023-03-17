@@ -19,10 +19,7 @@ const AvatarSettingItem = ({ icon, title, url }) => {
   return (
     <li>
       <Link to={url}>
-        <Item
-          title={title}
-          icon={icon}
-        />
+        <Item title={title} icon={icon} />
       </Link>
     </li>
   );

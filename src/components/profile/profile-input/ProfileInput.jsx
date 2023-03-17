@@ -27,35 +27,17 @@ export const HeaderProfile = ({
       <h3 className="sm:text-[14px]">{title}</h3>
       <div>
         {!isUpdate && (
-          <motion.div
-            {...motionAnimate}
-            onClick={onShowUpdate}
-          >
-            <UilEditAlt
-              className="cursor-pointer p-0.5"
-              size={iconSize}
-            />
+          <motion.div {...motionAnimate} onClick={onShowUpdate}>
+            <UilEditAlt className="cursor-pointer p-0.5" size={iconSize} />
           </motion.div>
         )}
         {isUpdate && (
           <div className="flex gap-x-2">
-            <motion.div
-              {...motionAnimate}
-              onClick={onUpdate}
-            >
-              <UilCheck
-                className="cursor-pointer p-0.5"
-                size={iconSize}
-              />
+            <motion.div {...motionAnimate} onClick={onUpdate}>
+              <UilCheck className="cursor-pointer p-0.5" size={iconSize} />
             </motion.div>
-            <motion.div
-              {...motionAnimate}
-              onClick={onReset}
-            >
-              <UilTimes
-                className="cursor-pointer p-0.5"
-                size={iconSize}
-              />
+            <motion.div {...motionAnimate} onClick={onReset}>
+              <UilTimes className="cursor-pointer p-0.5" size={iconSize} />
             </motion.div>
           </div>
         )}
@@ -123,10 +105,7 @@ export const InputInformation = forwardRef(
             placeholder={placeholder}
           />
         </div>
-        <ErrorMessage
-          isShow={isInValid}
-          message={errorText}
-        />
+        <ErrorMessage isShow={isInValid} message={errorText} />
       </div>
     );
   }
@@ -201,10 +180,7 @@ export const RadioInputInformation = forwardRef(
         <div className="flex items-center gap-x-2 justify-end">
           {list.map((item) => {
             return (
-              <div
-                key={item.title}
-                className="flex items-center gap-x-2"
-              >
+              <div key={item.title} className="flex items-center gap-x-2">
                 <label
                   className="text-primary sm:text-[13px]"
                   htmlFor={item.title}

@@ -35,14 +35,8 @@ const ProfileAvatarMenu = () => {
         title="Information"
         isChoose
       />
-      <ProfileAvatarMenuItem
-        icon={<UilKeyholeCircle />}
-        title="Security"
-      />
-      <ProfileAvatarMenuItem
-        icon={<UilAt />}
-        title="Contact"
-      />
+      <ProfileAvatarMenuItem icon={<UilKeyholeCircle />} title="Security" />
+      <ProfileAvatarMenuItem icon={<UilAt />} title="Contact" />
     </ul>
   );
 };

@@ -24,10 +24,7 @@ const Information = () => {
         <h3 className="flex-1 text-20 font-medium text-gray-800 truncate">
           Ginn1111
         </h3>
-        <ChevronDownIcon
-          className="text-black"
-          size={20}
-        />
+        <ChevronDownIcon className="text-black" size={20} />
       </div>
     </div>
   );
@@ -50,10 +47,7 @@ const Navbar = () => {
           <Information />
         </div>
         <ul className="h-full flex flex-col pl-20 gap-20 mt-auto relative">
-          <div
-            className="indicator"
-            ref={indicatorRef}
-          />
+          <div className="indicator" ref={indicatorRef} />
           {NAV_ITEMS.map(({ id, title, icon, to }, idx) => (
             <NavbarItem
               ref={idx === idxPath ? liItemRef : null}

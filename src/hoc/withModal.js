@@ -11,20 +11,14 @@ const withModal = (WrappedComponent, ChildComponent) => {
       <>
         {ReactDOM.createPortal(
           <>
-            <Backdrop
-              isShow={isShow}
-              onClose={onClose}
-            />
+            <Backdrop isShow={isShow} onClose={onClose} />
             <Modal isShow={isShow}>
               <ChildComponent onClose={onClose} />
             </Modal>
           </>,
           document.getElementById('modal')
         )}
-        <WrappedComponent
-          {...props}
-          modal={{ close: onClose, open: onOpen }}
-        />
+        <WrappedComponent {...props} modal={{ close: onClose, open: onOpen }} />
       </>
     );
   };

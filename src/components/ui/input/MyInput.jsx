@@ -29,10 +29,7 @@ export const InputInformation = forwardRef(
           } rounded-md bg-transparent px-2 py-1 border border-slate-300`}
         >
           <div className="flex flex-col w-full">
-            <label
-              className="text-[12px] opacity-50"
-              htmlFor={id}
-            >
+            <label className="text-[12px] opacity-50" htmlFor={id}>
               {title}
             </label>
             <input
@@ -92,10 +89,7 @@ const MyInput = forwardRef((props, ref) => {
         className={`flex items-center rounded-[18px] px-4 pt-1 pb-1.5 text-[18px] bg-gray-700 text-white border border-transparent border-solid focus-within:border-blue-800 shadow-[0_0_3px_2px_transparent] focus-within:shadow-blue-500 ${props.className}`}
       >
         <div className="flex flex-col w-full">
-          <label
-            className="text-[12px]  opacity-50"
-            htmlFor={id}
-          >
+          <label className="text-[12px]  opacity-50" htmlFor={id}>
             {props.title}
           </label>
           <input
@@ -173,10 +167,7 @@ export const InputArea = ({ width, rows, title, placeholder }) => {
         width ?? 'full'
       } rounded-md bg-transparent px-2 py-1 border border-slate-300 flex flex-col`}
     >
-      <label
-        className="text-[12px]  opacity-50 basis-1/3"
-        htmlFor={id}
-      >
+      <label className="text-[12px]  opacity-50 basis-1/3" htmlFor={id}>
         {title}
       </label>
       <textarea

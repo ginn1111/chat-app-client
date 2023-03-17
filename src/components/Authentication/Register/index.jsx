@@ -11,7 +11,7 @@ import {
   GoogleIcon,
   FacebookIcon,
 } from '@components/common/icons';
-import { PATHS } from '@constants/routers';
+import PATHS from '@constants/paths';
 import useRegister from './useRegister';
 import commonErrorHandler from '@axios/errorHandler';
 import { ErrorCode } from '@constants';
@@ -74,16 +74,10 @@ const Register = withToast(({ toast }) => {
         )}
         <div className="flex flex-col gap-12">
           <p className="flex justify-between text-16 text-gray-600 font-medium">
-            <label
-              htmlFor="password"
-              className="text-16"
-            >
+            <label htmlFor="password" className="text-16">
               Password
             </label>
-            <button
-              tabIndex="-1"
-              className="text-gray-400 font"
-            >
+            <button tabIndex="-1" className="text-gray-400 font">
               Forgot password?
             </button>
           </p>
@@ -108,36 +102,20 @@ const Register = withToast(({ toast }) => {
             Terms of Use
           </a>
         </p>
-        <Button
-          type="submit"
-          text="Register"
-          isLoading={state.isLoading}
-        />
+        <Button type="submit" text="Register" isLoading={state.isLoading} />
         <div>
           <p className="text-center text-16 text-gray-600 mb-24">
             Sign up using
           </p>
           <div className="flex gap-12">
-            <Oauth
-              icon={<GoogleIcon />}
-              className="text-red-500"
-            />
-            <Oauth
-              icon={<FacebookIcon />}
-              className="text-fbColor"
-            />
-            <Oauth
-              icon={<TwitterIcon />}
-              className="text-twitterColor"
-            />
+            <Oauth icon={<GoogleIcon />} className="text-red-500" />
+            <Oauth icon={<FacebookIcon />} className="text-fbColor" />
+            <Oauth icon={<TwitterIcon />} className="text-twitterColor" />
           </div>
         </div>
         <p className="text-16 text-gray-400 mx-auto mt-48">
           Already have an account?{' '}
-          <Link
-            to={PATHS.LOGIN}
-            className="underline text-primary"
-          >
+          <Link to={PATHS.LOGIN} className="underline text-primary">
             Login
           </Link>
         </p>

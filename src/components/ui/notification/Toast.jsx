@@ -29,25 +29,25 @@ const Toast = ({ type, message, autoClose = true }) => {
   const typeToast =
     type === ToastType.ERROR
       ? {
-        bg: 'bg-red-500',
-        borderColor: 'border-red-500',
-        icon: (
-          <ToastIcon
-            bg="bg-gradient-to-r from-red-500 to-orange-300"
-            icon={<WarnIcon />}
-          />
-        ),
-      }
+          bg: 'bg-red-500',
+          borderColor: 'border-red-500',
+          icon: (
+            <ToastIcon
+              bg="bg-gradient-to-r from-red-500 to-orange-300"
+              icon={<WarnIcon />}
+            />
+          ),
+        }
       : {
-        bg: 'bg-green-500',
-        borderColor: 'border-green-500',
-        icon: (
-          <ToastIcon
-            bg="bg-gradient-to-r from-green-500 to-blue-300"
-            icon={<TickIcon />}
-          />
-        ),
-      };
+          bg: 'bg-green-500',
+          borderColor: 'border-green-500',
+          icon: (
+            <ToastIcon
+              bg="bg-gradient-to-r from-green-500 to-blue-300"
+              icon={<TickIcon />}
+            />
+          ),
+        };
   return (
     <Transition
       enter="transition-transform duration-300"

@@ -13,5 +13,5 @@ export const URL = {
 };
 
 export const KEY = {
-  JWT: 'jwt'
-}
+  JWT: 'jwt',
+};

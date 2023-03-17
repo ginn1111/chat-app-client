@@ -10,10 +10,7 @@ const Search = ({ placeholder, onSearch, onFocus }) => {
 
   return (
     <div className="px-20 bg-white flex items-center text-gray-500 rounded-[6px] gap-8 box-border">
-      <SearchIcon
-        size={20}
-        className="flex-shink-0"
-      />
+      <SearchIcon size={20} className="flex-shink-0" />
       <input
         className="flex-1 py-20 block w-full"
         onFocus={focusHandler}

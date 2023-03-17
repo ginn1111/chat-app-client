@@ -17,10 +17,7 @@ const withToggleModal = (WrappedComponent, childComponentObj) => {
       <>
         {ReactDOM.createPortal(
           <>
-            <Backdrop
-              isShow={isShow}
-              onClose={onClose}
-            />
+            <Backdrop isShow={isShow} onClose={onClose} />
             <Modal isShow={isShow}>
               <ChildComponent onClose={onClose} />
             </Modal>

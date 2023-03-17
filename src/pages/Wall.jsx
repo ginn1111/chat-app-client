@@ -83,11 +83,7 @@ const Wall = () => {
         coverPicture={coverPicture}
       />
       <section className="text-slate-600 mt-[150px] flex items-start gap-x-5 xl:w-[1300px] h-full pb-5 mx-auto w-[90%] sm:mt-[100px]">
-        <Biography
-          join={join}
-          slogan={slogan}
-          dob={dob}
-        />
+        <Biography join={join} slogan={slogan} dob={dob} />
         <Friend friendList={friendList} />
       </section>
     </div>

@@ -45,12 +45,7 @@ const ContactInformation = ({ isUpdate }, ref) => {
         readOnly={!isUpdate}
         ref={phoneRef}
         title="Phone"
-        icon={
-          <UilPhone
-            size="20"
-            className="text-slate-400"
-          />
-        }
+        icon={<UilPhone size="20" className="text-slate-400" />}
         validateFunction={validatePhone}
         errorText="Phone is invalid!"
       />

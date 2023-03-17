@@ -72,10 +72,7 @@ const Header = () => {
       </div>
       <div className="w-1/4 mr-auto flex text-[14px] items-center gap-x-5 relative justify-end">
         {/* Notify section */}
-        <div
-          className="relative cursor-pointer"
-          id="notification-container"
-        >
+        <div className="relative cursor-pointer" id="notification-container">
           <NotifyBubble
             top="top-[10px]"
             right="right-[0px]"

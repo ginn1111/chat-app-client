@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { register } from '@services/authentication';
 import * as schemas from '@constants';
 import useAbort from 'src/hooks/useAbort';
-import axios from 'axios'
+import axios from 'axios';
 
 const useRegister = ({
   onSuccess,
@@ -33,9 +33,9 @@ const useRegister = ({
       } catch (error) {
         let errorCode;
         if (axios.isCancel(error)) {
-          errorCode = error.code
+          errorCode = error.code;
         } else {
-          errorCode = error.response.status
+          errorCode = error.response.status;
         }
         onError(errorCode);
       } finally {

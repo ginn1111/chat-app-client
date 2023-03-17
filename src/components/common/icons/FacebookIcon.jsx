@@ -10,10 +10,7 @@ function FacebookIcon({ color = 'currentColor', size = 24, ...props }) {
       height={size}
       {...props}
     >
-      <g
-        id="SVGRepo_bgCarrier"
-        strokeWidth="0"
-      ></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"

@@ -73,10 +73,7 @@ const EditorMessage = ({ conversationId, receiverId }) => {
   return (
     <div className="bg-white relative flex py-20 px-28 gap-12 items-center rounded-[0_0_6px_6px]">
       <span className="w-4/5 h-[1px] bg-gray-300 absolute top-0 left-0 right-0 mx-auto" />
-      <EditorMessageControl
-        icon={<AddIcon />}
-        className="p-8"
-      />
+      <EditorMessageControl icon={<AddIcon />} className="p-8" />
       <input
         // onChange={onChange}
         // onKeyDown={enterHandler}

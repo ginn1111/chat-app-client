@@ -8,7 +8,7 @@ import { loginSchema } from '@constants';
 import { loginThunk, resetAction } from '@features/authentication/userSlice';
 import { loadingStatusGeneratorSelector } from 'src/app/selectors';
 import { LoadingStatus } from '@features/constants';
-import { PATHS } from '@constants/routers';
+import PATHS from '@constants/paths';
 
 const useLogin = ({ email = '', password = '', rememberMe = false } = {}) => {
   const location = useLocation();

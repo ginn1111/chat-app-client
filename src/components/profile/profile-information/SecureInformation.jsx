@@ -45,12 +45,7 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
         ref={currentPasswordRef}
         title="Password"
         placeholder=""
-        icon={
-          <UilKeySkeleton
-            className=" text-slate-400"
-            size="20"
-          />
-        }
+        icon={<UilKeySkeleton className=" text-slate-400" size="20" />}
         type="password"
       />
       <AnimatePresence>
@@ -79,12 +74,7 @@ const SecureInformation = ({ toast, isUpdate }, ref) => {
               ref={passwordRef}
               title="New Password"
               placeholder=""
-              icon={
-                <UilKeySkeleton
-                  className=" text-slate-400"
-                  size="20"
-                />
-              }
+              icon={<UilKeySkeleton className=" text-slate-400" size="20" />}
               type="password"
               validateFunction={(value) => value.trim().length >= 8}
               errorText="Password least 8 characters!"

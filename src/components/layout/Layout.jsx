@@ -22,4 +22,10 @@ const Layout = () => {
   );
 };
 
+Layout.SubLayout = ({ children }) => (
+  <section className="grid grid-cols-12 py-20 h-screen px-56 bg-gradient-to-r from-[#F3F3FB] to-[#FDFBFD] gap-20">
+    {children}
+  </section>
+);
+
 export default Layout;

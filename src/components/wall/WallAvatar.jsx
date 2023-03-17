@@ -235,10 +235,7 @@ const WallAvatar = withToast(
                   htmlFor="change-avatar"
                   className="cursor-pointer p-[8px] sm:p-[5px]"
                 >
-                  <UilCameraPlus
-                    size={sizeIcon}
-                    className="flex"
-                  />
+                  <UilCameraPlus size={sizeIcon} className="flex" />
                 </label>
                 <input
                   onClick={clickFileInputHandler}
@@ -255,10 +252,7 @@ const WallAvatar = withToast(
                       {...updateAnimate}
                       onClick={updateAvatarHandler}
                     >
-                      <UilCheck
-                        size={sizeIcon}
-                        color="lightgreen"
-                      />
+                      <UilCheck size={sizeIcon} color="lightgreen" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -269,10 +263,7 @@ const WallAvatar = withToast(
                       className="p-[8px] cursor-pointer"
                       {...updateAnimate}
                     >
-                      <UilTimes
-                        size={sizeIcon}
-                        color="lightcoral"
-                      />
+                      <UilTimes size={sizeIcon} color="lightcoral" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -298,10 +289,7 @@ const WallAvatar = withToast(
                     className="px-1"
                     {...updateAnimate}
                   >
-                    <UilCheck
-                      color="lightgreen"
-                      size={sizeIcon}
-                    />
+                    <UilCheck color="lightgreen" size={sizeIcon} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -311,10 +299,7 @@ const WallAvatar = withToast(
                     onClick={cancelUpdateBackgroundHandler}
                     {...updateAnimate}
                   >
-                    <UilTimes
-                      color="lightcoral"
-                      size={sizeIcon}
-                    />
+                    <UilTimes color="lightcoral" size={sizeIcon} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -332,10 +317,7 @@ const WallAvatar = withToast(
             <div onClick={sendAddFriendHandler}>
               <FriendState
                 icon={
-                  <UilUserPlus
-                    style={{ color: '#6fdeff' }}
-                    size={sizeIcon}
-                  />
+                  <UilUserPlus style={{ color: '#6fdeff' }} size={sizeIcon} />
                 }
                 title="Add friend"
               />
@@ -343,24 +325,14 @@ const WallAvatar = withToast(
           )}
           {isPending && !isFriend && (
             <FriendState
-              icon={
-                <UilUserExclamation
-                  style={warningType}
-                  size={sizeIcon}
-                />
-              }
+              icon={<UilUserExclamation style={warningType} size={sizeIcon} />}
               title="Waitting"
             />
           )}
           {isFriend && !isResponse && (
             <FriendState
               onClick={unfriendHandler}
-              icon={
-                <UilUserMinus
-                  style={errorType}
-                  size={sizeIcon}
-                />
-              }
+              icon={<UilUserMinus style={errorType} size={sizeIcon} />}
               title="Unfriend"
             />
           )}
@@ -368,22 +340,12 @@ const WallAvatar = withToast(
             <>
               <FriendState
                 onClick={() => responseAddFriendHandler(true)}
-                icon={
-                  <UilUserCheck
-                    style={safeType}
-                    size={sizeIcon}
-                  />
-                }
+                icon={<UilUserCheck style={safeType} size={sizeIcon} />}
                 title="Accept"
               />
               <FriendState
                 onClick={() => responseAddFriendHandler(false)}
-                icon={
-                  <UilUserTimes
-                    style={errorType}
-                    size={sizeIcon}
-                  />
-                }
+                icon={<UilUserTimes style={errorType} size={sizeIcon} />}
                 title="Deny"
               />
             </>
