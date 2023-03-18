@@ -32,7 +32,8 @@ function App() {
           <Route element={<RequireAuthentication />}>
             <Route path={PATHS.ROOT} element={<Layout />}>
               {PRIVATE_ROUTES.map((privateRoute) => {
-                const LayoutComponent = privateRoute.layout;
+                const LayoutComponent =
+                  privateRoute.layout ?? (({ children }) => <>{children}</>);
                 return (
                   <Route
                     key={privateRoute.path}
@@ -40,7 +41,9 @@ function App() {
                     element={
                       <LayoutComponent>{privateRoute.element}</LayoutComponent>
                     }
-                  />
+                  >
+                    {privateRoute.nested}
+                  </Route>
                 );
               })}
             </Route>

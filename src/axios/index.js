@@ -16,10 +16,20 @@ export const privateRequest = axios.create({
   withCredentials: true,
 });
 
+privateRequest.interceptors.response.use((response) => {
+  switch (response.config.url) {
+    case URL.GET_USER(response.data._id):
+      const { _id, __v, createAt, updateAt, ...rest } = response.data;
+      return { ...response, data: { ...rest, id: _id } };
+    default:
+      return response;
+  }
+});
+
 publicRequest.interceptors.response.use((response) => {
+  console.log(response.config.url, URL.GET_USER(response.data._id));
   switch (response.config.url) {
     case URL.LOGIN:
-    case URL.GET_USER(response.data._id):
       const { _id, __v, createAt, updateAt, ...rest } = response.data;
       return { ...response, data: { ...rest, id: _id } };
     default:

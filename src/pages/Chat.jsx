@@ -1,6 +1,9 @@
-import withToast from '../hoc/withToast';
-import Conversation from '@components/Chat/Conversation';
+import { Outlet } from 'react-router-dom';
+
 import ConversationList from '@components/Chat/ConversationList';
+import withToast from '@hoc/withToast';
+import { Suspense } from 'react';
+import BoxesLoading from '@components/ui/loading/BoxesLoading';
 
 export const commonStyle =
   'rounded-md rounded-tl-none rounded-bl-none px-2 py-1 h-full';
@@ -47,7 +50,9 @@ const Chat = ({ toast }) => {
         <ConversationList />
       </div>
       <div className="col-span-8 h-full flex flex-col overflow-hidden">
-        <Conversation />
+        <Suspense fallback={<BoxesLoading />}>
+          <Outlet />
+        </Suspense>
       </div>
     </>
   );

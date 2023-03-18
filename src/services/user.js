@@ -21,3 +21,9 @@ export const updateAvatar = (userId, config) =>
 
 export const updateCoverPicture = (userId, config) =>
   privateRequest.put(URL.UPDATE_COVER_PICTURE(userId), config);
+
+export const searchUserByNickName = (nickname, config) =>
+  privateRequest.get(URL.SEARCH_FRIEND, { nickname }, config);
+
+export const searchUser = (name, config) =>
+  privateRequest.get(URL.GET_ALL_USER, { params: { name } }, config);

@@ -4,18 +4,45 @@
       "module-resolver",
       {
         "alias": {
-          "@hoc": ["./src/hoc"],
-          "@hooks": ["./src/hooks"],
-          "@components": ["./src/components"],
-          "@services": ["./src/services"],
-          "@store": ["./src/store"],
-          "@features": ["./src/features"],
-          "@constants": ["./src/constants"],
-          "@pages": ["./src/pages"],
-          "@utils": ["./src/utils"],
-          "@axios": ["./src/axios"],
-          "@assets": ["./src/assets"],
-          "@app": ["./src/app"]
+          "@hoc": [
+            "./src/hoc"
+          ],
+          "@hooks": [
+            "./src/hooks"
+          ],
+          "@components": [
+            "./src/components"
+          ],
+          "@services": [
+            "./src/services"
+          ],
+          "@store": [
+            "./src/store"
+          ],
+          "@features": [
+            "./src/features"
+          ],
+          "@constants": [
+            "./src/constants"
+          ],
+          "@pages": [
+            "./src/pages"
+          ],
+          "@utils": [
+            "./src/utils"
+          ],
+          "@axios": [
+            "./src/axios"
+          ],
+          "@assets": [
+            "./src/assets"
+          ],
+          "@app": [
+            "./src/app"
+          ],
+          "@utils": [
+            "./src/utils"
+          ]
         }
       }
     ]

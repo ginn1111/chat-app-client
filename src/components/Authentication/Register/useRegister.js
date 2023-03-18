@@ -26,7 +26,7 @@ const useRegister = ({
       try {
         setIsRegistering(true);
         const { response } = await register(
-          { ...values, firstName: values.username, lastName: values.username },
+          { ...values, nickname: values.username },
           { signal }
         );
         onSuccess(response);

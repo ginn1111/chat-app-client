@@ -12,7 +12,7 @@ function Button({ text, className, isLoading, ...props }) {
       {...props}
     >
       {isLoading && (
-        <div className="animate-spin h-20 w-20 border-4 border-t-white rounded-cir"></div>
+        <div className="animate-spin h-20 w-20 border-4 border-t-white rounded-cir" />
       )}
       {text}
     </button>

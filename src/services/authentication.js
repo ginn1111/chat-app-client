@@ -4,15 +4,13 @@ import { URL } from '@services/constants';
 export const login = ({ email, password }, config) =>
   publicRequest.post(URL.LOGIN, { email, password }, config);
 
-export const register = ({ firstName, lastName, email, password }, config) =>
+export const register = ({ nickname, email, password }, config) =>
   publicRequest.post(
     URL.REGISTER,
     {
-      firstName,
-      lastName,
+      nickname,
       email,
       password,
-      gender: 'female',
     },
     config
   );

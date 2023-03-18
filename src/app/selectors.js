@@ -28,7 +28,27 @@ export const userInformationSelector = myCreateSelector(
   (user) => user.information
 );
 
+export const userIdSelector = myCreateSelector(
+  userInformationSelector,
+  (information) => information.id
+);
+
 export const accessTokenSelector = myCreateSelector(
   userSelector,
   (user) => user.accessToken
+);
+
+export const friendListSelector = myCreateSelector(
+  userSelector,
+  (user) => user.information.friendList
+);
+
+export const friendRequestSelector = myCreateSelector(
+  userSelector,
+  (user) => user.information.friendRequest
+);
+
+export const friendResponseSelector = myCreateSelector(
+  userSelector,
+  (user) => user.information.friendResponse
 );

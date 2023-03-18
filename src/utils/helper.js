@@ -1,3 +1,4 @@
+import { FIRST_SEGMENT_PATH } from '@constants';
 // TODO: using Intl for formatting
 export const formatDate = (d) => {
   const date = new Date(d);
@@ -81,4 +82,25 @@ export const getOfflineTime = (timestamp) => {
     : timestamp < timeObj.month * 12
     ? getDayAndMonth(new Date(timestamp * 1000))
     : getFullDate(new Date(timestamp * 1000));
+};
+
+export const getFirstSegmentPath = (pathname) =>
+  pathname.split('/')[FIRST_SEGMENT_PATH];
+
+/*
+ * create the regex match with the path '/path/:id'
+ * '/path/:id' -> split('/') -> ['', 'path', '', ':id']
+ *                                     ^ first segment path
+ */
+export const regexPathCreator = (path) =>
+  new RegExp(`(?=.*(${getFirstSegmentPath(path)}))`);
+
+export const debounce = (fn, ms) => {
+  let timerId = null;
+  return (...arg) => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(fn, ms, ...arg);
+  };
 };

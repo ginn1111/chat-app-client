@@ -13,7 +13,8 @@
       "@utils/*": ["./src/utils"],
       "@axios/*": ["./src/axios"],
       "@assets/*": ["./src/assets"],
-      "@app/*": ["./src/app"]
+      "@app/*": ["./src/app"],
+      "@utils/*": ["./src/utils"]
     }
   }
 }

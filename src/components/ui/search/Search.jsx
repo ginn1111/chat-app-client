@@ -1,8 +1,9 @@
-import { ChevronDownIcon, SearchIcon } from '@components/common/icons';
+import { SearchIcon } from '@components/common/icons';
+import { debounce } from '@utils/helper';
 
 const Search = ({ placeholder, onSearch, onFocus }) => {
   function changeHandler(e) {
-    onSearch(e);
+    onSearch(e.target.value);
   }
   function focusHandler() {
     onFocus?.();
@@ -14,14 +15,10 @@ const Search = ({ placeholder, onSearch, onFocus }) => {
       <input
         className="flex-1 py-20 block w-full"
         onFocus={focusHandler}
-        onChange={changeHandler}
+        onChange={debounce(changeHandler, 300)}
         placeholder={placeholder}
         type="text"
       />
-      <div className="flex items-center gap-8">
-        <p>Messages</p>
-        <ChevronDownIcon size={20} />
-      </div>
     </div>
   );
 };

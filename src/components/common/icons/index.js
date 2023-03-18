@@ -19,3 +19,5 @@ export { default as SmileIcon } from './SmileIcon';
 export { default as TickIcon } from './TickIcon';
 export { default as WarnIcon } from './WarnIcon';
 export { default as CloseIcon } from './CloseIcon';
+export { default as AddFriendIcon } from './AddFriendIcon';
+export { default as UnFriendIcon } from './UnFriendIcon';

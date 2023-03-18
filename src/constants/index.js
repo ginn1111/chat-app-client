@@ -4,3 +4,5 @@ export { default as ResponseMessage } from './messages';
 export * from './schemas';
 export const DURATION_UI_TOAST_LEAVE = 300;
 export * from './error';
+
+export const FIRST_SEGMENT_PATH = 1;

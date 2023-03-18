@@ -310,7 +310,7 @@
 
 @layer utilities {
   /*CONVERSATION*/
-  .conversation-active {
+  .primary-hover {
     @apply bg-gradient-to-r from-blue-300 to-primary text-white cursor-pointer transition-all;
   }
   /*DISABLE*/

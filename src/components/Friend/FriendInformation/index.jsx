@@ -1,5 +1,8 @@
+import { useParams } from 'react-router-dom';
+
 const FriendInformation = () => {
-  return <div>Friend Information</div>;
+  const { id: userId } = useParams();
+  return <div>Friend Information {userId}</div>;
 };
 
 export default FriendInformation;
