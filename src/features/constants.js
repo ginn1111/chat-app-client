@@ -7,6 +7,7 @@ export const LoadingStatus = {
 
 export const PREFIX = {
   AUTHENTICATION: 'authentication',
+  FRIEND: 'friend',
 };
 
 /*

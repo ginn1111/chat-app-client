@@ -14,6 +14,7 @@ import { ErrorCode, ResponseMessage } from 'src/constants';
 import { LoadingStatus } from '../constants';
 import { getLocal, removeLocal } from '@services/localServices';
 import { getUser } from '@services/user';
+import { KEY } from '@services/constants';
 
 export const INITIAL_STATE = {
   accessToken: null,
@@ -51,9 +52,9 @@ export const persistentThunk = createAsyncThunk(
   actionNameCreator('persistent'),
   async (_, thunkAPI) => {
     try {
-      const jwt = JSON.parse(getLocal('jwt'));
+      const jwt = JSON.parse(getLocal(KEY.JWT));
       if (!jwt) {
-        throw new Error({ code: 'NOT_PERSISTENT' });
+        throw new Error({ code: ErrorCode.NOT_PERSISTENT });
       }
       const decodeJWT = jwtDecode(jwt);
       if (decodeJWT) {
@@ -66,10 +67,10 @@ export const persistentThunk = createAsyncThunk(
       // The error is not abort request or do not persistent
       if (
         error?.code !== ErrorCode.CANCEL_REQUEST &&
-        error?.code !== 'NOT_PERSISTENT'
+        error?.code !== ErrorCode.NOT_PERSISTENT
       ) {
         thunkAPI.dispatch(setAccessToken(null));
-        removeLocal('jwt');
+        removeLocal(KEY.JWT);
       }
       return thunkAPI.rejectWithValue();
     }
@@ -89,6 +90,22 @@ const userSlice = createSlice({
     },
     setAccessToken(state, action) {
       state.accessToken = action.payload;
+    },
+    addFriend(state, action) {
+      state.information.friendRequest.push(action.payload);
+    },
+    responseFriend(state, action) {
+      const { isAccept, friendId } = action.payload;
+      if (isAccept) {
+        state.information.friendList.push(friendId);
+      } else {
+      }
+      const friendIdx = state.information.friendResponse.indexOf(friendId);
+      friendIdx !== -1 && state.information.friendResponse.splice(friendIdx, 1);
+    },
+    unFriend(state, action) {
+      const friendIdx = state.information.friendList.indexOf(action.payload);
+      friendIdx !== -1 && state.information.friendList.splice(friendIdx, 1);
     },
   },
   extraReducers: (builder) => {
@@ -133,5 +150,11 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetAction, setAccessToken } = userSlice.actions;
+export const {
+  unFriend,
+  responseFriend,
+  addFriend,
+  resetAction,
+  setAccessToken,
+} = userSlice.actions;
 export default userSlice.reducer;

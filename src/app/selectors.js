@@ -16,6 +16,8 @@ export const SliceName = Object.keys(rootReducer).reduce(
 // GLOBAL STATE FROM ROOT REDUCER
 const userSelector = (state) => state.user;
 
+const friendSelector = (state) => state.friend;
+
 export const loadingStatusGeneratorSelector = (sliceName) =>
   myCreateSelector(
     (state) => state[sliceName],
@@ -38,7 +40,7 @@ export const accessTokenSelector = myCreateSelector(
   (user) => user.accessToken
 );
 
-export const friendListSelector = myCreateSelector(
+export const friendListIdSelector = myCreateSelector(
   userSelector,
   (user) => user.information.friendList
 );
@@ -51,4 +53,16 @@ export const friendRequestSelector = myCreateSelector(
 export const friendResponseSelector = myCreateSelector(
   userSelector,
   (user) => user.information.friendResponse
+);
+
+// FRIEND SLICE
+export const friendListSelector = myCreateSelector(
+  friendSelector,
+  (friend) => friend.friendList
+);
+
+export const friendListFollowFriendListId = myCreateSelector(
+  friendSelector,
+  friendListIdSelector,
+  (friend, idList) => friend.friendList.filter(({ id }) => idList.includes(id))
 );

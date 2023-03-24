@@ -5,14 +5,15 @@ import jwtDecode from 'jwt-decode';
 import { setAccessToken } from '@features/authentication/userSlice';
 import { getLocal, setLocal } from '@services/localServices';
 import { KEY, URL } from '@services/constants';
+import API_URL from '@constants/domains';
 
 export const publicRequest = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: API_URL,
   withCredentials: true,
 });
 
 export const privateRequest = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: API_URL,
   withCredentials: true,
 });
 

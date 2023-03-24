@@ -13,7 +13,7 @@ const withToast = (WrappedComponent) => {
     return (
       <>
         {createPortal(
-          <div className="fixed top-60 right-28 z-[11] flex flex-col items-stretch">
+          <div className="fixed top-60 right-28 z-[9999999] flex flex-col items-stretch">
             {toasts.map(({ id, ...toast }) => (
               <Toast {...toast} key={id} />
             ))}

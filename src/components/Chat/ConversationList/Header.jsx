@@ -1,9 +1,9 @@
 import withModal from '@hoc/withModal';
 import Search from '@components/ui/search/Search';
-import NewConversation from './NewConversation';
 import { AddIcon, ChevronDownIcon } from '@components/common/icons';
+import NewConversationModal from './NewConversationModal';
 
-const Header = ({ onSearch }) => {
+const Header = ({ onSearch, modal }) => {
   return (
     <>
       <header className="flex justify-between items-start">
@@ -14,7 +14,7 @@ const Header = ({ onSearch }) => {
             <ChevronDownIcon size={20} />
           </div>
         </div>
-        <button className="create-new-chat-btn">
+        <button className="create-new-chat-btn" onClick={modal.open}>
           <AddIcon size={24} />
           <p className="capitalize">Create new chat</p>
         </button>
@@ -26,4 +26,4 @@ const Header = ({ onSearch }) => {
   );
 };
 
-export default withModal(Header, NewConversation);
+export default withModal(Header, NewConversationModal);

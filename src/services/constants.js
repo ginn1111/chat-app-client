@@ -12,6 +12,13 @@ export const URL = {
   UPDATE_COVER_PICTURE: (userId) =>
     `/users/${encodeURIComponent(userId)}/cover-picture`,
   GET_ALL_USER: `/users/`,
+  // FRIEND API
+  ADD_FRIEND: (userId) => `/users/${userId}/friends/add`,
+  UN_FRIEND: (userId) => `/users/${userId}/friends/unfriend`,
+  RESPONSE_FRIEND: (userId) => `/users/${userId}/friends/response`,
+  GET_FRIEND: (friendId) => `/users/find/${friendId}`,
+  // CONVERSATION API
+  CREATE_CONVERSATION: (userId) => `conversations/${userId}/create`,
 };
 
 export const KEY = {

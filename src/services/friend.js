@@ -1,27 +1,31 @@
 import { privateRequest } from '../axios';
+import { URL } from '@services/constants';
 
 export const getFriendList = async (userId) =>
   await privateRequest.get(`/users/${userId}/friends`);
 
-export const unfriend = async (userId, receiverId) =>
-  await privateRequest.put(`/users/${userId}/friends/unfriend`, null, {
+export const unfriend = ({ senderId, receiverId }, config) =>
+  privateRequest.put(URL.UN_FRIEND(senderId), null, {
     params: { receiverId },
+    ...config,
   });
 
-export const getFriend = async (friendId) =>
-  await privateRequest.get(`/users/find/${friendId}`);
+export const getFriend = (friendId, config) =>
+  privateRequest.get(URL.GET_FRIEND(friendId), config);
 
-export const responseAddFriend = async (userId, { receiverId, accepted }) =>
-  await privateRequest.put(`/users/${userId}/friends/response`, null, {
+export const responseAddFriend = ({ senderId, receiverId, accepted }, config) =>
+  privateRequest.put(URL.RESPONSE_FRIEND(senderId), null, {
     params: {
       receiverId,
       accepted,
     },
+    ...config,
   });
 
-export const sendAddFriend = async (userId, receiverId) =>
-  await privateRequest.put(`/users/${userId}/friends/add`, null, {
+export const sendAddFriend = async ({ senderId, receiverId }, config) =>
+  await privateRequest.put(URL.ADD_FRIEND(senderId), null, {
     params: {
       receiverId,
     },
+    ...config,
   });

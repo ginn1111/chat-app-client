@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom';
 import { PrimaryHover } from '@components/common/Effect/Hover';
 import PATHS from '@constants/paths';
-import { UserStatus } from '../hooks/useFriend';
-import {
-  UnFriendIcon,
-  WarnIcon,
-  AddFriendIcon,
-} from '@components/common/icons';
+import ControlRequestFriend from './ControlRequestFriend';
 
 const FriendItem = ({ id, nickname, avatar, biography, userStatus }) => {
   return (
@@ -21,11 +16,7 @@ const FriendItem = ({ id, nickname, avatar, biography, userStatus }) => {
             />
           </article>
           <h4 className="flex-1 truncate">{nickname}</h4>
-          <div>
-            {userStatus === UserStatus.Waitting && <WarnIcon />}
-            {userStatus === UserStatus.Strange && <AddFriendIcon />}
-            {userStatus === UserStatus.Unfriend && <UnFriendIcon />}
-          </div>
+          <ControlRequestFriend userStatus={userStatus} id={id} />
         </div>
         <p className="text mt-20 line-clamp-2">{biography}</p>
       </Link>

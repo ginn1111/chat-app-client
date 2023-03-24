@@ -5,46 +5,77 @@ import FriendItem from './FriendItem';
 import useFriend from '../hooks/useFriend';
 import FriendSkeleton from '@components/common/Skeleton/FriendSkeleton';
 import Fade from '@components/common/Effect/Fade';
+import withToast from '@hoc/withToast';
+import commonErrorHandler from 'src/axios/errorHandler';
+import { ToastType } from '@components/ui/notification/Toast';
+import useSearchUser from '../hooks/useSearchUser';
+import ErrorMessage from '@components/common/ErrorMessage';
 
-const FriendList = () => {
-  // Get friendList, friendResponse, friendRequest of the user and combine with userList to produce the status of the userList (unfriend, addfriend, waiting)
+const FriendList = ({ toast }) => {
+  const { isLoading: isFetching, responseMessage } = useFriend();
+  const {
+    isLoading: isSearchLoading,
+    searchUserHandler,
+    combineUserList: userList,
+  } = useSearchUser({
+    onError(errorCode) {
+      const message = commonErrorHandler(errorCode);
+      toast({ message, type: ToastType.ERROR });
+    },
+  });
 
-  const { isLoading, searchUserHandler, userList } = useFriend();
+  const isLoading = isSearchLoading || isFetching;
 
   const friendListSkelton = (
-    <ul className="mt-20 space-y-20">
+    <Transition
+      as="ul"
+      className="mt-20 space-y-20"
+      show={isLoading && !responseMessage}
+      enter="transition-opacity duration-300"
+      leave="transition-all duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-1"
+      leaveTo="h-0 p-0 m-0 overflow-hidden opacity-0"
+      leaveFrom="opacity-1"
+    >
       {Array.from({ length: 3 }, (_, i) => i).map((_, idx) => (
         <FriendSkeleton as="li" key={idx} />
       ))}
-    </ul>
+    </Transition>
   );
 
   const userListRender = (
     <ul className="flex-1 overflow-auto space-y-20 mt-20">
-      {userList.map((user) => {
-        return <FriendItem {...user} key={user.id} />;
-      })}
+      {userList.map((user) => (
+        <FriendItem {...user} key={user.id} />
+      ))}
     </ul>
   );
 
   return (
     <>
       <Header onSearch={searchUserHandler} isLoading={isLoading} />
-      <Fade show={isLoading}>{friendListSkelton}</Fade>
+      {friendListSkelton}
       <Transition
         appear
-        show={!isLoading}
-        enter="transition-opacity duration-300 delay-300"
-        leave="transition-opacity duration-300 delay-300"
-        enterFrom="translate-x-[100%] opacity-0"
-        enterTo="translate-x-0 opacity-1"
-        leaveTo="translate-x-[100%] opacity-0"
-        leaveFrom="translate-x-0 opacity-1"
+        show={!isLoading && !responseMessage}
+        enter="transition-all duration-300"
+        leave="transition-all duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-1"
+        leaveTo="opacity-0"
+        leaveFrom="opacity-1"
       >
         {userListRender}
       </Transition>
+      <Fade show={!isLoading && !!responseMessage}>
+        <ErrorMessage
+          errorMsg={responseMessage}
+          className="p-x-16 mt-20 text-[16px]"
+        />
+      </Fade>
     </>
   );
 };
 
-export default FriendList;
+export default withToast(FriendList);

@@ -1,23 +1,28 @@
 import { privateRequest } from '../axios';
+import { URL } from '@services/constants';
 
-export const createConversation = async (userId, members, isGroup, title) =>
-  await privateRequest.post(
-    `conversations/${userId}/create`,
+export const createConversation = (
+  { userId, members, isGroup, title },
+  config
+) =>
+  privateRequest.post(
+    URL.CREATE_CONVERSATION(userId),
     { theme: 'default', members, title },
-    { params: { group: isGroup } }
+    { params: { group: isGroup }, ...config }
   );
 
-export const getConversation = async (userId, isGroup) =>
-  await privateRequest.get(`conversations/${userId}/get`, {
+export const getConversation = ({ userId, isGroup }, config) =>
+  privateRequest.get(`conversations/${userId}/get`, {
     params: {
       isGroup,
     },
+    ...config,
   });
 
-export const addNewMember = async (conversationId, newMembers) =>
-  await privateRequest.put(`conversations/${conversationId}/add-member`, {
+export const addNewMember = (conversationId, newMembers) =>
+  privateRequest.put(`conversations/${conversationId}/add-member`, {
     newMembers,
   });
 
-export const deleteConversation = async (conversationId) =>
-  await privateRequest.delete(`conversations/${conversationId}/delete`);
+export const deleteConversation = (conversationId) =>
+  privateRequest.delete(`conversations/${conversationId}/delete`);
