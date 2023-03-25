@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 const colors = {
   primary: '#2A8BF2',
   fbColor: '#0d8af0',
@@ -6,6 +8,7 @@ const colors = {
   grayShadow: '#707c9726',
   lightShadow: '#00000005',
   primaryShadow: '#2A8BF226',
+  skeleton: '#94a3b8',
 };
 
 module.exports = colors;

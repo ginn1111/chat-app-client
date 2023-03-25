@@ -1,3 +1,4 @@
+import { KEY } from '@services/constants';
 import { loginThunk } from 'src/features/authentication/userSlice';
 
 export const localStorageMiddleware = () => (next) => (action) => {
@@ -5,7 +6,7 @@ export const localStorageMiddleware = () => (next) => (action) => {
     action.type === loginThunk.typePrefix + '/fulfilled' &&
     action.meta.arg.rememberMe
   ) {
-    localStorage.setItem('jwt', JSON.stringify(action.payload.accessToken));
+    localStorage.setItem(KEY.JWT, JSON.stringify(action.payload.accessToken));
   }
 
   return next(action);

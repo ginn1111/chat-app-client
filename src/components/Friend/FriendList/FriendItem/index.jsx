@@ -8,13 +8,13 @@ const FriendItem = ({ id, nickname, avatar, biography, userStatus }) => {
     <PrimaryHover as="li" className="rounded-[6px] bg-white">
       <Link to={PATHS.FRIEND + id} className="block px-16 py-8">
         <div className="flex items-center gap-20">
-          <article className="w-56 h-56 overflow-hidden rounded-cir">
+          <div className="w-56 h-56">
             <img
-              className="block w-full h-full object-cover object-fit"
+              className="block w-full h-full object-cover object-fit ring-2 ring-white rounded-cir"
               src={avatar}
               alt={`Avatar ${nickname}`}
             />
-          </article>
+          </div>
           <h4 className="flex-1 truncate">{nickname}</h4>
           <ControlRequestFriend userStatus={userStatus} id={id} />
         </div>

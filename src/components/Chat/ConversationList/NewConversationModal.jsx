@@ -1,38 +1,25 @@
-import { useState, Fragment } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Combobox, Transition } from '@headlessui/react';
-import { TickIcon, ChevronDownIcon } from '@components/common/icons';
+import { ChevronDownIcon } from '@components/common/icons';
 import Button from '@components/common/Button';
-import { useSelector } from 'react-redux';
-import {
-  userInformationSelector,
-  friendListFollowFriendListId,
-} from '@app/selectors';
-import useAPI from '@hooks/useAPI';
-import { createConversation } from '@services/conversation';
 import commonErrorHandler from 'src/axios/errorHandler';
 import { ToastType } from '@components/ui/notification/Toast';
 import ResponseMessage from '@constants/messages';
 import withToast from '@hoc/withToast';
+import useNewConversation from '../hooks/useNewConversation';
 
 const NewConversationModal = ({ onClose, toast }) => {
-  const user = useSelector(userInformationSelector);
-  const friendList = useSelector(friendListFollowFriendListId);
-
-  const [selectedFriendList, setSelectedFriendList] = useState([]);
-  const [query, setQuery] = useState('');
-
-  const { requestFn, isLoading } = useAPI({
-    requestFn: () =>
-      createConversation({
-        userId: user.id,
-        members: [
-          ...selectedFriendList.map(({ id: memberId, nickname }) => ({
-            memberId,
-            nickname,
-          })),
-          { memberId: user.id, nickname: user.nickname },
-        ],
-      }),
+  const {
+    remainingFriendList,
+    isDisabled,
+    isLoading,
+    selectedFriendList,
+    setQuery,
+    query,
+    newConversationHandler,
+    chooseFriendHandler,
+    removeFriendHandler,
+  } = useNewConversation({
     onError: (errorCode) => {
       const message = commonErrorHandler(errorCode);
       if (message) {
@@ -44,30 +31,6 @@ const NewConversationModal = ({ onClose, toast }) => {
     },
   });
 
-  const selectedFriendListId = selectedFriendList.map(({ id }) => id);
-  const isDisabled = selectedFriendListId.length === 0;
-
-  const filteredFriend = friendList.filter(({ id }) => {
-    return !selectedFriendListId.includes(id);
-  });
-
-  const filterQuery =
-    query === ''
-      ? filteredFriend
-      : filteredFriend.filter(({ nickname }) =>
-          nickname.toLowerCase().includes(query.toLowerCase())
-        );
-
-  const chooseFriendHandler = (friend) => {
-    setSelectedFriendList((friends) => [...friends, { ...friend }]);
-  };
-
-  const removeHandler = (friend) => {
-    setSelectedFriendList((friends) =>
-      friends.filter(({ id }) => id !== friend.id)
-    );
-  };
-
   return (
     <div className="min-h-[300px] flex flex-col">
       <Dialog.Title
@@ -78,6 +41,7 @@ const NewConversationModal = ({ onClose, toast }) => {
       </Dialog.Title>
       <Dialog.Description as="div" className="flex-1 flex flex-col mt-28">
         <p className="mb-12 text-16">Choose friends</p>
+
         <Combobox
           mutiple="true"
           value={selectedFriendList}
@@ -89,7 +53,7 @@ const NewConversationModal = ({ onClose, toast }) => {
             {selectedFriendList.map((friend) => (
               <button
                 key={friend.id}
-                onClick={removeHandler.bind(null, friend)}
+                onClick={removeFriendHandler.bind(null, friend)}
                 className="p-8 bg-primary/70 rounded-sm text-white"
               >
                 {friend.nickname}
@@ -112,12 +76,12 @@ const NewConversationModal = ({ onClose, toast }) => {
             afterLeave={() => setQuery('')}
           >
             <Combobox.Options className="absolute left-0 top-full mt-4 max-h-[140px] w-full overflow-auto rounded-sm bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-[1001]">
-              {filterQuery.length === 0 && query !== '' ? (
+              {remainingFriendList.length === 0 && query !== '' ? (
                 <div className="relative cursor-default select-none px-16 py-8">
                   Nothing found.
                 </div>
               ) : (
-                filterQuery.map((friend) => (
+                remainingFriendList.map((friend) => (
                   <Combobox.Option
                     as="div"
                     key={friend.id}
@@ -147,7 +111,7 @@ const NewConversationModal = ({ onClose, toast }) => {
             className="flex-1 px-20 py-16"
             disabled={isDisabled}
             isLoading={isLoading}
-            onClick={requestFn}
+            onClick={newConversationHandler}
           >
             Create
           </Button>

@@ -29,14 +29,14 @@ const FriendList = ({ toast }) => {
   const friendListSkelton = (
     <Transition
       as="ul"
-      className="mt-20 space-y-20"
+      className="space-y-20 mt-20 bt-black"
       show={isLoading && !responseMessage}
       enter="transition-opacity duration-300"
       leave="transition-all duration-300"
       enterFrom="opacity-0"
       enterTo="opacity-1"
       leaveTo="h-0 p-0 m-0 overflow-hidden opacity-0"
-      leaveFrom="opacity-1"
+      leaveFrom="opacity-1 h-full"
     >
       {Array.from({ length: 3 }, (_, i) => i).map((_, idx) => (
         <FriendSkeleton as="li" key={idx} />
@@ -54,7 +54,7 @@ const FriendList = ({ toast }) => {
 
   return (
     <>
-      <Header onSearch={searchUserHandler} isLoading={isLoading} />
+      <Header onSearch={searchUserHandler} isLoading={isSearchLoading} />
       {friendListSkelton}
       <Transition
         appear

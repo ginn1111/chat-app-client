@@ -22,7 +22,7 @@ const useAPI = ({
 
   const requestDecorator = (fn) => {
     return async (
-      { onError = _onError, onSuccess = _onSuccess, ...arg },
+      { onError = _onError, onSuccess = _onSuccess, ...arg } = {},
       config = _config
     ) => {
       openLoading();

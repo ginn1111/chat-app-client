@@ -83,8 +83,6 @@ const useSearchUser = (
     }
   };
 
-  console.log(combineUserList);
-
   return {
     isLoading,
     combineUserList,

@@ -26,4 +26,4 @@ export const searchUserByNickName = (nickname, config) =>
   privateRequest.get(URL.SEARCH_FRIEND, { nickname }, config);
 
 export const searchUser = (name, config) =>
-  privateRequest.get(URL.GET_ALL_USER, { params: { name } }, config);
+  privateRequest.get(URL.GET_ALL_USER, { params: { name }, ...config });

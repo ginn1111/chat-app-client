@@ -1,9 +1,11 @@
+import { Transition } from '@headlessui/react';
 import React, { useRef, useEffect, useMemo, useState, memo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
+import ConversationSkeleton from '@components/common/Skeleton/ConversationSkeleton';
 import ConversationItem from './ConversationItem';
 import Header from './Header';
 import {
@@ -28,8 +30,11 @@ import getSocketIO, {
   emitGetStateConversations,
 } from '@services/socketIO';
 import useSearch from '@hooks/useSearch';
+import useConversationList from '../hooks/useConversationList';
 
 const ConversationList = () => {
+  const { conversationList, isLoading, error } = useConversationList();
+
   // useEffect(() => {
   //   const id = conversationList?.[0]?._id;
   //   status === 'conversation-get/success' &&
@@ -115,40 +120,35 @@ const ConversationList = () => {
   //   );
   // }, [conversationListWithOnline, filterConversation]);
 
-  const filterList = [
-    { id: 0, title: 'conversation 1' },
-    { id: 1, title: 'conversation 2' },
-    { id: 2, title: 'conversation 3' },
-    { id: 3, title: 'conversation 4' },
-    { id: 4, title: 'conversation 4' },
-    { id: 5, title: 'conversation 4' },
-    { id: 6, title: 'conversation 4' },
-    { id: 7, title: 'conversation 4' },
-  ];
+  const conversationListSkeleton = (
+    <Transition
+      as="ul"
+      className="mt-20 space-y-20"
+      show={isLoading && !error}
+      enter="transition-opacity duration-300"
+      leave="transition-all duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-1"
+      leaveTo="h-0 p-0 m-0 overflow-hidden opacity-0"
+      leaveFrom="opacity-1 h-full"
+    >
+      {Array.from({ length: 3 }, (_, i) => i).map((_, idx) => (
+        <ConversationSkeleton as="li" key={idx} />
+      ))}
+    </Transition>
+  );
 
+  const filterList = conversationList;
   let conversationListRender = (
     <ul className="overflow-auto flex-1 mt-20 space-y-20">
-      {filterList?.length === 0 && (
-        <p className="text-center text-[16px] font-[500] text-slate-600">
-          No conversation found!
-        </p>
-      )}
+      {!filterList ||
+        (filterList?.length === 0 && (
+          <p className="text-center text-[16px] font-medium">
+            No conversation found!
+          </p>
+        ))}
       {filterList?.map((conversation) => {
-        return (
-          <ConversationItem
-            key={conversation.id}
-            name={conversation?.title}
-            // avatar={conversation?.avatar}
-            // fromOnline={
-            //   conversation?.isOnline ? null : conversation?.fromOnline
-            // }
-            conversationId={conversation.id}
-            // lastMsg={conversation?.lastMsg}
-            // isUnSeen={conversation?.isUnSeen}
-            // isGroup={conversation?.isGroup}
-            // members={conversation?.members}
-          />
-        );
+        return <ConversationItem key={conversation.id} {...conversation} />;
       })}
     </ul>
   );
@@ -156,6 +156,7 @@ const ConversationList = () => {
   return (
     <>
       <Header />
+      {conversationListSkeleton}
       {conversationListRender}
     </>
   );

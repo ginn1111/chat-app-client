@@ -32,58 +32,6 @@ const getFullDate = (date) => {
   return `${getDayAndMonth(date)}/${year}`;
 };
 
-const getFullTime = (date) => {
-  const splitDate = date.toLocaleTimeString().split(' ');
-  const timeWithHourAndMinute = splitDate[0].split(':').slice(0, 2).join(':');
-
-  return `${timeWithHourAndMinute} ${splitDate[1]}`;
-};
-
-const timeObj = {
-  month: 2_592_000,
-  week: 648_000,
-  day: 86_400,
-  hour: 3_600,
-  minute: 60,
-};
-
-export const formatTime = (time) => {
-  const date = new Date(time);
-  const diffDay = (Date.now() - date.getTime()) / 1000;
-  return diffDay < timeObj.minute
-    ? 'just now'
-    : diffDay < timeObj.hour
-    ? getRemainTime(diffDay)(timeObj.minute) + 'm'
-    : diffDay < timeObj.day
-    ? getFullTime(date)
-    : diffDay < timeObj.month * 12
-    ? getDayAndMonth(date)
-    : getFullDate(date);
-};
-
-const getRemainTime = (timestamp) => (num) => Math.round(timestamp / num);
-
-export const getOfflineTime = (timestamp) => {
-  if (!timestamp) return;
-  timestamp = (new Date().getTime() - timestamp) / 1000;
-
-  const iGetRemainTime = getRemainTime(timestamp);
-
-  return timestamp < timeObj.minute
-    ? 'just now'
-    : timestamp < timeObj.hour
-    ? iGetRemainTime(timeObj.minute) + 'm'
-    : timestamp < timeObj.day
-    ? iGetRemainTime(timeObj.hour) + 'h'
-    : timestamp < timeObj.week
-    ? iGetRemainTime(timeObj.day) + 'd'
-    : timestamp < timeObj.month
-    ? iGetRemainTime(timeObj.week) + 'w'
-    : timestamp < timeObj.month * 12
-    ? getDayAndMonth(new Date(timestamp * 1000))
-    : getFullDate(new Date(timestamp * 1000));
-};
-
 export const getFirstSegmentPath = (pathname) =>
   pathname.split('/')[FIRST_SEGMENT_PATH];
 
@@ -103,4 +51,49 @@ export const debounce = (fn, ms) => {
     }
     timerId = setTimeout(fn, ms, ...arg);
   };
+};
+
+/*
+ * format relative time
+ * */
+
+const A_MILI_SECOND = 1000;
+const DateTimeUnits = [
+  'second',
+  'minute',
+  'hour',
+  'day',
+  'week',
+  'month',
+  'quarter',
+  'year',
+];
+const DateTimes = [
+  1,
+  60,
+  3_600,
+  86_400,
+  7 * 86_400,
+  30 * 86_400,
+  89 * 86_400,
+  356 * 86_400,
+  Infinity,
+];
+export const formatRelativeTime = (timestamp) => {
+  const rtf = new Intl.RelativeTimeFormat('en', {
+    style: 'narrow',
+  });
+
+  let fromNow = Math.floor((timestamp - Date.now()) / A_MILI_SECOND);
+  let timeIdx = DateTimes.findIndex(
+    (dateTime) => dateTime >= Math.abs(fromNow)
+  );
+
+  timeIdx = timeIdx > 0 ? timeIdx - 1 : 0;
+
+  const dateTimeUnit = DateTimeUnits[timeIdx];
+
+  fromNow = Math.trunc(fromNow / DateTimes[timeIdx]);
+
+  return rtf.format(fromNow, dateTimeUnit);
 };

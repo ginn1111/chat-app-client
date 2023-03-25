@@ -21,3 +21,4 @@ export { default as WarnIcon } from './WarnIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as AddFriendIcon } from './AddFriendIcon';
 export { default as UnFriendIcon } from './UnFriendIcon';
+export { default as BellIcon } from './BellIcon';

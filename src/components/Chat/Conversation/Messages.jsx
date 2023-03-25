@@ -8,7 +8,6 @@ import {
   hasMore as hasMoreMsg,
   hasGetMore,
 } from '../../../store/selectors';
-import { formatTime } from '../../../utils/helper';
 import getSocketIO, {
   getMessage,
   removeGetMessage,

@@ -28,7 +28,6 @@ privateRequest.interceptors.response.use((response) => {
 });
 
 publicRequest.interceptors.response.use((response) => {
-  console.log(response.config.url, URL.GET_USER(response.data._id));
   switch (response.config.url) {
     case URL.LOGIN:
       const { _id, __v, createAt, updateAt, ...rest } = response.data;

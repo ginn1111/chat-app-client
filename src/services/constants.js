@@ -19,6 +19,7 @@ export const URL = {
   GET_FRIEND: (friendId) => `/users/find/${friendId}`,
   // CONVERSATION API
   CREATE_CONVERSATION: (userId) => `conversations/${userId}/create`,
+  GET_CONVERSATION_LIST: (userId) => `conversations/${userId}/get`,
 };
 
 export const KEY = {

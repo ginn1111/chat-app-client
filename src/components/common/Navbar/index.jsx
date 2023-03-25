@@ -1,36 +1,43 @@
 import { useRef } from 'react';
 import clsx from 'clsx';
-import { ChevronDownIcon } from '@components/common/icons';
+import { useSelector } from 'react-redux';
+
+import { BellIcon } from '@components/common/icons';
 import NavbarItem from './NavbarItem';
 import { NAV_ITEMS } from '@constants';
 import useIndicator from './useIndicator';
+import { userInformationSelector } from '@app/selectors';
 
-const Avatar = ({ className }) => {
+const Avatar = ({ className, src }) => {
   return (
     <div className={clsx('w-96 h-96 max-w-full p-12 mx-auto mt-40', className)}>
       <img
         className="w-full h-full block object-cover object-center rounded-cir"
-        src="https://www.figma.com/file/cXZUlJRHi5JhnrgLdZZfvK/image/25daf6b6c9cfce0b73cb0788f056ca80336c3df5?fuid=1056603901594338444"
+        src={src}
         alt="User avatar"
+        loading="eager"
       />
     </div>
   );
 };
 
-const Information = () => {
+const Information = ({ isNotify, nickname }) => {
   return (
     <div className="px-20 flex items-center justify-center">
       <div className="flex items-center gap-8 overflow-hidden">
         <h3 className="flex-1 text-20 font-medium text-gray-800 truncate">
-          Ginn1111
+          {nickname}
         </h3>
-        <ChevronDownIcon className="text-black" size={20} />
+        <div className={clsx('text-primary', { 'animate-bounce': isNotify })}>
+          <BellIcon size={20} />
+        </div>
       </div>
     </div>
   );
 };
 
 const Navbar = () => {
+  const user = useSelector(userInformationSelector);
   const indicatorRef = useRef();
   const liItemRef = useRef();
   const idxPath = useIndicator(indicatorRef, liItemRef);
@@ -43,8 +50,8 @@ const Navbar = () => {
     <>
       <nav className="flex flex-col navbar">
         <div className="text-center">
-          <Avatar />
-          <Information />
+          <Avatar src={user.avatar} />
+          <Information nickname={user.nickname} />
         </div>
         <ul className="h-full flex flex-col pl-20 gap-20 mt-auto relative">
           <div className="indicator" ref={indicatorRef} />

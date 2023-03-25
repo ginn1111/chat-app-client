@@ -103,8 +103,6 @@ const NewConversation = ({ onClose }) => {
     );
   }
 
-  console.log(user?.friendList);
-
   return (
     <form
       onSubmit={submitHandler}
